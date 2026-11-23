@@ -7,6 +7,7 @@ import plotly.express as px
 import streamlit as st
 
 import config
+from app.estilos import intro
 from app.utils.datos import cargar_procesado
 from app.utils.graficos import mostrar_metricas
 from app.utils.modelos import cargar_joblib, leer_meta
@@ -210,8 +211,8 @@ def _modelo(meta):
 
 
 def render():
-    st.header("Predicción de generación de residuos per cápita")
-    st.write("Estima cuántos kg de residuos genera por día un habitante de un país a partir de su PIB, su población y su región.")
+    intro("Predicción de la generación de residuos per cápita",
+          "Estima cuántos kg de residuos genera por día un habitante de un país a partir de su PIB, su población y su región.")
     try:
         meta = leer_meta(ARCHIVO_META)
         modelo = cargar_joblib(ARCHIVO_MODELO)
@@ -229,8 +230,7 @@ def render():
                                        (pestanas[2], _modelo, (meta,))):
             with pestana:
                 funcion(*args)
-        with st.expander("Aviso de uso responsable y fuentes"):
-            st.write(config.AVISO_USO)
+        with st.expander("Fuentes de datos y limitaciones"):
             st.write("Datos: Banco Mundial, *What a Waste* (nivel país; licencia indicada en la ficha: CC-BY-4.0). Los años de referencia "
                      "difieren entre países y la relación con el PIB es una asociación, no una causa.")
     except Exception as e:  # noqa: BLE001

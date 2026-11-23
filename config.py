@@ -2,6 +2,8 @@
 from pathlib import Path
 
 NOMBRE_PROYECTO = "EcoResiduos IA"
+GRUPO = "Grupo 3"
+CURSO = "Software Inteligente (UNMSM, 2026-2)"
 DESCRIPCION_PROYECTO = (
     "Análisis y apoyo a la decisión en la gestión de residuos sólidos municipales, "
     "con modelos de aprendizaje automático sobre datos abiertos."
@@ -99,9 +101,3 @@ CONTENEDORES = {
         },
     },
 }
-
-AVISO_USO = (
-    "Herramienta académica de apoyo a la decisión. Las estimaciones y clasificaciones "
-    "pueden contener errores y sesgos de los datos; no sustituyen la evaluación de un "
-    "especialista. No subas imágenes con personas ni textos con datos personales."
-)

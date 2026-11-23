@@ -10,6 +10,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 import config
+from app.estilos import intro
 from app.utils.graficos import mostrar_metricas
 from app.utils.modelos import cargar_joblib, leer_meta
 
@@ -268,9 +269,9 @@ def _modelo(meta):
 
 
 def render():
-    st.header("Clustering de países por perfil de residuos")
-    st.write("Agrupa países según cuánto residuo generan por habitante y de qué se compone. Es un análisis exploratorio: "
-             "describe parecidos, no causas.")
+    intro("Clustering de países por perfil de residuos",
+          "Agrupa países según cuánto residuo generan por habitante y de qué se compone. Es un análisis exploratorio: "
+          "describe parecidos, no causas.")
     try:
         meta = leer_meta(ARCHIVO_META)
         art = cargar_joblib(ARCHIVO_MODELO)
@@ -294,8 +295,7 @@ def render():
             _mapa(meta, art, paises, nombres, seleccion)
         with pestanas[2]:
             _modelo(meta)
-        with st.expander("Aviso de uso responsable y fuentes"):
-            st.write(config.AVISO_USO)
+        with st.expander("Fuentes de datos y limitaciones"):
             st.write("Datos: Banco Mundial, *What a Waste* (nivel país; licencia indicada en la ficha: CC-BY-4.0). Los años de referencia "
                      "difieren entre países, y los nombres y políticas de los grupos son propuestas del equipo, no resultados del algoritmo.")
     except Exception as e:  # noqa: BLE001

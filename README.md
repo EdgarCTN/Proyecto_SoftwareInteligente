@@ -1,6 +1,6 @@
 # EcoResiduos IA
 
-Aplicación web para el análisis y el apoyo a la decisión en la gestión de residuos sólidos municipales. Integra modelos de aprendizaje automático entrenados con datos abiertos y los presenta en una interfaz con una pestaña por módulo. Trabajo final de Software Inteligente (UNMSM, 2026-2).
+Aplicación web para el análisis y el apoyo a la decisión en la gestión de residuos sólidos municipales. Integra modelos de aprendizaje automático entrenados con datos abiertos y los presenta en una interfaz con una pestaña por módulo. Trabajo final de Software Inteligente (UNMSM, 2026-2), Grupo 3.
 
 ## Alcance de esta versión
 
@@ -65,7 +65,8 @@ El clasificador de imágenes se entrena en Google Colab con `notebooks/03_imagen
 ## Estructura
 
 ```
-app/            interfaz (main.py), módulos por pestaña (modules/) y utilidades (utils/)
+app/            interfaz (main.py), estilos (estilos.py), módulos por pestaña (modules/) y utilidades (utils/)
+.streamlit/     tema visual de la aplicación
 config.py       rutas, semilla, registro de módulos y esquemas de contenedores
 data/           raw/ (descargas, no versionadas), processed/ (datos limpios y resultados), imagenes/
 docs/           diccionario de datos, descripción de los datos de imágenes y figuras

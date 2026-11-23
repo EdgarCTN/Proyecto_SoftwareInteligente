@@ -11,6 +11,7 @@ import streamlit as st
 from PIL import Image, ImageOps
 
 import config
+from app.estilos import intro
 from app.utils.modelos import cargar_keras, leer_meta, ruta_modelo
 
 ARCHIVO_MODELO = "clasificador_imagenes.keras"
@@ -240,8 +241,8 @@ def _modelo(meta, clases):
 
 
 def render():
-    st.header("Clasificación de imágenes de residuos")
-    st.write("Sube la foto de un residuo y el modelo estima de qué tipo es y a qué contenedor iría. Es una ayuda orientativa, no una decisión final.")
+    intro("Clasificación de imágenes de residuos",
+          "Sube la foto de un residuo y el modelo estima de qué tipo es y a qué contenedor iría. Es una ayuda orientativa, no una decisión final.")
     try:
         meta = leer_meta(ARCHIVO_META)
         clases = leer_clases(meta)
@@ -259,8 +260,7 @@ def render():
             _clasificar(meta, clases)
         with pestanas[1]:
             _modelo(meta, clases)
-        with st.expander("Aviso de uso responsable y fuentes"):
-            st.write(config.AVISO_USO)
+        with st.expander("Fuentes de datos y limitaciones"):
             st.write("Entrenado con DS3 (Kaggle, *Garbage Classification V2*, `sumn2u/garbage-classification-v2`) y probado también con DS4 (TrashNet, "
                      "repositorio `garythung/trashnet`; copia en Kaggle `feyzazkefe/trashnet`). Las imágenes no se redistribuyen: consulta la licencia de "
                      "cada una en su página. Los colores de contenedor del esquema del proyecto son una convención propia; los de Perú resumen la NTP 900.058:2019 "

@@ -13,8 +13,10 @@ if str(RAIZ) not in sys.path:
 import streamlit as st  # noqa: E402
 
 import config  # noqa: E402
+from app import estilos  # noqa: E402
 
-st.set_page_config(page_title=config.NOMBRE_PROYECTO, layout="wide")
+st.set_page_config(page_title=config.NOMBRE_PROYECTO, layout="wide", initial_sidebar_state="collapsed")
+estilos.aplicar()
 
 
 def modulo_disponible(nombre):
@@ -39,17 +41,7 @@ def mostrar_modulo(nombre):
         st.caption("El resto de la aplicación sigue funcionando.")
 
 
-st.title(config.NOMBRE_PROYECTO)
-st.caption(config.DESCRIPCION_PROYECTO)
-
-with st.sidebar:
-    st.subheader("Acerca de")
-    st.write(
-        "Trabajo final de Software Inteligente (UNMSM, 2026-2). Cada pestaña corresponde a un módulo "
-        "con su modelo ya entrenado; la aplicación no entrena al iniciarse."
-    )
-    with st.expander("Aviso de uso responsable"):
-        st.write(config.AVISO_USO)
+estilos.cabecera()
 
 disponibles = [m for m in config.MODULOS if modulo_disponible(m["modulo"])]
 if not disponibles:
@@ -59,3 +51,5 @@ else:
     for pestana, m in zip(pestanas, disponibles):
         with pestana:
             mostrar_modulo(m["modulo"])
+
+estilos.pie()

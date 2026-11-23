@@ -1,0 +1,8 @@
+
+=== DS3: data/raw/imagenes/ds3 ===
+imágenes legibles: 0; dañadas: 0
+No se encontraron imágenes. Revisa la ruta.
+
+=== DS4: data/raw/imagenes/ds4 ===
+imágenes legibles: 0; dañadas: 0
+No se encontraron imágenes. Revisa la ruta.

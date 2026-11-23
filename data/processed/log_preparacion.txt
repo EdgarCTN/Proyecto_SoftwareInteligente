@@ -1,0 +1,21 @@
+DS1: 217 filas x 51 columnas leídas; 41 columnas renombradas
+DS1: filas eliminadas sin iso3c = 0; duplicadas por iso3c = 0
+DS1: gpc_kg_hab_dia derivada = ton_anio*1000/365/población; calculable en 215 de 217 países
+DS1: guardado paises_residuos.csv (217 filas x 52 columnas)
+DS2: 25355 filas x 12 columnas leídas
+DS2: fechas interpretables = 100.0% (columna «MONTH»)
+DS2: material refuse = suma de ['REFUSETONSCOLLECTED']
+DS2: material paper = suma de ['PAPERTONSCOLLECTED']
+DS2: material mgp = suma de ['MGPTONSCOLLECTED']
+DS2: material organics = suma de ['RESORGANICSTONS', 'SCHOOLORGANICTONS', 'LEAVESORGANICTONS', 'OTHERORGANICSTONS']
+DS2: filas eliminadas por fecha o toneladas vacías = 23735 de 101420
+DS2: guardado dsny_distritos_mensual.csv (77685 filas)
+DS2: serie de ciudad 1990-01 a 2026-10; meses sin datos = 4
+DS2: cobertura máxima = 59 distritos; sostenida desde 1992-01 (18 meses incompletos antes o durante)
+DS2: refuse: máximo de distritos con dato = 59; sostenida desde 1992-01 (18 meses incompletos antes o durante)
+DS2: paper: máximo de distritos con dato = 59; sostenida desde 2004-04 (134 meses incompletos antes o durante)
+DS2: mgp: máximo de distritos con dato = 59; sostenida desde 2004-04 (60 meses incompletos antes o durante)
+DS2: organics: máximo de distritos con dato = 59; sostenida desde 2024-10 (417 meses incompletos antes o durante)
+DS2: covid=1 de 2020-03-01 a 2021-12-01 (fin PROVISIONAL); organicos_programa=0 de 2020-05-01 a antes de 2021-10-01
+DS2: AVISO n_distritos por mes varía entre 3 y 59 (revisar antes de sumar)
+DS2: guardado serie_ciudad_mensual.csv

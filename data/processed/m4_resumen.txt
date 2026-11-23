@@ -1,0 +1,66 @@
+Países en el CSV: 217; usados (7 variables completas): 160; descartados: 57
+Vacíos % por variable: {'gpc_kg_hab_dia': 0.9, 'comp_food_organic_waste_pct': 18.9, 'comp_paper_cardboard_pct': 18.9, 'comp_plastic_pct': 19.4, 'comp_glass_pct': 21.2, 'comp_metal_pct': 21.2, 'comp_other_pct': 19.4, 'cobertura_total_percent_of_population': 57.6, 'trat_recycling_pct': 42.4}
+scikit-learn 1.9.1
+
+Mejor configuración elegible por algoritmo:
+           algoritmo parametros  n_clusters  ruido_pct  tam_min  silhouette  davies_bouldin  calinski_harabasz
+             K-Means   {"k": 4}           4        0.0       16       0.219           1.548             34.312
+Agglomerative (Ward)   {"k": 4}           4        0.0       12       0.207           1.648             31.850
+          GMM (diag)   {"k": 3}           3        0.0       38       0.177           2.210             31.623
+
+Ganador: K-Means {"k": 4}; 4 clústeres; Silhouette 0.219; Davies-Bouldin 1.548; Calinski-Harabasz 34.3; ruido 0.0 %; tamaño mínimo 16
+Mejor Silhouette sin restricciones: DBSCAN {"eps": 0.8, "min_samples": 3} -> 7 clústeres, 0.491
+
+K-Means (codo):
+ k  inercia  silhouette
+ 2  855.795       0.219
+ 3  756.610       0.204
+ 4  674.758       0.219
+ 5  628.353       0.164
+ 6  563.574       0.175
+ 7  515.115       0.196
+ 8  483.727       0.171
+ 9  458.724       0.175
+10  434.414       0.173
+
+Estabilidad (30 submuestras del 80 %): ARI 0.662 ± 0.277 (mín 0.250)
+
+Contraste externo:
+             ARI    NMI  homogeneidad  completitud  V_measure
+income_id  0.180  0.254         0.245        0.264      0.254
+region_id  0.075  0.151         0.128        0.185      0.151
+
+Sensibilidad:
+{"CLR": {"ARI_vs_principal": 0.3136660844663454, "n_clusters": 4}, "semillas_0_a_9": {"ARI_media": 0.962653776313012, "ARI_min": 0.931162594881872}, "ampliado_9_variables": {"n_paises": 44, "n_clusters": 4, "ARI_vs_principal_mismos_paises": 0.2313367368950888, "silhouette": 0.23057824685693423}}
+
+Perfil (mediana) y tamaño por clúster:
+         gpc_kg_hab_dia  comp_food_organic_waste_pct  comp_paper_cardboard_pct  comp_plastic_pct  comp_glass_pct  comp_metal_pct  comp_other_pct  n_paises
+cluster                                                                                                                                                   
+0                  2.22                        24.00                     28.50              5.40            4.60            6.29           13.13        17
+1                  1.18                        41.47                     15.00             13.50            5.50            3.80           12.10        79
+2                  0.59                        59.79                      8.00             10.00            2.32            2.00           11.05        48
+3                  0.83                        16.80                      8.35             10.29            3.10            3.50           41.07        16
+
+Clúster por grupo de ingreso:
+income_id  HIC  LIC  LMC  UMC
+cluster                      
+0           16    0    1    0
+1           46    1    9   23
+2            0   11   20   17
+3            6    4    2    4
+
+Clúster por región:
+region_id  EAS  ECS  LCN  MEA  NAC  SAS  SSF
+cluster                                     
+0            4    7    3    0    3    0    0
+1           16   32   18    9    0    1    3
+2            9    3   10   11    0    4   11
+3            4    5    1    0    0    0    6
+
+Países más cercanos al centro de cada clúster:
+  Clúster 0: Norway, Liechtenstein, Guam, Canada, Cayman Islands, Denmark, United States, Puerto Rico
+  Clúster 1: Mexico, Netherlands, Dominican Republic, Italy, Brunei Darussalam, Antigua and Barbuda, Austria, Lebanon
+  Clúster 2: Morocco, Sri Lanka, China, Iran, Islamic Rep., Ecuador, Colombia, West Bank and Gaza, Bolivia
+  Clúster 3: Hungary, Grenada, Senegal, Belgium, Marshall Islands, Togo, New Zealand, United Kingdom
+
+Asignación por centroide coincide con las etiquetas en el 100.0 % de los países

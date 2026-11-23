@@ -1,0 +1,18 @@
+# Aplicación
+streamlit==1.67.0
+pandas==3.0.6
+numpy==2.3.2
+plotly==7.1.0
+scikit-learn==1.9.1
+xgboost==3.4.1
+joblib==1.5.1
+pillow==12.3.0
+tensorflow==2.21.0
+
+# Análisis, entrenamiento y notebooks
+matplotlib==3.11.2
+seaborn==0.13.2
+notebook==7.6.5
+
+# Pruebas
+pytest==8.3.4

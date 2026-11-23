@@ -1,0 +1,26 @@
+{
+  "_aviso": "Nombres y políticas asignados por el equipo a partir de los perfiles obtenidos en la ejecución del 2026-11-22. Las políticas son sugerencias orientativas y no se derivan de los datos. Si se vuelve a entrenar, los identificadores de clúster pueden cambiar: la aplicación compara los tamaños y avisa.",
+  "tamanos_de_la_ejecucion": {"0": 17, "1": 79, "2": 48, "3": 16},
+  "clusters": {
+    "0": {
+      "nombre": "Alta generación, mucho papel y cartón",
+      "descripcion": "Los países con mayor generación per cápita, con la mayor proporción de papel y cartón y la menor de residuos orgánicos. Casi todos son de ingreso alto.",
+      "politica": "Prevención en origen (menos envases y desperdicio), recuperación de papel y cartón y evaluar tarifas según la cantidad generada."
+    },
+    "1": {
+      "nombre": "Generación intermedia, composición mixta",
+      "descripcion": "El grupo más numeroso: generación intermedia, con una parte importante de orgánicos y la mayor proporción de plástico. Predominan países de ingreso alto y medio-alto.",
+      "politica": "Separación en origen de plásticos y envases, y compostaje de la fracción orgánica."
+    },
+    "2": {
+      "nombre": "Baja generación, predominio orgánico",
+      "descripcion": "Los países con menor generación per cápita y mayor proporción de residuos orgánicos. No incluye países de ingreso alto.",
+      "politica": "Priorizar el compostaje o la digestión anaerobia local de la fracción orgánica y asegurar la recolección y la disposición final controlada."
+    },
+    "3": {
+      "nombre": "Alta fracción de «otros»",
+      "descripcion": "Grupo pequeño donde la categoría «otros» domina la composición y el ingreso es heterogéneo. Puede reflejar cómo cada país clasificó sus residuos y no una composición real.",
+      "politica": "Mejorar primero la caracterización de los residuos: la categoría «otros» puede ocultar materiales aprovechables; después decidir las acciones."
+    }
+  }
+}

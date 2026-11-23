@@ -1,0 +1,457 @@
+{
+ "modulo": "imagenes",
+ "modelo": "V3_fine_tuning (MobileNetV2, entrada 224x224)",
+ "fecha": "2026-11-23",
+ "dataset": "DS3 Garbage Classification V2 (carpeta usada: original); prueba externa DS4 TrashNet (carpeta: dataset-resized)",
+ "n_entrenamiento": 8554,
+ "n_validacion": 1833,
+ "n_prueba": 1833,
+ "parametros": {
+  "epocas_max": [
+   25,
+   12,
+   12
+  ],
+  "lr": [
+   0.001,
+   0.001,
+   1e-05
+  ],
+  "batch": 32,
+  "capas_descongeladas_v3": 30,
+  "semilla": 42,
+  "pesos_base": "imagenet",
+  "regla_seleccion": "macro-F1 de validación; empate <= 0.005 -> menos parámetros entrenables"
+ },
+ "metricas": {
+  "accuracy": 0.9148936170212766,
+  "macro_f1": 0.9099085769857981,
+  "accuracy_val": 0.92253136933988,
+  "macro_f1_val": 0.9126591878588597,
+  "accuracy_test_6clases": 0.8762331838565023,
+  "macro_f1_test_6clases": 0.8694104729671209,
+  "accuracy_ds4": 0.6101083032490975,
+  "macro_f1_ds4": 0.573881220217491,
+  "brecha_accuracy": 0.2661248806074048,
+  "brecha_macro_f1": 0.29552925274962993
+ },
+ "features": {
+  "entrada": [
+   224,
+   224,
+   3
+  ],
+  "preprocesamiento_en_modelo": true
+ },
+ "clases": [
+  "battery",
+  "biological",
+  "cardboard",
+  "clothes",
+  "glass",
+  "metal",
+  "paper",
+  "plastic",
+  "shoes",
+  "trash"
+ ],
+ "librerias": {
+  "tensorflow": "2.21.0",
+  "keras": "3.13.2",
+  "numpy": "2.4.6",
+  "scikit-learn": "1.6.1",
+  "pillow": "11.3.0"
+ },
+ "ganador": "V3_fine_tuning",
+ "comparacion_variantes": [
+  {
+   "variante": "V1_desde_cero",
+   "epocas": 9,
+   "segundos": 339,
+   "params_entrenables": 242474,
+   "val_accuracy": 0.4283,
+   "val_macro_f1": 0.416,
+   "test_accuracy": 0.4239,
+   "test_macro_f1": 0.4194
+  },
+  {
+   "variante": "V2_clasificador",
+   "epocas": 11,
+   "segundos": 287,
+   "params_entrenables": 12810,
+   "val_accuracy": 0.8931,
+   "val_macro_f1": 0.8832,
+   "test_accuracy": 0.9013,
+   "test_macro_f1": 0.8938
+  },
+  {
+   "variante": "V3_fine_tuning",
+   "epocas": 12,
+   "segundos": 341,
+   "params_entrenables": 1523530,
+   "val_accuracy": 0.9225,
+   "val_macro_f1": 0.9127,
+   "test_accuracy": 0.9149,
+   "test_macro_f1": 0.9099
+  }
+ ],
+ "por_clase_test": {
+  "battery": {
+   "precision": 0.9814814814814815,
+   "recall": 0.9464285714285714,
+   "f1-score": 0.9636363636363636,
+   "support": 112.0
+  },
+  "biological": {
+   "precision": 0.9901960784313726,
+   "recall": 0.9619047619047619,
+   "f1-score": 0.9758454106280193,
+   "support": 105.0
+  },
+  "cardboard": {
+   "precision": 0.8733031674208145,
+   "recall": 0.919047619047619,
+   "f1-score": 0.8955916473317865,
+   "support": 210.0
+  },
+  "clothes": {
+   "precision": 0.9929824561403509,
+   "recall": 0.9964788732394366,
+   "f1-score": 0.9947275922671354,
+   "support": 284.0
+  },
+  "glass": {
+   "precision": 0.9422222222222222,
+   "recall": 0.8185328185328186,
+   "f1-score": 0.8760330578512396,
+   "support": 259.0
+  },
+  "metal": {
+   "precision": 0.7616279069767442,
+   "recall": 0.9357142857142857,
+   "f1-score": 0.8397435897435898,
+   "support": 140.0
+  },
+  "paper": {
+   "precision": 0.898936170212766,
+   "recall": 0.845,
+   "f1-score": 0.8711340206185567,
+   "support": 200.0
+  },
+  "plastic": {
+   "precision": 0.8708333333333333,
+   "recall": 0.8781512605042017,
+   "f1-score": 0.8744769874476988,
+   "support": 238.0
+  },
+  "shoes": {
+   "precision": 0.9907407407407407,
+   "recall": 0.9861751152073732,
+   "f1-score": 0.9884526558891455,
+   "support": 217.0
+  },
+  "trash": {
+   "precision": 0.7763157894736842,
+   "recall": 0.8676470588235294,
+   "f1-score": 0.8194444444444444,
+   "support": 68.0
+  }
+ },
+ "matriz_confusion_test": [
+  [
+   106,
+   0,
+   2,
+   0,
+   0,
+   3,
+   0,
+   0,
+   0,
+   1
+  ],
+  [
+   0,
+   101,
+   2,
+   0,
+   1,
+   0,
+   1,
+   0,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   193,
+   0,
+   0,
+   0,
+   11,
+   4,
+   0,
+   1
+  ],
+  [
+   0,
+   0,
+   0,
+   283,
+   0,
+   1,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   212,
+   21,
+   0,
+   21,
+   1,
+   4
+  ],
+  [
+   1,
+   0,
+   1,
+   0,
+   2,
+   131,
+   2,
+   3,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   18,
+   1,
+   1,
+   7,
+   169,
+   1,
+   0,
+   3
+  ],
+  [
+   0,
+   1,
+   2,
+   1,
+   8,
+   7,
+   3,
+   209,
+   1,
+   6
+  ],
+  [
+   0,
+   0,
+   0,
+   0,
+   1,
+   0,
+   0,
+   0,
+   214,
+   2
+  ],
+  [
+   0,
+   0,
+   3,
+   0,
+   0,
+   2,
+   2,
+   2,
+   0,
+   59
+  ]
+ ],
+ "prueba_externa": {
+  "clases_comunes": [
+   "glass",
+   "paper",
+   "cardboard",
+   "plastic",
+   "metal",
+   "trash"
+  ],
+  "mapeo_trashnet_a_ds3": {
+   "glass": "glass",
+   "paper": "paper",
+   "cardboard": "cardboard",
+   "plastic": "plastic",
+   "metal": "metal",
+   "trash": "trash"
+  },
+  "n_ds3_test_6clases": 1115,
+  "n_ds4": 277,
+  "ds4_por_clase": {
+   "glass": {
+    "precision": 0.9857142857142858,
+    "recall": 0.6216216216216216,
+    "f1-score": 0.7624309392265194,
+    "support": 111.0
+   },
+   "paper": {
+    "precision": 0.48717948717948717,
+    "recall": 0.8260869565217391,
+    "f1-score": 0.6129032258064516,
+    "support": 23.0
+   },
+   "cardboard": {
+    "precision": 0.625,
+    "recall": 0.9375,
+    "f1-score": 0.75,
+    "support": 16.0
+   },
+   "plastic": {
+    "precision": 0.28888888888888886,
+    "recall": 0.41935483870967744,
+    "f1-score": 0.34210526315789475,
+    "support": 31.0
+   },
+   "metal": {
+    "precision": 0.21739130434782608,
+    "recall": 1.0,
+    "f1-score": 0.35714285714285715,
+    "support": 10.0
+   },
+   "trash": {
+    "precision": 0.8113207547169812,
+    "recall": 0.5,
+    "f1-score": 0.6187050359712231,
+    "support": 86.0
+   }
+  },
+  "matriz_ds4": [
+   [
+    69,
+    1,
+    0,
+    20,
+    20,
+    1
+   ],
+   [
+    0,
+    19,
+    2,
+    2,
+    0,
+    0
+   ],
+   [
+    0,
+    1,
+    15,
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    3,
+    3,
+    13,
+    2,
+    9
+   ],
+   [
+    0,
+    0,
+    0,
+    0,
+    10,
+    0
+   ],
+   [
+    0,
+    15,
+    4,
+    10,
+    14,
+    43
+   ]
+  ],
+  "fotos_propias": null
+ },
+ "limpieza": {
+  "ds3": {
+   "original": 12259,
+   "duplicados_eliminados": 12,
+   "conflicto_etiqueta_eliminadas": 27
+  },
+  "ds4": {
+   "original": 2527,
+   "duplicados_eliminados": 2,
+   "conflicto_etiqueta_eliminadas": 10,
+   "solapadas_con_ds3_excluidas": 2238
+  },
+  "conteo_por_clase": {
+   "battery": {
+    "train": 526,
+    "val": 113,
+    "test": 112
+   },
+   "biological": {
+    "train": 489,
+    "val": 105,
+    "test": 105
+   },
+   "cardboard": {
+    "train": 983,
+    "val": 211,
+    "test": 210
+   },
+   "clothes": {
+    "train": 1324,
+    "val": 284,
+    "test": 284
+   },
+   "glass": {
+    "train": 1206,
+    "val": 258,
+    "test": 259
+   },
+   "metal": {
+    "train": 651,
+    "val": 139,
+    "test": 140
+   },
+   "paper": {
+    "train": 932,
+    "val": 199,
+    "test": 200
+   },
+   "plastic": {
+    "train": 1113,
+    "val": 239,
+    "test": 238
+   },
+   "shoes": {
+    "train": 1014,
+    "val": 217,
+    "test": 217
+   },
+   "trash": {
+    "train": 316,
+    "val": 68,
+    "test": 68
+   }
+  }
+ },
+ "notas": "Fondos controlados u origen web: no generaliza a cualquier calle; ver brecha de dominio. Residuos peligrosos (baterías) requieren manejo especial. Licencias de DS3/DS4 por confirmar en Kaggle."
+}

@@ -1,0 +1,4 @@
+variante,epocas,segundos,params_entrenables,val_accuracy,val_macro_f1,test_accuracy,test_macro_f1,ganador
+V1_desde_cero,9,339,242474,0.4283,0.416,0.4239,0.4194,False
+V2_clasificador,11,287,12810,0.8931,0.8832,0.9013,0.8938,False
+V3_fine_tuning,12,341,1523530,0.9225,0.9127,0.9149,0.9099,True

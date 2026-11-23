@@ -1,0 +1,24 @@
+# Entorno y caché
+venv/
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.env
+.DS_Store
+
+# Credenciales
+kaggle.json
+
+# Datos: no se versionan (peso y licencias); se conserva solo la carpeta
+data/raw/*
+data/imagenes/*
+!data/raw/.gitkeep
+!data/imagenes/.gitkeep
+
+# Directorios locales de herramientas
+.agents/
+
+# models/ no se ignora: la aplicación necesita los modelos entrenados.
+# Si algún archivo supera 100 MB (límite de GitHub), usar Git LFS.

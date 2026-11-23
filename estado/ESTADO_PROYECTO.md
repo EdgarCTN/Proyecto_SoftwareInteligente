@@ -10,10 +10,10 @@
 
 | Campo | Valor |
 |---|---|
-| Versión del estado | 24 (Fase 4 Parte B: modo país confirmado) |
+| Versión del estado | 31 (Fase 5 Parte B: script de comprobación OK y TensorFlow fijado) |
 | Última actualización | 2026-11-21 |
-| Última fase completada | Fase 3 (Fase 2 con pendientes: revisión humana del filtro de textos e imágenes DS3 y DS4) |
-| Fase actual | Fase 4 Parte B — ⚠️ error corregido y modo país confirmado; falta su "Continuar" |
+| Última fase completada | Fase 4 (con P20 parcial; Fase 2 con pendientes: revisión humana del filtro de textos e imágenes DS3 y DS4) |
+| Fase actual | Fase 5 Parte B — 🟡 entregada; falta que el usuario la pruebe y escriba "Continuar" |
 | Semana del cronograma | 13 (próxima entrega: semana 14, avance 50 %) |
 | Nº de conversación (chat) | 1 |
 
@@ -39,8 +39,8 @@
 | 1 | Estructura del repositorio y entorno | ✅ | Árbol, `requirements.txt`, `main.py` esqueleto, `config.py`, utils | Sí (Continuar) | App abre con 5 pestañas (confirmado por el usuario) |
 | 2 | Datos: descarga, verificación, limpieza y EDA | ✅ | `src/preparar_datos.py`, CSV limpio, diccionario de datos, EDA | Sí (Continuar, con pendientes) | Parte A validada (REGISTRO 0c). Parte B entregada; textos listos y verificados (XL-Sum 4 763 y MLSUM 13 366 artículos de test; muestras de 500); revisión preliminar del filtro hecha por la IA (precisión 6 % con criterio de tema principal; REGISTRO 0e); imágenes aún no descargadas |
 | 3 | Módulo 1: Predicción | ✅ | Notebook 01, `prediccion.py`, modelo + meta | Sí (Continuar) | Parte A ejecutada con datos reales (REGISTRO 1): ganador SVR con A0; mejora modesta sobre el baseline. Parte B entregada: `app/modules/prediccion.py` (simulador, países, métricas); abierta por el usuario en la app real y confirmada (REGISTRO 0b) |
-| 4 | Módulo 4: Clustering | ⚠️ | Notebook 04, `clustering.py`, modelo + meta | — | Parte A ejecutada con datos reales (REGISTRO 4): ganador K-Means k=4, estructura débil. Parte B entregada (probada solo con Streamlit y plotly simulados y un modelo de juguete): `app/modules/clustering.py` |
-| 5 | Módulo 3: Imágenes | ⬜ | Notebook 03 (Colab), `imagenes.py`, `.keras` + meta | — | |
+| 4 | Módulo 4: Clustering | ✅ | Notebook 04, `clustering.py`, modelo + meta | Sí (Continuar) | Parte A con datos reales (REGISTRO 4): K-Means k=4, estructura débil. Parte B: `app/modules/clustering.py`; modo país confirmado tras corregir TWN sin nombre (D57, D58); perfil nuevo, mapa y métricas sin reporte de fallas (P20 parcial) |
+| 5 | Módulo 3: Imágenes | 🟡 | Notebook 03 (Colab), `imagenes.py`, `.keras` + meta | Parte A: sí (Continuar) | Parte A ejecutada con datos reales (REGISTRO 3). Parte B entregada: `app/modules/imagenes.py`, `CONTENEDORES` en `config.py`, `src/comprobar_modelo_imagenes.py`, `tests/test_imagenes.py`. Probada por la IA con el modelo real, 5 pruebas pytest y Streamlit AppTest con una foto sintética; en el PC del usuario: 5 pruebas pasan, la app y la pestaña funcionan (interfaz aprobada por el usuario); el script de comprobación se corrigió (codificación) y terminó en OK; 1 foto real probada (REGISTRO 3) |
 | 6 | Módulo 2: Series temporales | ⬜ | Notebook 02, `series_tiempo.py`, modelo + meta | — | |
 | 7 | Módulo 5: Resumen de texto | ⬜ | Notebook 05, `resumen.py` | — | |
 | 8 | Integración y pruebas | ⬜ | `main.py` completo, pruebas, caché, errores | — | |
@@ -113,6 +113,22 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | D56 | App de clustering: tres pestañas (Explorar, Mapa y grupos, Modelo y métricas). «Explorar» permite elegir un país del dataset o introducir un perfil nuevo (se asigna al centroide más cercano; avisa si la composición suma más de 100 % o si el perfil está casi a igual distancia de dos grupos, con margen (d2 − d1)/d2 < 0.15, umbral heurístico). Los avisos sobre estructura débil, estabilidad y sensibilidad se calculan con el meta; no hay cifras fijas en el código. No se muestra selector de variante: solo existe la A | `app/modules/clustering.py` | 4B |
 | D57 | Clustering, corrección del error: `sorted()` fallaba con un nombre de país vacío (reproducido en pruebas con un nombre vacío; el error es idéntico). Ahora `_leer_paises()` rellena `pais` con `iso3c` cuando falta, la lista de descartados tolera valores vacíos y el módulo muestra un «Detalle técnico del error» con el traceback. La causa en los datos reales (qué país tiene el nombre vacío) está sin confirmar | `app/modules/clustering.py` | 4B |
 | D58 | Causa confirmada del error de clustering: `TWN` no trae nombre de país en DS1. Las pestañas de clustering y de predicción muestran el código `iso3c` cuando falta el nombre; no se inventa un nombre en los datos. El nombre del grupo se muestra con `st.subheader` porque no cabía en un `st.metric` | `REGISTRO` 0c | 4B |
+| D59 | M3: un solo notebook de Colab (`03_imagenes_colab.ipynb`) hace descarga (API de Kaggle), inventario, duplicados, partición, 3 variantes, prueba externa, meta y zip de salida. Las subcarpetas de DS3 y DS4 y el emparejamiento de clases **no se suponen**: el usuario las elige tras ver la lista real (`SUB_DS3`, `SUB_DS4`, `MAPEO_MANUAL`) | `notebooks/03_imagenes_colab.ipynb` | 5A |
+| D60 | M3: duplicados = mismo MD5 o mismo hash perceptual (igual que `verificar_imagenes.py`); en DS3 se conserva una copia (si hay etiquetas distintas se descartan todas), y las imágenes de DS4 que coinciden con DS3 se excluyen de la prueba externa | `notebooks/03_imagenes_colab.ipynb` | 5A |
+| D61 | M3: partición estratificada 70/15/15 (semilla 42) hecha antes del aumento; pesos de clase `balanced`; se guarda `data/processed/m3_particiones.csv` | idem | 5A |
+| D62 | M3, regla fijada antes de entrenar: gana la variante con mayor macro-F1 de **validación**; empate (≤ 0.005) → menos parámetros entrenables; test no se usa para elegir. V1 CNN propia; V2 MobileNetV2 solo clasificador; V3 fine-tuning de las últimas 30 capas (BatchNorm congelada, lr 1e-5) desde V2 | idem | 5A |
+| D63 | M3: preprocesamiento y aumento dentro del modelo; `Rescaling(1/127.5, offset=-1)` reemplaza a `preprocess_input` (mismo escalado a [-1, 1]); no se verificó contra la función oficial | idem | 5A |
+| D64 | M3: prueba externa con decisión restringida a 6 clases comunes (probabilidades renormalizadas); se reporta DS3 test 6 clases, DS4 y la brecha; «trash» de TrashNet y la basura general de DS3 pueden no equivaler | idem | 5A |
+| D65 | M3, datos: 2 238 de las 2 527 imágenes de DS4 coinciden con DS3 (MD5 o hash perceptual idéntico), así que la prueba externa solo tiene 277 imágenes, desbalanceadas (glass 111, trash 86, metal 10). Se reporta tal cual, con esa limitación; no se presenta como prueba de TrashNet completa | `REGISTRO` 3 | 5A |
+| D66 | M3, lectura: V3 es el ganador (macro-F1 val 0.9127 frente a 0.8832 de V2), con una sola ejecución por variante; V1 (CNN propia) queda en 0.4194 de macro-F1 en test. La brecha de dominio (0.266 en accuracy, 0.296 en macro-F1) debe leerse con la cautela de D65 y se discute en el informe | `REGISTRO` 3 | 5A |
+| D67 | **Rechazada por el usuario (2026-11-23):** no se usarán fotos propias. La prueba externa queda solo con las 277 imágenes de DS4 no coincidentes (D65); el informe lo declara como limitación | `REGISTRO` 3 | 5A |
+| D68 | M3 se entrenó con la versión `original` de DS3 (tamaños variados), no con la de 256 px que proponía `M3` 6.1. `image_dataset_from_directory` redimensiona a 224×224 sin recortar (la imagen se estira); la app debe aplicar el mismo redimensionado a la foto subida, y se comprueba en la Parte B (PIL vs. TensorFlow pueden diferir un poco) | `REGISTRO` 3 | 5A |
+| D69 | M3, contenedores: tres esquemas en `config.CONTENEDORES` — `proyecto` (convención propia, no es estándar), `peru_municipal` y `peru_no_municipal` (resumen de Inacal publicado por Andina sobre la NTP 900.058:2019, 2.ª ed.; el PDF oficial no se pudo abrir). Cada sugerencia indica si su origen es `norma` o `proyecto` (p. ej. calzado y basura general son criterio del proyecto). **[VERIFICAR] los colores contra el texto oficial antes de citarlos** | `config.py` | 5B |
+| D70 | M3, app: la foto se redimensiona con `tf.image.resize` bilinear sin recorte (la misma llamada que `image_dataset_from_directory` en el código fuente de Keras 3.15.1; el entrenamiento usó 3.13.2, no se comparó su código); se corrige la rotación EXIF y las transparencias PNG se pasan a fondo blanco; límite 10 MB | `app/modules/imagenes.py` | 5B |
+| D71 | M3, umbrales heurísticos (no derivados de datos ni calibrados): confianza < 0.60 → no se sugiere contenedor y se pide otra foto; si una clase peligrosa (batería) es la 2.ª o 3.ª con ≥ 0.20, se avisa igual | `config.py` | 5B |
+| D72 | M3: el modelo no tiene clase «ninguno» y responde con alta confianza a imágenes que no son residuos (ruido → `paper` 0.876; REGISTRO 3); la app lo declara en «¿Qué tan fiable es este resultado?» y el informe lo incluirá como limitación | `REGISTRO` 3 | 5B |
+| D74 | M3: `comprobar_modelo_imagenes.py` fuerza UTF-8 en la salida (la consola de Windows usa cp1252 y fallaba con «≈»); el aviso «No runtime found» de Streamlit al ejecutarlo fuera de la app es normal | `src/comprobar_modelo_imagenes.py` | 5B |
+| D73 | M3: TensorFlow se agrega **a mano** a `requirements.txt` (no se reenvía el archivo, D33); `src/comprobar_modelo_imagenes.py` verifica la carga local (P12) | `src/comprobar_modelo_imagenes.py` | 5B |
 | D14 | Stack de `C2` sec. 2 propuesto sin cambios (Python 3.11, Streamlit, scikit-learn, Keras/Colab, etc.); confirmar al validar F0 | `C2` 2 | 0 (propuesta) |
 
 *(La IA agrega aquí cada decisión nueva con su fase.)*
@@ -121,10 +137,10 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 
 | Módulo | Dataset usado | Modelo ganador | Métrica clave (real) | Artefacto | Estado |
 |---|---|---|---|---|---|
-| 1 Predicción | — | — | — | `models/prediccion_mejor.pkl` | ⬜ |
+| 1 Predicción | DS1, 172 países con objetivo (prueba n = 43) | SVR (C=1, epsilon=0.1), conjunto A0 | RMSE prueba 0.443 (baseline 0.501), MAE 0.268, R² 0.529 (REGISTRO 1) | `models/prediccion_mejor.pkl` | ✅ |
 | 2 Series temporales | — | — | — | `models/serie_mejor.*` | ⬜ |
-| 3 Imágenes | — | — | — | `models/clasificador_imagenes.keras` | ⬜ |
-| 4 Clustering | — | — | — | `models/clustering_mejor.pkl` | ⬜ |
+| 3 Imágenes | DS3 limpio (12 220 imágenes, 10 clases); prueba externa DS4 (277) | V3 MobileNetV2 con fine-tuning | Test DS3: accuracy 0.915, macro-F1 0.910; DS4 (6 clases): accuracy 0.610, macro-F1 0.574 (REGISTRO 3) | `models/clasificador_imagenes.keras` | 🟡 (falta Parte B) |
+| 4 Clustering | DS1, 7 variables de composición y generación | K-Means k=4 | Silhouette 0.219, DB 1.548; estabilidad ARI 0.662 ± 0.277 (estructura débil) (REGISTRO 4) | `models/clustering_mejor.pkl` | ✅ |
 | 5 Resumen | — | — | — | (modelo HF / TextRank) | ⬜ |
 
 *(Detalle completo de métricas en `REGISTRO_RESULTADOS.md`.)*
@@ -137,7 +153,7 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | P2 | Nº de integrantes (4 o 5) y roles; sin nombres por ahora | Usuario | abierto (no bloquea) |
 | P3 | Nombre del proyecto | Usuario | cerrado: EcoCiudad IA |
 | P4 | Verificar DS1, DS3 a DS6 (columnas, clases, licencias, carga) con `C3` V1 a V8 | Usuario | abierto |
-| P5 | (Opcional) Fotos propias de residuos, sin personas | Equipo | abierto |
+| P5 | (Opcional) Fotos propias de residuos, sin personas | Equipo | descartado por el usuario (D67) |
 | P6 | Crear repositorio Git | Usuario | abierto |
 | P9 | Semana actual del cronograma | Usuario | cerrado: semana 13 |
 | P10 | Formato del informe | Usuario | cerrado: Markdown |
@@ -145,7 +161,7 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | P13 | Ejecutar `preparar` y `eda_tabular.py` con el ajuste y pegar las líneas nuevas | Usuario | cerrado: 2026-11-21 |
 | P14 | Contrastar la unidad ton/mes con un reporte mensual PDF de DSNY (opcional, V3). Hipótesis a verificar: la caída de mgp en 2003 coincide con cobertura incompleta (antes de 2004-04) y el salto de organics en 2025 con que los 59 distritos reportan desde 2024-10 | Equipo | abierto |
 | P1 | Verificar DS2 (columnas, fechas, rango): hecho; falta unidad y cobertura | Usuario | parcial |
-| P12 | TensorFlow en Python 3.13: la simulación resolvió sin errores visibles (indicio, no prueba). Confirmar con la instalación real al inicio de la Fase 5; si falla, usar un entorno con Python 3.11 | Usuario | abierto (se revisa en Fase 5) |
+| P12 | TensorFlow en el PC del usuario (Python 3.13) | Usuario | cerrado: 2026-11-22 (TensorFlow 2.21.0 y Keras 3.15.1 cargan el modelo; 5 pruebas pasan) |
 | P18 | Ejecutar el clustering y pegar `m4_resumen.txt` | Usuario | cerrado: 2026-11-22 |
 | P20 | Reprobar la pestaña Clustering: país del dataset, perfil nuevo, mapa y métricas | Usuario | parcial: país del dataset confirmado (captura); perfil nuevo, mapa y métricas sin reporte de fallas |
 | P21 | Identificar qué país tiene el nombre vacío | Usuario | cerrado: 2026-11-23 (TWN) |
@@ -153,17 +169,31 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | P17 | Abrir la pestaña Predicción y confirmar que se ve bien | Usuario | cerrado: 2026-11-22 (simulador confirmado con captura; las sub-pestañas de países y métricas no se mencionaron) |
 | P16 | Ejecutar el entrenamiento y pegar `m1_resumen.txt` | Usuario | cerrado: 2026-11-21 |
 | P15 | Textos: reejecución hecha y revisión preliminar hecha por la IA con extractos (REGISTRO 0e). Falta que una persona del equipo revise por lo menos 10 de los 50 con el artículo completo, y decidir D37, antes de la Fase 7. Imágenes: descargar DS3 y DS4 y ejecutar `verificar_imagenes.py`, o hacerlo en Colab al inicio de la Fase 5 | Usuario | abierto (parcial) |
-| P8 | Cuenta de Kaggle y `kaggle.json` (o alternativa Hugging Face) | Usuario | abierto |
+| P8 | Cuenta de Kaggle y `kaggle.json` (el notebook lo pide al ejecutarse; o descargar a mano los ZIP) | Usuario | abierto (se usa en Fase 5A) |
+| P22 | Ejecutar `notebooks/03_imagenes_colab.ipynb` en Colab y pegar resultados | Usuario | cerrado: 2026-11-23 (`m3_resumen.txt` y celdas 4 y 5; REGISTRO 3) |
+| P23 | Anotar la licencia de DS3 y DS4 (V5, V8). El emparejamiento TrashNet→DS3 se recibió (nombres idénticos); que `trash` sea equivalente es un supuesto | Usuario | parcial: falta la licencia |
+| P24 | `SUB_DS3` = `original`, `SUB_DS4` = `dataset-resized`; artefactos `clasificador_imagenes.keras` (21.9 MB), `clases_imagenes.json` e `imagenes_meta.json` recibidos y comprobados | Usuario | cerrado: 2026-11-23 |
+| P25 | Decidir D67 (fotos propias) | Usuario | cerrado: no (2026-11-23) |
+| P26 | `tensorflow==2.21.0` agregado y fijado en `requirements.txt`; `python src/comprobar_modelo_imagenes.py` termina en OK en el PC del usuario | Usuario | cerrado: 2026-11-22 |
+| P27 | Probar la pestaña con 3 a 5 fotos reales de residuos (clase, confianza, si acertó) y guardar capturas para el manual | Usuario | parcial: 1 foto (madera → Cartón 94.5 %, REGISTRO 3) |
+| P28 | Contrastar los colores de `peru_municipal` y `peru_no_municipal` con el texto oficial de la NTP 900.058:2019 (INACAL) | Usuario | abierto |
 
 ## 6. Próximo paso exacto
 
-> El usuario ejecuta los scripts de la Parte B (o los difiere si el plazo aprieta) y pega los resultados. Con **Continuar** sin errores se cierra la Fase 2 y sigue la **Fase 3 Parte A** (predicción con DS1). Si no hay tiempo de ejecutar textos e imágenes ahora, **Continuar sin resultados** deja `[RESULTADO REAL PENDIENTE]` y se avanza.
+> Con **Continuar** la Fase 5 pasa a ✅ y empieza la **Fase 6** (Módulo 5: resumen de texto); antes se lee su guía `M5` y la sección de textos de `C3`. Siguen abiertos, sin bloquear: P23 (licencias de DS3 y DS4), P27 (más fotos reales y capturas para el manual) y P28 (colores de la NTP 900.058:2019).
 
 ## 7. Historial
 
 | Versión | Fecha | Fase | Cambio |
 |---|---|---|---|
 | 0 | — | — | Estado inicial creado junto con el paquete |
+| 31 | 2026-11-23 | 5B | Script de comprobación OK en el PC del usuario; `tensorflow==2.21.0` fijado en `requirements.txt` (`fijar_versiones.py` dejó `pytest==8.3.4`, la versión instalada, en lugar de 9.0.1); P26 cerrado; quedan P23, P27 (parcial) y P28 |
+| 30 | 2026-11-23 | 5B | Pruebas en el PC del usuario: 5 pruebas OK, app y pestaña funcionando; script corregido por codificación (D74); P12 cerrado, P26 y P27 parciales; observación con foto real en REGISTRO 3 |
+| 29 | 2026-11-23 | 5B | Fase 5 Parte B entregada: `imagenes.py`, `CONTENEDORES` y umbrales en `config.py`, script de comprobación y pruebas; D69 a D73; pendientes P26 a P28 |
+| 28 | 2026-11-23 | 5A | Artefactos del módulo 3 recibidos y comprobados (carga y coherencia con el meta); D67 rechazada; P24 y P25 cerrados; confusiones principales en REGISTRO 3 |
+| 27 | 2026-11-23 | 5A | Confirmados `SUB_DS3` = `original` y `SUB_DS4` = `dataset-resized` (P24 parcial); D68 |
+| 26 | 2026-11-23 | 5A | Resultados reales del módulo 3 registrados (REGISTRO 3); decisiones D65 a D67; pendientes P22 cerrado, P23 parcial, P24 y P25; tabla de ganadores actualizada |
+| 25 | 2026-11-23 | 5A | Fase 4 validada (✅). Fase 5 Parte A entregada: notebook 03 de Colab (D59 a D64); probado solo con datos de juguete. Tabla de ganadores (sec. 4) completada para M1 y M4 desde REGISTRO |
 | 24 | 2026-11-23 | 4B | Modo país confirmado; causa del error: TWN sin nombre (D58); mismo ajuste en predicción y nombre del grupo en `st.subheader` |
 | 23 | 2026-11-23 | 4B | Error reportado en clustering (modo país); corregido con D57 |
 | 22 | 2026-11-22 | 4B | Fase 4 Parte B entregada: `app/modules/clustering.py` y `models/clustering_nombres.json` (D54 aplicada, D56) |

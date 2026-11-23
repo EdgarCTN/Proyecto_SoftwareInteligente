@@ -1,0 +1,57 @@
+M3 IMAGENES — resumen (ejecución real, 2026-11-23)
+Limpieza DS3: {'original': 12259, 'duplicados_eliminados': 12, 'conflicto_etiqueta_eliminadas': 27} | DS4: {'original': 2527, 'duplicados_eliminados': 2, 'conflicto_etiqueta_eliminadas': 10, 'solapadas_con_ds3_excluidas': 2238}
+Particiones: train 8554, val 1833, test 1833; clases (10): ['battery', 'biological', 'cardboard', 'clothes', 'glass', 'metal', 'paper', 'plastic', 'shoes', 'trash']
+Conteo por clase (train/val/test):
+            train  val  test
+clase                       
+battery       526  113   112
+biological    489  105   105
+cardboard     983  211   210
+clothes      1324  284   284
+glass        1206  258   259
+metal         651  139   140
+paper         932  199   200
+plastic      1113  239   238
+shoes        1014  217   217
+trash         316   68    68
+
+Comparación:
+       variante  epocas  segundos  params_entrenables  val_accuracy  val_macro_f1  test_accuracy  test_macro_f1  ganador
+  V1_desde_cero       9       339              242474        0.4283        0.4160         0.4239         0.4194    False
+V2_clasificador      11       287               12810        0.8931        0.8832         0.9013         0.8938    False
+ V3_fine_tuning      12       341             1523530        0.9225        0.9127         0.9149         0.9099     True
+
+GANADOR: V3_fine_tuning
+Reporte por clase (test DS3, ganador):
+              precision  recall  f1-score   support
+battery           0.981   0.946     0.964   112.000
+biological        0.990   0.962     0.976   105.000
+cardboard         0.873   0.919     0.896   210.000
+clothes           0.993   0.996     0.995   284.000
+glass             0.942   0.819     0.876   259.000
+metal             0.762   0.936     0.840   140.000
+paper             0.899   0.845     0.871   200.000
+plastic           0.871   0.878     0.874   238.000
+shoes             0.991   0.986     0.988   217.000
+trash             0.776   0.868     0.819    68.000
+accuracy          0.915   0.915     0.915     0.915
+macro avg         0.908   0.916     0.910  1833.000
+weighted avg      0.919   0.915     0.915  1833.000
+
+Emparejamiento TrashNet->DS3: {'glass': 'glass', 'paper': 'paper', 'cardboard': 'cardboard', 'plastic': 'plastic', 'metal': 'metal', 'trash': 'trash'}
+DS3 test 6 clases (n=1115): acc 0.8762 macro-F1 0.8694
+DS4 (n=277): acc 0.6101 macro-F1 0.5739
+Brecha (DS3-DS4): acc 0.2661 macro-F1 0.2955
+Reporte DS4:
+              precision  recall  f1-score  support
+glass             0.986   0.622     0.762   111.00
+paper             0.487   0.826     0.613    23.00
+cardboard         0.625   0.938     0.750    16.00
+plastic           0.289   0.419     0.342    31.00
+metal             0.217   1.000     0.357    10.00
+trash             0.811   0.500     0.619    86.00
+accuracy          0.610   0.610     0.610     0.61
+macro avg         0.569   0.717     0.574   277.00
+weighted avg      0.764   0.610     0.643   277.00
+Recarga .keras: dif máx 0.0
+Librerías: {'tensorflow': '2.21.0', 'keras': '3.13.2', 'numpy': '2.4.6', 'scikit-learn': '1.6.1', 'pillow': '11.3.0'}

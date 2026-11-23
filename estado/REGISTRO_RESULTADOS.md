@@ -170,23 +170,58 @@ Serie (S1, S2, S3…): `[PENDIENTE]` · Frecuencia: `[PENDIENTE]` · Periodo: `[
 
 **Justificación del ganador:** `[PENDIENTE]`
 
-## 3. Clasificación de imágenes — Fase 5
+## 3. Clasificación de imágenes — Fase 5 Parte A (origen: `m3_resumen.txt` y salida de las celdas 4 y 5 de `03_imagenes_colab.ipynb`, ejecución del usuario en Colab, 2026-11-23)
 
-Dataset: `[PENDIENTE]` · Clases: `[PENDIENTE]` · Particiones train/val/test: `[PENDIENTE]`
+Dataset de entrenamiento: **DS3 Garbage Classification V2**, 12 259 imágenes legibles (0 dañadas) en 10 clases: `battery, biological, cardboard, clothes, glass, metal, paper, plastic, shoes, trash`. Existen tres versiones con las mismas 12 259 imágenes (`original`, `standardized_256`, `standardized_384`); **subcarpeta usada: `original`** (`SUB_DS3 = "original"`, confirmada por el usuario con su celda 2; DS4: `SUB_DS4 = "dataset-resized"`). Tamaños más frecuentes en el inventario: 512×384 (2 218), 225×225 (1 336) y 400×533 (1 024): coherente con la versión `original` (no estandarizada). Licencia de DS3 y DS4: `[PENDIENTE]` (P23).
 
-| Variante | Accuracy | Macro-F1 | Precision (macro) | Recall (macro) | Épocas | Origen | Fecha | ⭐ |
-|---|---|---|---|---|---|---|---|---|
-| Desde cero | [RESULTADO REAL PENDIENTE] | | | | | | | |
-| Solo capa clasificadora (feature extraction) | [RESULTADO REAL PENDIENTE] | | | | | | | |
-| Fine-tuning | [RESULTADO REAL PENDIENTE] | | | | | | | |
+**Limpieza (V6):** DS3: 12 duplicados eliminados y 27 imágenes con etiquetas en conflicto descartadas → **12 220** imágenes. Particiones estratificadas (semilla 42): **train 8 554 · val 1 833 · test 1 833**. Conteo por clase (train/val/test): battery 526/113/112 · biological 489/105/105 · cardboard 983/211/210 · clothes 1 324/284/284 · glass 1 206/258/259 · metal 651/139/140 · paper 932/199/200 · plastic 1 113/239/238 · shoes 1 014/217/217 · trash 316/68/68. DS4 (TrashNet, carpeta `dataset-resized`): 2 527 imágenes legibles, 6 clases (paper 594, glass 501, plastic 482, metal 410, cardboard 403, trash 137); 2 duplicados y 10 con etiqueta en conflicto eliminados, y **2 238 coinciden con DS3 (MD5 o hash perceptual idéntico) y se excluyen** → **277** imágenes quedan como prueba externa.
 
-**Prueba externa (DS4 TrashNet en las 6 clases comunes; y fotos propias si las hay):**
+| Variante | Accuracy (val) | Macro-F1 (val) | Accuracy (test) | Macro-F1 (test) | Épocas ejecutadas | Parámetros entrenables | Segundos | Origen | Fecha | ⭐ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| V1 desde cero (CNN propia) | 0.4283 | 0.4160 | 0.4239 | 0.4194 | 9 | 242 474 | 339 | `m3_resumen.txt` | 2026-11-23 | |
+| V2 MobileNetV2, solo clasificador | 0.8931 | 0.8832 | 0.9013 | 0.8938 | 11 | 12 810 | 287 | `m3_resumen.txt` | 2026-11-23 | |
+| V3 MobileNetV2, fine-tuning (últimas 30 capas) | 0.9225 | 0.9127 | 0.9149 | 0.9099 | 12 | 1 523 530 | 341 | `m3_resumen.txt` | 2026-11-23 | ⭐ |
 
-| Variante | Conjunto externo | Nº de imágenes | Accuracy | Macro-F1 | Diferencia frente al test de DS3 (6 clases) | Fecha |
-|---|---|---|---|---|---|---|
-| [RESULTADO REAL PENDIENTE] | | | | | | |
+**Justificación del ganador:** regla fijada antes de entrenar (macro-F1 de validación; empate ≤ 0.005 → menos parámetros entrenables). V3 supera a V2 por 0.0295 en macro-F1 de validación (> 0.005), así que no hubo empate. Una sola ejecución por variante (una semilla): no se midió la variabilidad entre ejecuciones. V1 se detuvo en la época 9 con EarlyStopping (patience 4 sobre `val_loss`) y su macro-F1 de validación es 0.4160.
 
-**Métricas por clase (modelo ganador):** `[RESULTADO REAL PENDIENTE]` · **Matriz de confusión:** `[archivo/figura PENDIENTE]`
+**Métricas por clase del ganador (test DS3, n = 1 833; macro avg: precision 0.908, recall 0.916, F1 0.910; accuracy 0.915):**
+
+| Clase | Precision | Recall | F1 | Soporte |
+|---|---|---|---|---|
+| battery | 0.981 | 0.946 | 0.964 | 112 |
+| biological | 0.990 | 0.962 | 0.976 | 105 |
+| cardboard | 0.873 | 0.919 | 0.896 | 210 |
+| clothes | 0.993 | 0.996 | 0.995 | 284 |
+| glass | 0.942 | 0.819 | 0.876 | 259 |
+| metal | 0.762 | 0.936 | 0.840 | 140 |
+| paper | 0.899 | 0.845 | 0.871 | 200 |
+| plastic | 0.871 | 0.878 | 0.874 | 238 |
+| shoes | 0.991 | 0.986 | 0.988 | 217 |
+| trash | 0.776 | 0.868 | 0.819 | 68 |
+
+**Prueba externa (ganador V3; decisión restringida a las 6 clases comunes; emparejamiento TrashNet→DS3 por nombre idéntico: glass, paper, cardboard, plastic, metal, trash):**
+
+| Conjunto | Nº de imágenes | Accuracy | Macro-F1 | Fecha |
+|---|---|---|---|---|
+| Test de DS3 restringido a las 6 clases | 1 115 | 0.8762 | 0.8694 | 2026-11-23 |
+| DS4 (solo las 277 no coincidentes con DS3) | 277 | 0.6101 | 0.5739 | 2026-11-23 |
+| **Brecha (DS3 − DS4)** | | 0.2661 | 0.2955 | 2026-11-23 |
+
+DS4 por clase (precision / recall / F1 / soporte): glass 0.986 / 0.622 / 0.762 / 111 · paper 0.487 / 0.826 / 0.613 / 23 · cardboard 0.625 / 0.938 / 0.750 / 16 · plastic 0.289 / 0.419 / 0.342 / 31 · metal 0.217 / 1.000 / 0.357 / 10 · trash 0.811 / 0.500 / 0.619 / 86 (macro avg: precision 0.569, recall 0.717, F1 0.574; weighted F1 0.643). Fotos propias: no se usaron.
+
+**Lectura (no son cifras nuevas):** (1) DS3 ya contiene gran parte de TrashNet: 2 238 de 2 527 imágenes de DS4 coinciden con DS3. Por eso la prueba externa es **pequeña (277) y desbalanceada** (glass y trash suman 197; metal solo 10), y sus métricas por clase con pocas imágenes (metal, cardboard, paper) son poco fiables. (2) Si quedaran imágenes casi duplicadas con hash distinto (el criterio es hash idéntico), la exactitud en DS4 estaría inflada y la brecha real sería mayor `[no verificado]`. (3) El test de DS3 con 6 clases (0.8762) es menor que el de 10 clases (0.9149) porque se quitan clases con F1 alto (clothes, shoes, battery, biological). (4) «trash» de TrashNet y `trash` de DS3 se emparejaron por nombre; que signifiquen lo mismo es un supuesto.
+
+**Confusiones principales** (leídas de `matriz_confusion_test` y `matriz_ds4` de `imagenes_meta.json`, filas = real): en test de DS3, glass→plastic 21, glass→metal 21, paper→cardboard 18, cardboard→paper 11, plastic→glass 8. En DS4: glass→plastic 20, glass→metal 20, trash→paper 15, trash→metal 14, trash→plastic 10.
+
+**Comprobación de los artefactos (2026-11-23, entorno de la IA con Keras 3.15.1):** `clasificador_imagenes.keras` carga (entrada 224×224×3, salida 10, 2 270 794 parámetros), `clases_imagenes.json` coincide con `clases` del meta, y accuracy recalculada desde las matrices de confusión coincide con el meta (test DS3 n = 1 833: 0.9149; DS4 n = 277: 0.6101). La carga en el entorno local del usuario (Python 3.13, P12) está sin verificar.
+
+**Observación informal de la Fase 5 Parte B (no es una métrica; 3 imágenes sintéticas en el entorno de la IA, 2026-11-23):** el modelo siempre reparte probabilidad entre las 10 clases. Con ruido aleatorio a color respondió `paper` 0.876 (luego `trash` 0.065, `metal` 0.033); con gris uniforme, `plastic` 0.279, `metal` 0.203, `trash` 0.176; con blanco, `trash` 0.451, `cardboard` 0.258, `paper` 0.102. Una imagen que no es un residuo puede recibir confianza alta; la app lo avisa y no hay clase «ninguno».
+
+**Verificación en el PC del usuario (Windows, Python 3.13.6, TensorFlow 2.21.0, Keras 3.15.1, 2026-11-22 noche, hora de Lima):** `tests/test_imagenes.py`: 5 pruebas pasan (incluye cargar el `.keras` y predecir). `src/comprobar_modelo_imagenes.py` cargó el modelo (entrada `(None, 224, 224, 3)`, salida `(None, 10)`, 10 clases) pero falló al imprimir por la codificación de la consola (cp1252); corregido en la Fase 5 B. Repetido después en el PC del usuario (2026-11-22, 23:27, hora de Lima): imprime la suma de probabilidades con una imagen de prueba (gris uniforme) = 1.0000 y termina con «OK: el modelo carga y predice en este entorno». `requirements.txt` quedó con `tensorflow==2.21.0` tras `fijar_versiones.py`. La app abrió y la pestaña de imágenes respondió.
+
+**Primera foto real en la app (captura del usuario; no es una métrica):** una foto de trozos de madera apilados (el archivo se llama `Como-se…irarla.jpg`, 188.4 KB) se clasificó como **Cartón con 94.5 %** (Papel 2.2 %, Plástico 0.8 %) y sugirió el contenedor azul «Papel y cartón» (esquema del proyecto). La madera no es ninguna de las 10 clases: confirma D72 (sin clase «ninguno», con confianza alta).
+
+**Reproducibilidad:** Colab con TensorFlow 2.21.0, Keras 3.13.2, NumPy 2.4.6, scikit-learn 1.6.1, Pillow 11.3.0. Recarga del `.keras`: diferencia máxima de probabilidades 0.0; tamaño del `.keras`: 21.9 MB. **Matriz de confusión:** `docs/figuras/m3_matriz_confusion.png` y `m3_matriz_ds4.png` (generadas por el notebook; confirmar que están en el proyecto).
 
 ## 4. Clustering — Fase 4 (origen: `m4_resumen.txt`, ejecución del usuario, 2026-11-22)
 

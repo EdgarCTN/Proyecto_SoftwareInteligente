@@ -10,7 +10,8 @@ joblib==1.5.1
 matplotlib==3.11.2
 seaborn==0.13.2
 pillow==12.3.0
-pytest==9.0.1
+pytest==8.3.4
 # Se agregarán en su fase: tensorflow (F5), statsmodels (F6), librerías de resumen (F7)
 datasets==5.2.0
 notebook==7.6.5
+tensorflow==2.21.0

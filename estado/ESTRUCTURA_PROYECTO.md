@@ -24,7 +24,7 @@ software_inteligente/
 │   ├── modules/
 │   │   ├── prediccion.py             🟡 Fase 3 B
 │   │   ├── series_tiempo.py          ⬜ Fase 6
-│   │   ├── imagenes.py               ⬜ Fase 5
+│   │   ├── imagenes.py               🟡 Fase 5 B
 │   │   ├── clustering.py             🟡 Fase 4 B
 │   │   └── resumen.py                ⬜ Fase 7
 │   └── utils/
@@ -38,11 +38,12 @@ software_inteligente/
 │   ├── entrenar_prediccion.py        🟡 Fase 3 A (mismo código del notebook 01, sin Jupyter)
 │   ├── entrenar_clustering.py        🟡 Fase 4 A (mismo código del notebook 04, sin Jupyter)
 │   ├── preparar_textos.py            🟡 Fase 2 B (DS5 y DS6 → textos_residuos.csv, log_textos.txt, revision_filtro.csv)
-│   └── verificar_imagenes.py         🟡 Fase 2 B (V5 y V6 de DS3 y DS4; duplicados_ds3_ds4.csv)
+│   ├── verificar_imagenes.py         🟡 Fase 2 B (V5 y V6 de DS3 y DS4; duplicados_ds3_ds4.csv)
+│   └── comprobar_modelo_imagenes.py  🟡 Fase 5 B (comprueba la carga del modelo en el entorno local)
 ├── notebooks/
 │   ├── 01_prediccion.ipynb           🟡 Fase 3 A (entrena y compara; escribe models/prediccion_*, data/processed/m1_*, docs/figuras/m1_*.png)
 │   ├── 02_series_tiempo.ipynb        ⬜ Fase 6
-│   ├── 03_imagenes_colab.ipynb       ⬜ Fase 5
+│   ├── 03_imagenes_colab.ipynb       🟡 Fase 5 A (Colab; sin ejecutar con datos reales)
 │   ├── 04_clustering.ipynb           🟡 Fase 4 A (agrupa países; escribe models/clustering_*, data/processed/clustering_paises.csv, m4_*, docs/figuras/m4_*.png)
 │   └── 05_resumen.ipynb              ⬜ Fase 7
 ├── models/                           (artefactos entrenados + *_meta.json)
@@ -55,6 +56,7 @@ software_inteligente/
 │       ├── externo_trashnet/         (DS4, solo las 6 clases comunes)
 │       └── externo_propio/           (fotos propias, opcional)
 ├── tests/
+│   ├── test_imagenes.py              🟡 Fase 5 B (5 pruebas; las del modelo se omiten si faltan TensorFlow o models/)
 │   └── test_humo.py                  ⬜ Fase 8
 ├── docs/
 │   ├── diccionario_datos.md          🟡 Fase 2 B (DS1 y DS2 con datos reales; textos e imágenes pendientes de ejecución)
@@ -110,6 +112,8 @@ software_inteligente/
 **Salidas del módulo 1:** `data/processed/m1_resultados_cv.csv`, `m1_resultados_test.csv`, `m1_resumen.txt` y las figuras `docs/figuras/m1_comparacion_cv.png`, `m1_real_vs_predicho.png`, `m1_importancia.png`.
 
 **Artefactos del módulo 4 (variante A, países):** `models/clustering_mejor.pkl` es un dict de joblib con `prep` (Pipeline log1p + StandardScaler ya ajustado), `centroides` (k × 7, en el espacio estandarizado), `ids_cluster` (lista de enteros en el mismo orden que los centroides), `variables` (las 7 columnas, en orden), `pca` (2 componentes ajustado sobre el espacio estandarizado), `algoritmo` y `parametros`. Un país nuevo se asigna al centroide más cercano de `prep.transform(df[variables])`. `models/clustering_meta.json` agrega: `variante`, `preprocesamiento`, `regla_seleccion`, `mejor_sin_restricciones`, `comparacion_algoritmos`, `estabilidad`, `contraste_externo`, `sensibilidad`, `paises_usados`, `paises_descartados`, `vacios_pct` y `perfiles` (por clúster: `n_paises`, `mediana` de las 7 variables, `ingreso`, `representativos`); `clases` lista los ids de clúster. `data/processed/clustering_paises.csv` tiene `iso3c, pais, income_id, region_id`, las 7 variables, `cluster`, `pc1`, `pc2`. `models/clustering_nombres.json` (lo escribe la IA tras ver los perfiles) mapea id de clúster a `{nombre, descripcion, politica}`. Salidas: `data/processed/m4_resultados.csv`, `m4_resumen.txt` y figuras `docs/figuras/m4_codo_silhouette.png`, `m4_dendrograma.png`, `m4_pca_clusters.png`, `m4_perfiles.png`.
+
+**Artefactos del módulo 3 (Fase 5 Parte A; los genera el notebook de Colab y se entregan en `salida_fase5.zip`):** `models/clasificador_imagenes.keras` (modelo completo con aumento y escalado dentro; entrada 224×224×3 en píxeles 0–255), `models/clases_imagenes.json` (lista de nombres; el índice = salida del modelo), `models/imagenes_meta.json`. Campos del meta: `ganador`, `metricas` (accuracy y macro_f1 en test de DS3; `*_val`; `*_test_6clases`; `*_ds4`; `brecha_accuracy`, `brecha_macro_f1`), `comparacion_variantes`, `por_clase_test`, `matriz_confusion_test`, `prueba_externa` (`clases_comunes`, `mapeo_trashnet_a_ds3`, `n_ds4`, `ds4_por_clase`, `matriz_ds4`, `fotos_propias`), `limpieza` (duplicados y conteo por clase y partición), `librerias`, `notas`. Salidas: `data/processed/m3_resultados.csv`, `m3_resumen.txt`, `m3_particiones.csv` y figuras `docs/figuras/m3_conteo_clases.png`, `m3_curvas.png`, `m3_comparacion.png`, `m3_matriz_confusion.png`, `m3_matriz_ds4.png`. El mapeo clase→contenedor está en `config.CONTENEDORES` (Parte B).
 
 Las claves de `metricas` varían por módulo (clasificación: accuracy, macro_f1, etc.; clustering: silhouette, davies_bouldin, calinski_harabasz; resumen: rouge1, rouge2, rougeL, ratio_compresion). Los valores **solo** se llenan con ejecución real.
 
@@ -168,12 +172,14 @@ Los estados de los archivos se llevan en el árbol de la sección 1 (cambiar ⬜
 
 | Archivo | Firma | Qué hace |
 |---|---|---|
-| `config.py` | constantes `NOMBRE_PROYECTO`, `RANDOM_STATE`, `BASE_DIR`, `DATA_RAW`, `DATA_PROCESSED`, `IMG_DIR`, `MODELS_DIR`, `DOCS_DIR`, `ARCHIVOS_PROCESADOS` (dict clave→CSV: paises, dsny_distritos, serie_ciudad, distritos_nyc, textos), `MODULOS` (lista de dict: id, titulo, modulo, meta), `CONTENEDORES` (vacío hasta Fase 5), `AVISO_USO` | Rutas, semilla y registro de módulos |
+| `config.py` | constantes `NOMBRE_PROYECTO`, `RANDOM_STATE`, `BASE_DIR`, `DATA_RAW`, `DATA_PROCESSED`, `IMG_DIR`, `MODELS_DIR`, `DOCS_DIR`, `ARCHIVOS_PROCESADOS` (dict clave→CSV: paises, dsny_distritos, serie_ciudad, distritos_nyc, textos), `MODULOS` (lista de dict: id, titulo, modulo, meta), `CONTENEDORES` (dict esquema_id → {nombre, fuente, clases: {clase: {color, hex, contenedor, origen ('norma'|'proyecto'), nota}}}; esquemas `proyecto`, `peru_municipal`, `peru_no_municipal`), `NOMBRES_CLASES`, `RESIDUOS_PELIGROSOS`, `UMBRAL_CONFIANZA` (0.60), `UMBRAL_PELIGROSO_POSIBLE` (0.20), `ESQUEMA_PREDETERMINADO`, `AVISO_USO` | Rutas, semilla y registro de módulos |
 | `app/utils/modelos.py` | `ruta_modelo(nombre)`, `meta_existe(nombre_meta)`, `leer_meta(nombre_meta) -> dict`, `cargar_joblib(nombre)`, `cargar_keras(nombre)`, `estado_modulo(modulo) -> bool` | Carga de artefactos (cacheada con `st.cache_resource` si hay Streamlit) y lectura de metadatos |
 | `app/utils/datos.py` | `ruta_procesado(clave)`, `procesado_existe(clave)`, `cargar_procesado(clave) -> DataFrame` | Lectura de CSV procesados (cacheada con `st.cache_data`) |
 | `app/utils/graficos.py` | `tabla_metricas(meta)`, `mostrar_metricas(meta)`, `grafico_barras(df,x,y,titulo,color)`, `grafico_dispersion_2d(df,x,y,color,hover,titulo)`, `grafico_pronostico(historico,pronostico,inferior,superior,titulo,unidad)` | Gráficos plotly y métricas desde el `_meta.json` |
 | `app/modules/prediccion.py` | `render()`; puras: `fmt(x, decimales)`, `construir_tabla(valores, features, n)`, `estimar(modelo, tabla) -> (array, hubo_negativos)`, `avisos_rango(gdp, poblacion, meta) -> [(nivel, texto)]`, `referencia(meta, tipo, clave)`, `comparacion_con_baseline(meta)`, `curva_pib(modelo, meta, poblacion, region, puntos)`. Constantes `ARCHIVO_MODELO`, `ARCHIVO_META`, `ORDEN_INGRESO`, `NOMBRE_INGRESO` | Pestaña de predicción. Entrada: `gdp`, `poblacion`, `region_id` (las `features` del meta); lee `prediccion_mejor.pkl` y `prediccion_meta.json`. Si el meta pide otras variables, avisa y no estima |
 | `app/modules/clustering.py` | `render()`; puras: `etiqueta(variable)`, `cargar_nombres(meta) -> (nombres, avisos)`, `asignar_perfil(art, valores) -> (cluster, distancias, vector)`, `vecinos_de_vector(art, paises, x, n, excluir)`, `margen_frontera(distancias)`, `z_perfiles(paises, variables)`, `avisos_estructura(meta)`, `ruido_configuracion(algoritmo, parametros)`, `validar_perfil(valores, comp_vars)`. Constantes `ARCHIVO_MODELO`, `ARCHIVO_META`, `ARCHIVO_NOMBRES`, `ARCHIVO_PAISES`, `ETIQUETAS` | Pestaña de clustering. Lee `clustering_mejor.pkl`, `clustering_meta.json`, `clustering_nombres.json` (opcional) y `data/processed/clustering_paises.csv` (más `m4_resultados.csv` y las figuras `m4_*.png` si existen). Los nombres solo se aplican si `tamanos_de_la_ejecucion` coincide con `perfiles[c].n_paises` del meta |
+| `app/modules/imagenes.py` | `render()`; puras: `nombre_clase(clase)`, `leer_clases(meta)`, `tam_entrada(meta)`, `abrir_imagen(bytes) -> PIL RGB`, `a_entrada(img, tam) -> array (1,alto,ancho,3) 0-255`, `predecir(modelo, img, tam) -> probs`, `top_k(probs, clases, k)`, `clase_peligrosa(top)`, `contenedor_de(clase, esquema_id)`, `precision_recall(meta, clase)`, `confundidas_con(meta, clase, k)`. Constantes `ARCHIVO_MODELO`, `ARCHIVO_CLASES`, `ARCHIVO_META`, `MAX_MB` | Pestaña de imágenes. Entrada: foto jpg/png (≤ 10 MB) y esquema de contenedores. Lee `clasificador_imagenes.keras`, `clases_imagenes.json` e `imagenes_meta.json`. Redimensiona con `tf.image.resize` bilinear sin recorte (igual que el entrenamiento); si la confianza es menor que `UMBRAL_CONFIANZA` no sugiere contenedor |
+| `src/comprobar_modelo_imagenes.py` | CLI: `python src/comprobar_modelo_imagenes.py [--imagen ruta]` | Comprueba que el modelo carga y predice en el entorno local; devuelve 0 si todo bien |
 | `src/fijar_versiones.py` | script (sin funciones públicas) | Reescribe `requirements.txt` con las versiones instaladas |
 | `src/preparar_datos.py` | CLI: `python src/preparar_datos.py <descargar\|verificar\|preparar\|todo> [--forzar]`. Funciones: `renombrar_ds1(df)`, `preparar_ds1(log)`, `detectar_ds2(df)`, `parsear_fecha(serie)`, `ds2_largo(df, det, log)`, `serie_ciudad(largo, log)`, `preparar_ds2(log)`. Parámetros editables al inicio: `UNIDAD_DS2`, `SUBCADENAS_MATERIAL`, `COVID_INICIO/FIN`, `ORG_SUSPENDE/REANUDA`, `MAPA_DS1` | Descarga a `data/raw/wab/` y `data/raw/dsny/`; escribe `verificacion_ds1_ds2.txt`, `log_preparacion.txt` y los CSV de `data/processed/` |
 | `src/eda_tabular.py` | CLI: `python src/eda_tabular.py` (sin funciones públicas) | Imprime resumen y guarda 8 figuras en `docs/figuras/` |

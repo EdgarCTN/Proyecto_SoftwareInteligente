@@ -1,0 +1,301 @@
+{
+  "modulo": "clustering",
+  "variante": "A (países, DS1)",
+  "modelo": "K-Means {\"k\": 4}",
+  "fecha": "2026-11-22",
+  "dataset": "DS1 What a Waste (nivel país), data/processed/paises_residuos.csv",
+  "n_entrenamiento": 160,
+  "n_prueba": 0,
+  "parametros": {
+    "k": 4
+  },
+  "metricas": {
+    "silhouette": 0.21857644445964905,
+    "davies_bouldin": 1.5482834943777097,
+    "calinski_harabasz": 34.31238323897334,
+    "n_clusters": 4,
+    "ruido_pct": 0.0
+  },
+  "features": [
+    "gpc_kg_hab_dia",
+    "comp_food_organic_waste_pct",
+    "comp_paper_cardboard_pct",
+    "comp_plastic_pct",
+    "comp_glass_pct",
+    "comp_metal_pct",
+    "comp_other_pct"
+  ],
+  "clases": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "librerias": {
+    "scikit-learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.3.2"
+  },
+  "preprocesamiento": "log1p y estandarización de las 7 variables; asignación de países nuevos al centroide más cercano",
+  "regla_seleccion": "mayor Silhouette con 3 a 8 clústeres, ruido <= 10 %, tamaño mínimo 5; desempate por menor Davies-Bouldin",
+  "mejor_sin_restricciones": {
+    "algoritmo": "DBSCAN",
+    "parametros": "{\"eps\": 0.8, \"min_samples\": 3}",
+    "n_clusters": 7,
+    "silhouette": 0.49053590198509994
+  },
+  "comparacion_algoritmos": [
+    {
+      "algoritmo": "K-Means",
+      "parametros": "{\"k\": 4}",
+      "n_clusters": 4,
+      "ruido_pct": 0.0,
+      "tam_min": 16,
+      "silhouette": 0.21857644445964905,
+      "davies_bouldin": 1.5482834943777097,
+      "calinski_harabasz": 34.31238323897334
+    },
+    {
+      "algoritmo": "Agglomerative (Ward)",
+      "parametros": "{\"k\": 4}",
+      "n_clusters": 4,
+      "ruido_pct": 0.0,
+      "tam_min": 12,
+      "silhouette": 0.2065312585972016,
+      "davies_bouldin": 1.6483653042701096,
+      "calinski_harabasz": 31.850245996603434
+    },
+    {
+      "algoritmo": "GMM (diag)",
+      "parametros": "{\"k\": 3}",
+      "n_clusters": 3,
+      "ruido_pct": 0.0,
+      "tam_min": 38,
+      "silhouette": 0.17707692388172647,
+      "davies_bouldin": 2.209589841347436,
+      "calinski_harabasz": 31.623334543357863
+    }
+  ],
+  "estabilidad": {
+    "ARI_media": 0.6615931007825747,
+    "ARI_desv": 0.27709441398285495,
+    "ARI_min": 0.25019946748018884,
+    "repeticiones": 30,
+    "fraccion": 0.8
+  },
+  "contraste_externo": {
+    "income_id": {
+      "ARI": 0.18008981280589334,
+      "NMI": 0.25447553379710497,
+      "homogeneidad": 0.24519280563884385,
+      "completitud": 0.2644887864245233,
+      "V_measure": 0.25447553379710497
+    },
+    "region_id": {
+      "ARI": 0.0749226331384611,
+      "NMI": 0.151217591080581,
+      "homogeneidad": 0.1276978029294672,
+      "completitud": 0.1853572866248278,
+      "V_measure": 0.15121759108058103
+    }
+  },
+  "sensibilidad": {
+    "CLR": {
+      "ARI_vs_principal": 0.3136660844663454,
+      "n_clusters": 4
+    },
+    "semillas_0_a_9": {
+      "ARI_media": 0.962653776313012,
+      "ARI_min": 0.931162594881872
+    },
+    "ampliado_9_variables": {
+      "n_paises": 44,
+      "n_clusters": 4,
+      "ARI_vs_principal_mismos_paises": 0.2313367368950888,
+      "silhouette": 0.23057824685693423
+    }
+  },
+  "paises_usados": 160,
+  "paises_descartados": [
+    "Aruba",
+    "Afghanistan",
+    "Bosnia and Herzegovina",
+    "Botswana",
+    "Central African Republic",
+    "Channel Islands",
+    "Côte d’Ivoire",
+    "Congo, Dem. Rep.",
+    "Congo, Rep.",
+    "Cabo Verde",
+    "Curacao",
+    "Djibouti",
+    "Eritrea",
+    "Faeroe Islands",
+    "Gabon",
+    "Gambia, The",
+    "Guinea-Bissau",
+    "Equatorial Guinea",
+    "Guatemala",
+    "Isle of Man",
+    "India",
+    "Iceland",
+    "Kyrgyz Republic",
+    "Korea, Rep.",
+    "Liberia",
+    "Lesotho",
+    "St. Martin (French part)",
+    "Monaco",
+    "Madagascar",
+    "Maldives",
+    "Myanmar",
+    "Mongolia",
+    "Mozambique",
+    "Mauritius",
+    "Malawi",
+    "Namibia",
+    "Niger",
+    "Nigeria",
+    "Nicaragua",
+    "Papua New Guinea",
+    "Paraguay",
+    "Rwanda",
+    "Sierra Leone",
+    "Somalia",
+    "South Sudan",
+    "São Tomé and Príncipe",
+    "Suriname",
+    "Slovenia",
+    "Sweden",
+    "Eswatini",
+    "Sint Maarten (Dutch part)",
+    "Turks and Caicos Islands",
+    "Tajikistan",
+    "Turkmenistan",
+    "Tanzania",
+    "Venezuela, RB",
+    "Zambia"
+  ],
+  "vacios_pct": {
+    "gpc_kg_hab_dia": 0.9,
+    "comp_food_organic_waste_pct": 18.9,
+    "comp_paper_cardboard_pct": 18.9,
+    "comp_plastic_pct": 19.4,
+    "comp_glass_pct": 21.2,
+    "comp_metal_pct": 21.2,
+    "comp_other_pct": 19.4,
+    "cobertura_total_percent_of_population": 57.6,
+    "trat_recycling_pct": 42.4
+  },
+  "perfiles": {
+    "0": {
+      "n_paises": 17,
+      "mediana": {
+        "gpc_kg_hab_dia": 2.224274173811497,
+        "comp_food_organic_waste_pct": 24.0,
+        "comp_paper_cardboard_pct": 28.5,
+        "comp_plastic_pct": 5.4,
+        "comp_glass_pct": 4.6,
+        "comp_metal_pct": 6.29,
+        "comp_other_pct": 13.13
+      },
+      "ingreso": {
+        "HIC": 16,
+        "LMC": 1
+      },
+      "representativos": [
+        "Norway",
+        "Liechtenstein",
+        "Guam",
+        "Canada",
+        "Cayman Islands",
+        "Denmark",
+        "United States",
+        "Puerto Rico"
+      ]
+    },
+    "1": {
+      "n_paises": 79,
+      "mediana": {
+        "gpc_kg_hab_dia": 1.176689862808065,
+        "comp_food_organic_waste_pct": 41.47,
+        "comp_paper_cardboard_pct": 15.0,
+        "comp_plastic_pct": 13.5,
+        "comp_glass_pct": 5.5,
+        "comp_metal_pct": 3.8,
+        "comp_other_pct": 12.1
+      },
+      "ingreso": {
+        "HIC": 46,
+        "UMC": 23,
+        "LMC": 9,
+        "LIC": 1
+      },
+      "representativos": [
+        "Mexico",
+        "Netherlands",
+        "Dominican Republic",
+        "Italy",
+        "Brunei Darussalam",
+        "Antigua and Barbuda",
+        "Austria",
+        "Lebanon"
+      ]
+    },
+    "2": {
+      "n_paises": 48,
+      "mediana": {
+        "gpc_kg_hab_dia": 0.5877116510795533,
+        "comp_food_organic_waste_pct": 59.79,
+        "comp_paper_cardboard_pct": 8.0,
+        "comp_plastic_pct": 10.0,
+        "comp_glass_pct": 2.32,
+        "comp_metal_pct": 2.0,
+        "comp_other_pct": 11.05
+      },
+      "ingreso": {
+        "LMC": 20,
+        "UMC": 17,
+        "LIC": 11
+      },
+      "representativos": [
+        "Morocco",
+        "Sri Lanka",
+        "China",
+        "Iran, Islamic Rep.",
+        "Ecuador",
+        "Colombia",
+        "West Bank and Gaza",
+        "Bolivia"
+      ]
+    },
+    "3": {
+      "n_paises": 16,
+      "mediana": {
+        "gpc_kg_hab_dia": 0.8327078058919062,
+        "comp_food_organic_waste_pct": 16.799999999999997,
+        "comp_paper_cardboard_pct": 8.348459119,
+        "comp_plastic_pct": 10.29,
+        "comp_glass_pct": 3.1,
+        "comp_metal_pct": 3.5,
+        "comp_other_pct": 41.07
+      },
+      "ingreso": {
+        "HIC": 6,
+        "LIC": 4,
+        "UMC": 4,
+        "LMC": 2
+      },
+      "representativos": [
+        "Hungary",
+        "Grenada",
+        "Senegal",
+        "Belgium",
+        "Marshall Islands",
+        "Togo",
+        "New Zealand",
+        "United Kingdom"
+      ]
+    }
+  },
+  "notas": "Los clústeres describen perfiles de residuos, no causas; los datos de DS1 son de años distintos según el país; se excluyen los países con algún dato faltante en las 7 variables; el resultado depende de las variables y del preprocesamiento, y el Silhouette es una guía, no una prueba. Los nombres de los clústeres están en models/clustering_nombres.json."
+}

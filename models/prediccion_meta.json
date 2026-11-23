@@ -1,0 +1,194 @@
+{
+  "modulo": "prediccion",
+  "modelo": "SVR (objetivo lineal, conjunto A0)",
+  "fecha": "2026-11-22",
+  "dataset": "DS1 What a Waste (nivel país), data/processed/paises_residuos.csv; objetivo gpc_kg_hab_dia derivado",
+  "n_entrenamiento": 172,
+  "n_prueba": 43,
+  "parametros": {
+    "C": 1,
+    "epsilon": 0.1
+  },
+  "metricas": {
+    "RMSE": 0.4433011140709456,
+    "MAE": 0.26757986949669055,
+    "MAPE": 36.72870973718555,
+    "R2": 0.5285423875388534,
+    "Pearson_r": 0.7361416424782766
+  },
+  "features": [
+    "gdp",
+    "poblacion",
+    "region_id"
+  ],
+  "clases": [],
+  "librerias": {
+    "scikit-learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.3.2"
+  },
+  "conjunto_variables": "A0",
+  "objetivo_log": false,
+  "metricas_cv": {
+    "RMSE_cv": 0.4598828006002838,
+    "RMSE_cv_std": 0.09351461453372456
+  },
+  "baseline": {
+    "descripcion": "promedio del grupo de ingreso",
+    "metricas_prueba": {
+      "RMSE": 0.5007962586929285,
+      "MAE": 0.3191576108396782,
+      "MAPE": 43.78905462224895,
+      "R2": 0.3983178071068778,
+      "Pearson_r": 0.6605783688293277
+    },
+    "cv": {
+      "RMSE_cv": 0.49612136129379786,
+      "RMSE_cv_std": 0.10511544226998945,
+      "MAE_cv": 0.3362850840788202,
+      "R2_cv": 0.5018878184095202
+    }
+  },
+  "metricas_sin_extremos": {
+    "baseline": {
+      "RMSE": 0.44153647390365885,
+      "MAE": 0.28839311772036824,
+      "MAPE": 43.68151433193774,
+      "R2": 0.33319149442417084,
+      "Pearson_r": 0.6793606637635338
+    },
+    "ganador_entrenado_con_todo": {
+      "RMSE": 0.41971272687854005,
+      "MAE": 0.24953573068429483,
+      "MAPE": 36.871238750725475,
+      "R2": 0.3974789313840663,
+      "Pearson_r": 0.6885384764765687
+    },
+    "ganador_entrenado_sin_extremos": {
+      "RMSE": 0.401444663155184,
+      "MAE": 0.24133838209883596,
+      "MAPE": 36.57969412093812,
+      "R2": 0.4487871438322105,
+      "Pearson_r": 0.7051371858600897
+    }
+  },
+  "extremos": [
+    "VIR",
+    "BMU",
+    "FRO",
+    "MCO",
+    "PRI"
+  ],
+  "importancia_permutacion": {
+    "gdp": 0.27664319287035183,
+    "poblacion": 0.06864672019654068,
+    "region_id": 0.017860381112488763
+  },
+  "referencias_app": {
+    "por_ingreso": {
+      "HIC": {
+        "media": 1.684056831852394,
+        "mediana": 1.5015249924446603,
+        "n": 79
+      },
+      "LIC": {
+        "media": 0.44639773109278147,
+        "mediana": 0.4402260304466586,
+        "n": 33
+      },
+      "LMC": {
+        "media": 0.5931273183486534,
+        "mediana": 0.4667400854751918,
+        "n": 47
+      },
+      "UMC": {
+        "media": 0.8346456630554083,
+        "mediana": 0.8336075057527899,
+        "n": 56
+      }
+    },
+    "por_region": {
+      "EAS": {
+        "media": 0.9919911870127192,
+        "mediana": 0.8982550794643517,
+        "n": 37
+      },
+      "ECS": {
+        "media": 1.4007424324693645,
+        "mediana": 1.2986301613780356,
+        "n": 58
+      },
+      "LCN": {
+        "media": 1.1803175403176833,
+        "mediana": 0.8976038310591837,
+        "n": 40
+      },
+      "MEA": {
+        "media": 1.0819734485114025,
+        "mediana": 0.9500000001105888,
+        "n": 21
+      },
+      "NAC": {
+        "media": 2.542075239117814,
+        "mediana": 2.224274173811497,
+        "n": 3
+      },
+      "SAS": {
+        "media": 0.48661629334984235,
+        "mediana": 0.4102657080024451,
+        "n": 8
+      },
+      "SSF": {
+        "media": 0.4789316841166203,
+        "mediana": 0.4450954193521641,
+        "n": 48
+      }
+    }
+  },
+  "rangos_variables": {
+    "gdp": {
+      "min": 822.6104736,
+      "p05": 1605.7038814,
+      "mediana": 13207.71191,
+      "p95": 61118.51991899999,
+      "max": 117335.5859
+    },
+    "poblacion": {
+      "min": 11097.0,
+      "p05": 53663.1,
+      "mediana": 5818553.0,
+      "p95": 110091442.39999962,
+      "max": 1400050048.0
+    }
+  },
+  "categorias": {
+    "region_id": [
+      "EAS",
+      "ECS",
+      "LCN",
+      "MEA",
+      "NAC",
+      "SAS",
+      "SSF"
+    ]
+  },
+  "gdp_por_ingreso": {
+    "HIC": [
+      15444.74609,
+      117335.5859
+    ],
+    "LIC": [
+      822.6104736,
+      8587.050781
+    ],
+    "LMC": [
+      1093.788086,
+      12605.13965
+    ],
+    "UMC": [
+      3628.895264,
+      29983.55664
+    ]
+  },
+  "notas": "Estima un promedio nacional (no una ciudad); los años de referencia difieren entre países; relación socioeconómica no causal; muestra pequeña, por lo que las métricas tienen incertidumbre; los territorios pequeños de ingreso alto son extremos. El grupo de ingreso se deriva del ingreso nacional, así que está muy relacionado con el PIB."
+}

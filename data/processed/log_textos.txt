@@ -1,0 +1,7 @@
+xlsum: cargado con {'repo': 'csebuetnlp/xlsum', 'rama': 'refs/convert/parquet', 'archivos': ['spanish/test/0000.parquet']}; 4763 filas y columnas ['id', 'url', 'title', 'summary', 'text']
+xlsum: 4763 artículos válidos en test; con palabras de residuos = 192 (4.0 %); palabras por texto (media) = 765; por resumen de referencia (media) = 27.4
+xlsum: muestra de evaluación = 500 artículos, de ellos de residuos = 192
+mlsum: cargado con {'repo': 'GEM/mlsum', 'rama': 'refs/convert/parquet', 'archivos': ['es/test/0000.parquet']}; 13366 filas y columnas ['gem_id', 'gem_parent_id', 'text', 'topic', 'url', 'title', 'date', 'target', 'references']
+mlsum: 13366 artículos válidos en test; con palabras de residuos = 699 (5.2 %); palabras por texto (media) = 798; por resumen de referencia (media) = 22.0
+mlsum: muestra de evaluación = 500 artículos, de ellos de residuos = 250
+Guardado textos_residuos.csv (1000 filas; NO subir al repositorio) y revision_filtro.csv (rellena la columna relevante_manual con 1 o 0 para estimar la precisión del filtro)

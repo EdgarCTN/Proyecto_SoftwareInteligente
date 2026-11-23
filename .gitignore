@@ -1,0 +1,23 @@
+# Entorno y caché
+venv/
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.env
+.DS_Store
+
+# Datos: no se versionan (peso y licencias); se conserva solo la carpeta
+data/raw/*
+data/imagenes/*
+data/processed/textos_residuos.csv
+data/processed/revision_filtro.csv
+!data/raw/.gitkeep
+!data/imagenes/.gitkeep
+
+# Habilidades de agentes de Streamlit (enlaces simbólicos del entorno local; no se versionan)
+.agents/
+
+# Nota: models/ NO se ignora: la app necesita los modelos entrenados.
+# Si algún archivo supera 100 MB (límite de GitHub), usar Git LFS o Releases.

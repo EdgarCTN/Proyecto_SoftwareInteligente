@@ -1,0 +1,64 @@
+Países usados: 215 (entrenamiento 172, prueba 43); descartados sin objetivo: 2
+scikit-learn 1.9.1; XGBoost: 3.4.1
+
+RMSE de validación cruzada (kg/hab/día):
+conjunto                            A0      A      B
+modelo                                              
+KNN                              0.507  0.494  0.513
+MLP                              0.468  0.467  0.489
+Polinómica g=2 (Ridge)           0.469  0.459  0.475
+Random Forest                    0.501  0.506  0.510
+Ridge (lineal)                   0.472  0.459  0.466
+SVR                              0.460  0.463  0.474
+XGBoost                          0.525  0.528  0.525
+Baseline (promedio por ingreso)  0.496  0.496  0.496
+
+Mejor global: conjunto A, Polinómica g=2 (Ridge), objetivo lineal, RMSE_cv = 0.459 ± 0.093; umbral = 0.553
+Mejor RMSE_cv por conjunto: {'A': 0.459, 'A0': 0.46, 'B': 0.466}
+Conjunto elegido para la app: A0 -> ['gdp', 'poblacion', 'region_id']
+
+Modelos ajustados (top 3):
+                   modelo objetivo  RMSE_cv_sin_ajustar  RMSE_cv_ajustado  RMSE_cv_std                                       parametros
+0                     SVR   lineal                0.460             0.460        0.094                         {'C': 1, 'epsilon': 0.1}
+1                     MLP   lineal                0.468             0.467        0.086  {'alpha': 0.01, 'hidden_layer_sizes': (32, 16)}
+2  Polinómica g=2 (Ridge)   lineal                0.469             0.469        0.088                                    {'alpha': 10}
+Ganador: SVR (objetivo lineal), parámetros {'C': 1, 'epsilon': 0.1}
+
+Métricas en prueba (n = 43):
+                                                       modelo  RMSE   MAE   MAPE    R2  Pearson_r
+                      Baseline: promedio por grupo de ingreso 0.501 0.319 43.789 0.398      0.661
+                                                SVR (ganador) 0.443 0.268 36.729 0.529      0.736
+                                                          MLP 0.477 0.297 36.076 0.454      0.704
+                                       Polinómica g=2 (Ridge) 0.445 0.291 40.909 0.525      0.733
+Mejor global sin ajustar (Polinómica g=2 (Ridge), conjunto A) 0.450 0.289 40.117 0.514      0.731
+
+Prueba sin extremos ['VIR', 'BMU', 'FRO', 'MCO', 'PRI']:
+                                 RMSE    MAE    MAPE     R2  Pearson_r
+baseline                        0.442  0.288  43.682  0.333      0.679
+ganador_entrenado_con_todo      0.420  0.250  36.871  0.397      0.689
+ganador_entrenado_sin_extremos  0.401  0.241  36.580  0.449      0.705
+
+Por grupo de ingreso (prueba):
+grupo  n  RMSE_ganador  RMSE_baseline  MAE_ganador
+  HIC 16         0.459          0.582        0.323
+  LIC  7         0.165          0.158        0.133
+  LMC  9         0.700          0.724        0.391
+  UMC 11         0.210          0.208        0.171
+
+Importancia por permutación:
+ variable  aumento_RMSE   std
+      gdp         0.277 0.051
+poblacion         0.069 0.026
+region_id         0.018 0.023
+
+Coeficientes del modelo lineal (10 mayores):
+          variable  coeficiente
+cat__region_id_NAC        0.675
+          num__gdp        0.441
+cat__region_id_EAS       -0.235
+    num__poblacion       -0.180
+cat__region_id_SAS       -0.159
+cat__region_id_MEA       -0.102
+cat__region_id_SSF       -0.077
+cat__region_id_LCN       -0.063
+cat__region_id_ECS       -0.040

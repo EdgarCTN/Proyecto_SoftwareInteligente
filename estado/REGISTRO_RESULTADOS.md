@@ -157,18 +157,79 @@ Ridge (lineal), KNN, Random Forest y XGBoost solo se evaluaron en validación cr
 
 **Justificación del ganador:** SVR tuvo el menor RMSE de validación cruzada entre los 3 modelos ajustados del conjunto elegido (0.460 frente a 0.467 y 0.469), pero la diferencia es menor que la desviación entre pliegues (≈ 0.09): los tres son indistinguibles con estos datos. En prueba, SVR mejora al baseline en RMSE (0.443 frente a 0.501), MAE (0.268 frente a 0.319) y R² (0.529 frente a 0.398).
 
-## 2. Series temporales — Fase 6
+## 2. Series temporales — Fase 6 Parte A (origen: `m2_resumen.txt`, ejecución real del usuario con `python src/entrenar_series.py`; Windows, Python 3.13.6, statsmodels 0.15.0, TensorFlow 2.21.0; 2026-11-23)
 
-Serie (S1, S2, S3…): `[PENDIENTE]` · Frecuencia: `[PENDIENTE]` · Periodo: `[PENDIENTE]` · Partición cronológica: `[PENDIENTE]`
+Frecuencia: mensual (`MS`). Se modela **toneladas por día** y todas las métricas están en **toneladas por mes**. Partición cronológica: prueba = últimos 12 meses; 4 ventanas móviles de validación de 12 meses antes de ella (RMSE val = media de las 4 ventanas; desv. = desviación estándar entre ventanas). Regla del ganador fijada antes de ver resultados (D77). Tiempos de ejecución de la reejecución del usuario en la rama correcta: S1 384 s, S2 121 s, S3 128 s (la ejecución anterior tardó S1 288 s, S2 179 s, S3 186 s; en total unos 10 minutos). S4 (orgánicos) no se modela (D76). La prueba ADF se reporta por serie; SARIMAX usa una diferencia simple y una estacional (d = 1, D = 1).
 
-| Modelo | RMSE | MAE | MAPE % | Parámetros | Origen | Fecha | ⭐ |
-|---|---|---|---|---|---|---|---|
-| Baseline ingenuo | [RESULTADO REAL PENDIENTE] | | | | | | |
-| Ingenuo estacional | [RESULTADO REAL PENDIENTE] | | | | | | |
-| SARIMAX (con indicadores) / Prophet / statsforecast | [RESULTADO REAL PENDIENTE] | | | | | | |
-| LSTM (si hay datos suficientes) | [RESULTADO REAL PENDIENTE] | | | | | | |
+### S1 Basura (refuse): 1992-01 a 2026-10 (418 meses)
 
-**Justificación del ganador:** `[PENDIENTE]`
+ADF (p-valor): {'serie': 0.22118522652020806, 'dif_1': 6.632479056455282e-06, 'dif_1_y_12': 1.8487901637764702e-13}
+
+Configuración elegida por AIC/AICc con datos anteriores a la primera validación: SARIMAX {'orden': (2, 1, 1), 'estacional': (0, 1, 1, 12), 'exog': ['covid', 'organicos_programa']} (AIC -1158.3) | ETS elegido: {'error': 'add', 'trend': None, 'damped': False, 'seasonal': 'mul'} (AICc -1273.5). La de ETS está en `m2_resumen.txt`.
+
+| Modelo | RMSE val | desv. RMSE val | MAE val | MAPE val % | RMSE prueba | MAE prueba | MAPE prueba % | ⭐ |
+|---|---|---|---|---|---|---|---|---|
+| Ingenuo (último valor) | 14469.92 | 6734.82 | 11705.12 | 4.88 | 13172.48 | 10188.81 | 4.31 |  |
+| Media móvil 12 m | 12726.95 | 3911.32 | 10215.18 | 4.26 | 13458.58 | 10946.58 | 4.58 |  |
+| Ingenuo estacional | 12478.89 | 4943.95 | 10291.42 | 4.21 | 9101.32 | 7425.80 | 3.04 |  |
+| ETS | 10304.55 | 5803.87 | 8319.82 | 3.37 | 8785.38 | 7505.56 | 3.08 | ⭐ |
+| SARIMAX | 11441.88 | 8206.26 | 9819.97 | 3.97 | 9258.68 | 7950.00 | 3.26 |  |
+| SARIMAX sin COVID en el entrenamiento (solo análisis) | 8331.34 | 2239.28 | 6700.06 | 2.73 | 9168.40 | 7923.69 | 3.24 |  |
+| LSTM | 10747.49 | 3556.96 | 8581.84 | 3.56 | 12797.77 | 9581.63 | 4.08 |  |
+
+**Ganador:** ETS. Mejora del RMSE de prueba del ganador frente al ingenuo estacional: 3.5 %. Convergencia del modelo final: None (`None` = no aplica). Pronóstico de 12 meses (2026-11 a 2027-10): primer mes 247923.6 ton (intervalo: 228988.5 a 265775.4); último mes 251041.2 ton (intervalo: 226710.4 a 275330.2) — valores de `m2_pronostico_S1.csv` tras reejecutar con el script corregido (D83); sustituyen a los intervalos de las dos ejecuciones anteriores; tabla completa en `data/processed/m2_pronostico_S1.csv`.
+
+### S2 Papel: 2004-04 a 2026-10 (271 meses)
+
+ADF (p-valor): {'serie': 0.039124877145881275, 'dif_1': 0.000759457747672763, 'dif_1_y_12': 6.437103470126484e-08}
+
+Configuración elegida por AIC/AICc con datos anteriores a la primera validación: SARIMAX {'orden': (1, 1, 1), 'estacional': (0, 1, 1, 12), 'exog': ['covid', 'organicos_programa']} (AIC -509.1) | ETS elegido: {'error': 'add', 'trend': 'add', 'damped': True, 'seasonal': 'mul'} (AICc -588.4). La de ETS está en `m2_resumen.txt`.
+
+| Modelo | RMSE val | desv. RMSE val | MAE val | MAPE val % | RMSE prueba | MAE prueba | MAPE prueba % | ⭐ |
+|---|---|---|---|---|---|---|---|---|
+| Ingenuo (último valor) | 1882.75 | 409.50 | 1484.01 | 5.80 | 2452.06 | 1950.72 | 7.94 |  |
+| Media móvil 12 m | 2085.84 | 714.69 | 1749.66 | 6.99 | 2481.16 | 1954.66 | 7.79 |  |
+| Ingenuo estacional | 1732.55 | 689.00 | 1422.75 | 5.78 | 2362.15 | 1596.97 | 6.36 |  |
+| ETS | 1690.90 | 642.83 | 1449.20 | 5.83 | 2116.50 | 1578.55 | 6.33 |  |
+| SARIMAX | 1384.27 | 318.74 | 1132.13 | 4.55 | 2224.96 | 1622.17 | 6.48 | ⭐ |
+| SARIMAX sin COVID en el entrenamiento (solo análisis) | 1264.65 | 178.54 | 1000.58 | 4.03 | 2265.33 | 1652.54 | 6.61 |  |
+| LSTM | 2082.85 | 774.37 | 1729.55 | 6.93 | 2440.25 | 1936.10 | 7.78 |  |
+
+**Ganador:** SARIMAX. Mejora del RMSE de prueba del ganador frente al ingenuo estacional: 5.8 %. Convergencia del modelo final: False (`None` = no aplica). Pronóstico de 12 meses (2026-11 a 2027-10): primer mes 24771.0 ton (intervalo: 21723.0 a 27819.0); último mes 25892.0 ton (intervalo: 22348.0 a 29436.0); tabla completa en `data/processed/m2_pronostico_S2.csv`.
+
+### S3 Metal, vidrio y plástico (MGP): 2004-04 a 2026-10 (271 meses)
+
+ADF (p-valor): {'serie': 0.6121090304254807, 'dif_1': 0.007889248069544377, 'dif_1_y_12': 5.623798953439335e-08}
+
+Configuración elegida por AIC/AICc con datos anteriores a la primera validación: SARIMAX {'orden': (2, 1, 1), 'estacional': (1, 1, 1, 12), 'exog': ['covid', 'organicos_programa']} (AIC -511.6) | ETS elegido: {'error': 'mul', 'trend': None, 'damped': False, 'seasonal': 'mul'} (AICc -582.0). La de ETS está en `m2_resumen.txt`.
+
+| Modelo | RMSE val | desv. RMSE val | MAE val | MAPE val % | RMSE prueba | MAE prueba | MAPE prueba % | ⭐ |
+|---|---|---|---|---|---|---|---|---|
+| Ingenuo (último valor) | 1174.90 | 173.55 | 986.37 | 4.01 | 2227.23 | 1731.44 | 7.49 | ⭐ |
+| Media móvil 12 m | 1551.23 | 947.75 | 1345.08 | 5.62 | 2240.65 | 1783.38 | 7.65 |  |
+| Ingenuo estacional | 1580.84 | 953.69 | 1350.18 | 5.57 | 2344.53 | 1512.05 | 6.35 |  |
+| ETS | 1342.38 | 701.68 | 1122.50 | 4.63 | 2146.27 | 1454.77 | 6.26 |  |
+| SARIMAX | 1444.53 | 877.58 | 1251.32 | 5.12 | 2157.75 | 1333.44 | 5.82 |  |
+| SARIMAX sin COVID en el entrenamiento (solo análisis) | 1235.64 | 596.31 | 1045.19 | 4.33 | 2193.53 | 1396.06 | 6.08 |  |
+| LSTM | 1425.22 | 860.51 | 1245.78 | 5.15 | 2211.92 | 1718.03 | 7.42 |  |
+
+**Ganador:** Ingenuo (último valor). Mejora del RMSE de prueba del ganador frente al ingenuo estacional: 5.0 %. Convergencia del modelo final: None (`None` = no aplica). Pronóstico de 12 meses (2026-11 a 2027-10): primer mes 23967.0 ton (intervalo: NaN a NaN); último mes 24766.0 ton (intervalo: NaN a NaN); tabla completa en `data/processed/m2_pronostico_S3.csv`.
+
+**Efecto de quitar el periodo COVID del entrenamiento (SARIMAX; RMSE en ton/mes, salida del script):** S1 validación 11 442 → 8 331 (−27.2 %), prueba 9 259 → 9 168 (−1.0 %); S2 validación 1 384 → 1 265 (−8.6 %), prueba 2 225 → 2 265 (+1.8 %); S3 validación 1 445 → 1 236 (−14.5 %), prueba 2 158 → 2 194 (+1.7 %). Porcentajes calculados por la IA sobre las cifras pegadas. Este modelo no compite (D78).
+
+**Lectura (calculada sobre las cifras de arriba; una sola ventana de prueba de 12 meses y 4 ventanas de validación con mucha dispersión):**
+1. **S1:** ETS gana por la regla (RMSE de validación 10 305, un 4.1 % menor que el del siguiente, LSTM). Su ventaja de prueba sobre el ingenuo estacional es de 3.5 %, menor que la dispersión entre ventanas (desv. 5 804).
+2. **S2:** SARIMAX gana en validación (18.1 % menos RMSE que ETS) pero en prueba ETS tiene menor RMSE (2 116 frente a 2 225); SARIMAX supera al ingenuo estacional en 5.8 %. **El SARIMAX final de S2 no convergió** (`convergio` = False): su pronóstico e intervalo van con esa reserva.
+3. **S3:** gana el ingenuo (último valor), 12.5 % menos RMSE de validación que ETS; en prueba ETS (2 146) y SARIMAX (2 158) quedan por debajo del ingenuo (2 227). Los siete modelos quedan entre 2 146 y 2 345 en prueba y la dispersión entre ventanas es grande (174 a 954): **ningún modelo supera con claridad al baseline**. El pronóstico de S3 no tiene intervalo.
+4. **LSTM:** no gana en ninguna serie; en prueba queda peor que el ingenuo estacional en S1 (12 798 frente a 9 101) y S2 (2 440 frente a 2 362) y algo mejor en S3 (2 212 frente a 2 345).
+5. **MAPE de prueba del ganador:** S1 3.08 %, S2 6.48 %, S3 7.49 %.
+6. La unidad ton/mes sigue sin contrastar con un reporte de DSNY (P14). El modelo supone `covid` = 0 y `organicos_programa` = último valor en el futuro.
+
+7. **Validación frente a prueba (calculado de las tablas):** en las 4 ventanas de validación cada ganador mejora al ingenuo estacional en RMSE, MAE y MAPE (S1: RMSE 10 305 frente a 12 479; S2: 1 384 frente a 1 733; S3, con el ingenuo: 1 175 frente a 1 581). En la ventana de prueba la mejora solo aparece en el RMSE (3.5 %, 5.8 % y 5.0 %); en MAE y MAPE los tres ganadores quedan peor que el ingenuo estacional (S1: MAE 7 506 frente a 7 426, MAPE 3.08 frente a 3.04; S2: 1 622 frente a 1 597 y 6.48 frente a 6.36; S3: 1 731 frente a 1 512 y 7.49 frente a 6.35). La prueba es una sola ventana de 12 meses.
+8. **Quiebre COVID (análisis, no candidato):** SARIMAX sin el periodo COVID en el entrenamiento tiene menor RMSE de validación que SARIMAX con él en las tres series (S1 8 331 frente a 11 442; S2 1 265 frente a 1 384; S3 1 236 frente a 1 445), pero en prueba la diferencia es pequeña y de signo mixto (S1 9 168 frente a 9 259; S2 2 265 frente a 2 225; S3 2 194 frente a 2 158). Por la regla fijada de antemano no compite; incluirlo como candidato después de ver la validación sería una decisión posterior a los resultados.
+9. **Reproducibilidad:** la reejecución en la rama correcta dio exactamente las mismas métricas, configuraciones y pronósticos puntuales que la ejecución registrada antes, pero **distintos intervalos de S1** (primer mes 228 550 a 268 303 frente a 229 020 a 267 013), porque los intervalos de ETS con componentes multiplicativos se simulan sin semilla. Corregido en la Fase 6 A (D83). Tras reejecutar con el script nuevo, `m2_pronostico_S1.csv` trae los intervalos de la línea anterior, y el pronóstico recalculado por la IA desde `serie_S1.joblib` (ETS, 418 observaciones, última fecha 2026-10, escala 8 238.38) coincide con ese CSV con diferencia máxima de 0.00 ton/mes en pronóstico, límite inferior y límite superior.
+
+**Reproducibilidad:** `m2_resumen.txt` y `data/processed/m2_resultados.csv` (todas las métricas por serie, modelo y ventana) están en el proyecto del usuario. Las figuras `docs/figuras/m2_*.png` las generó el script; la IA no las ha visto.
 
 ## 3. Clasificación de imágenes — Fase 5 Parte A (origen: `m3_resumen.txt` y salida de las celdas 4 y 5 de `03_imagenes_colab.ipynb`, ejecución del usuario en Colab, 2026-11-23)
 

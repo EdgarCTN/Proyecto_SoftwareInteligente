@@ -10,10 +10,10 @@
 
 | Campo | Valor |
 |---|---|
-| Versión del estado | 31 (Fase 5 Parte B: script de comprobación OK y TensorFlow fijado) |
-| Última actualización | 2026-11-21 |
-| Última fase completada | Fase 4 (con P20 parcial; Fase 2 con pendientes: revisión humana del filtro de textos e imágenes DS3 y DS4) |
-| Fase actual | Fase 5 Parte B — 🟡 entregada; falta que el usuario la pruebe y escriba "Continuar" |
+| Versión del estado | 37 (Fase 6 Parte B probada por el usuario; ajustes de texto) |
+| Última actualización | 2026-11-23 |
+| Última fase completada | Fase 5 (con P23, P27 y P28 abiertos); Fase 4 (con P20 parcial; Fase 2 con pendientes: revisión humana del filtro de textos e imágenes DS3 y DS4) |
+| Fase actual | Fase 6 Parte B — 🟡 entregada; falta que el usuario la pruebe y escriba "Continuar" |
 | Semana del cronograma | 13 (próxima entrega: semana 14, avance 50 %) |
 | Nº de conversación (chat) | 1 |
 
@@ -40,8 +40,8 @@
 | 2 | Datos: descarga, verificación, limpieza y EDA | ✅ | `src/preparar_datos.py`, CSV limpio, diccionario de datos, EDA | Sí (Continuar, con pendientes) | Parte A validada (REGISTRO 0c). Parte B entregada; textos listos y verificados (XL-Sum 4 763 y MLSUM 13 366 artículos de test; muestras de 500); revisión preliminar del filtro hecha por la IA (precisión 6 % con criterio de tema principal; REGISTRO 0e); imágenes aún no descargadas |
 | 3 | Módulo 1: Predicción | ✅ | Notebook 01, `prediccion.py`, modelo + meta | Sí (Continuar) | Parte A ejecutada con datos reales (REGISTRO 1): ganador SVR con A0; mejora modesta sobre el baseline. Parte B entregada: `app/modules/prediccion.py` (simulador, países, métricas); abierta por el usuario en la app real y confirmada (REGISTRO 0b) |
 | 4 | Módulo 4: Clustering | ✅ | Notebook 04, `clustering.py`, modelo + meta | Sí (Continuar) | Parte A con datos reales (REGISTRO 4): K-Means k=4, estructura débil. Parte B: `app/modules/clustering.py`; modo país confirmado tras corregir TWN sin nombre (D57, D58); perfil nuevo, mapa y métricas sin reporte de fallas (P20 parcial) |
-| 5 | Módulo 3: Imágenes | 🟡 | Notebook 03 (Colab), `imagenes.py`, `.keras` + meta | Parte A: sí (Continuar) | Parte A ejecutada con datos reales (REGISTRO 3). Parte B entregada: `app/modules/imagenes.py`, `CONTENEDORES` en `config.py`, `src/comprobar_modelo_imagenes.py`, `tests/test_imagenes.py`. Probada por la IA con el modelo real, 5 pruebas pytest y Streamlit AppTest con una foto sintética; en el PC del usuario: 5 pruebas pasan, la app y la pestaña funcionan (interfaz aprobada por el usuario); el script de comprobación se corrigió (codificación) y terminó en OK; 1 foto real probada (REGISTRO 3) |
-| 6 | Módulo 2: Series temporales | ⬜ | Notebook 02, `series_tiempo.py`, modelo + meta | — | |
+| 5 | Módulo 3: Imágenes | ✅ | Notebook 03 (Colab), `imagenes.py`, `.keras` + meta | Sí (Continuar, 2026-11-23) | Parte A ejecutada con datos reales (REGISTRO 3). Parte B entregada: `app/modules/imagenes.py`, `CONTENEDORES` en `config.py`, `src/comprobar_modelo_imagenes.py`, `tests/test_imagenes.py`. Probada por la IA con el modelo real, 5 pruebas pytest y Streamlit AppTest con una foto sintética; en el PC del usuario: 5 pruebas pasan, la app y la pestaña funcionan (interfaz aprobada por el usuario); el script de comprobación se corrigió (codificación) y terminó en OK; 1 foto real probada (REGISTRO 3) |
+| 6 | Módulo 2: Series temporales | 🟡 | Notebook 02, `entrenar_series.py`, `series_tiempo.py`, modelo + meta | — | Parte A ejecutada por el usuario con datos reales (REGISTRO 2): ganadores S1 ETS, S2 SARIMAX, S3 ingenuo (último valor); mejoras en prueba frente al ingenuo estacional de 3.5 %, 5.8 % y 5.0 %. SARIMAX final de S2 sin convergencia. Parte B entregada: `app/modules/series_tiempo.py` y `tests/test_series_tiempo.py`; probada por la IA con tu `serie_S1.joblib` real y tu CSV de S1 (coinciden) y con artefactos de una prueba de humo para S2 y S3 (mismos tipos de ganador); **S2, S3 y `serie_meta.json` reales sin verificar en la app** |
 | 7 | Módulo 5: Resumen de texto | ⬜ | Notebook 05, `resumen.py` | — | |
 | 8 | Integración y pruebas | ⬜ | `main.py` completo, pruebas, caché, errores | — | |
 | 9 | Manuales | ⬜ | `docs/manual_instalacion.md`, `docs/manual_usuario.md` | — | |
@@ -129,6 +129,18 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | D72 | M3: el modelo no tiene clase «ninguno» y responde con alta confianza a imágenes que no son residuos (ruido → `paper` 0.876; REGISTRO 3); la app lo declara en «¿Qué tan fiable es este resultado?» y el informe lo incluirá como limitación | `REGISTRO` 3 | 5B |
 | D74 | M3: `comprobar_modelo_imagenes.py` fuerza UTF-8 en la salida (la consola de Windows usa cp1252 y fallaba con «≈»); el aviso «No runtime found» de Streamlit al ejecutarlo fuera de la app es normal | `src/comprobar_modelo_imagenes.py` | 5B |
 | D73 | M3: TensorFlow se agrega **a mano** a `requirements.txt` (no se reenvía el archivo, D33); `src/comprobar_modelo_imagenes.py` verifica la carga local (P12) | `src/comprobar_modelo_imagenes.py` | 5B |
+| D75 | **Corrección:** el orden del plan es Fase 6 = Módulo 2 (series temporales) y Fase 7 = Módulo 5 (resumen de texto). Dos mensajes anteriores decían lo contrario por error | `PLAN_DE_FASES` | 6A |
+| D76 | M2: S4 (orgánicos) **no se modela** (cierra lo pendiente de D28): solo 25 meses con cobertura completa y el programa cambió de alcance. Se modelan S1 `refuse` (desde 1992-01), S2 `paper` y S3 `mgp` (desde 2004-04) | `notebooks/02_series_tiempo.ipynb` | 6A |
+| D77 | M2, diseño fijado antes de ver resultados: se modela **toneladas por día** y se reporta en **toneladas por mes**; prueba = últimos 12 meses; 4 ventanas móviles de validación de 12 meses antes de la prueba; hiperparámetros por AIC/AICc con datos anteriores a la primera ventana; ganador = menor RMSE medio de validación y, si hay empate (≤ 2 %), el modelo más simple (ingenuo estacional < media móvil < ingenuo < ETS < SARIMAX < LSTM) | idem | 6A |
+| D78 | M2, modelos: 3 baselines, ETS de `statsmodels` (en lugar de Prophet o statsforecast, para no sumar dependencias frágiles en Python 3.13), SARIMAX con exógenas, LSTM (ventana 12, promedio de 3 semillas) y SARIMAX sin COVID en el entrenamiento (solo análisis del quiebre; no compite). El ganador puede ser un baseline | idem | 6A |
+| D79 | M2, exógenas: en validación y prueba se usan los indicadores reales; en el pronóstico futuro `covid` = 0 y `organicos_programa` = último valor conocido | idem | 6A |
+| D80 | M2, artefactos: `models/serie_<id>.joblib` (diccionario), `serie_meta.json`, `data/processed/m2_pronostico_<id>.csv`; formato en `ESTRUCTURA` sec. 3 | `ESTRUCTURA` | 6A |
+| D81 | M2, lectura: ganadores por la regla fijada (S1 ETS, S2 SARIMAX, S3 ingenuo). Las ventajas sobre el ingenuo estacional en prueba son pequeñas (3.5 %, 5.8 %, 5.0 %) y hay mucha dispersión entre ventanas de validación; ningún modelo supera con claridad a los baselines y el LSTM no gana en ninguna serie. El informe lo presentará así, sin vender un modelo complejo como mejor | `REGISTRO` 2 | 6A |
+| D82 | M2, limitaciones que la Parte B debe mostrar: S3 no tiene intervalo (el ganador es el ingenuo); el SARIMAX final de S2 no convergió (`convergio` = False); solo se guardó el modelo ganador de cada serie; el pronóstico supone `covid` = 0 | `REGISTRO` 2 | 6A |
+| D83 | M2, parche tras comparar dos ejecuciones: (1) los intervalos de ETS se simulan, así que se fija `rng=np.random.default_rng(SEMILLA)` y salen iguales entre ejecuciones (verificado por la IA); (2) el ajuste final de SARIMAX admite hasta 1000 iteraciones y el pronóstico se toma del mismo modelo que se guarda (antes se ajustaba dos veces); la selección y las métricas de validación y prueba no cambian | `src/entrenar_series.py` | 6A |
+| D84 | M2, app: el pronóstico se recalcula con el modelo guardado (`serie_<id>.joblib`) siempre a `horizonte_max` = 12 meses y se recorta al horizonte elegido, para que los intervalos de ETS (simulados) no cambien con el slider; si el modelo no carga (p. ej. otra versión de statsmodels) se usa `m2_pronostico_<id>.csv` y se avisa | `app/modules/series_tiempo.py` | 6B |
+| D85 | M2, app: la comparación con el ingenuo estacional se escribe a partir de `tabla_modelos` del meta (no está fija en el código) y avisa cuando en la prueba el modelo elegido no mejora en RMSE, MAE o MAPE; también avisa por modelo simple sin intervalo y por `convergio` = False | idem | 6B |
+| D86 | M2, app, tras tus capturas: el nombre del modelo en la tarjeta se acorta (`CORTOS`, el nombre completo queda en la ayuda) porque «Ingenuo (último valor)» se cortaba; y el aviso del modelo simple dice qué hace realmente (repite un valor diario, por lo que el pronóstico oscila con los días del mes) en lugar de «casi plano» | `app/modules/series_tiempo.py` | 6B |
 | D14 | Stack de `C2` sec. 2 propuesto sin cambios (Python 3.11, Streamlit, scikit-learn, Keras/Colab, etc.); confirmar al validar F0 | `C2` 2 | 0 (propuesta) |
 
 *(La IA agrega aquí cada decisión nueva con su fase.)*
@@ -138,7 +150,7 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | Módulo | Dataset usado | Modelo ganador | Métrica clave (real) | Artefacto | Estado |
 |---|---|---|---|---|---|
 | 1 Predicción | DS1, 172 países con objetivo (prueba n = 43) | SVR (C=1, epsilon=0.1), conjunto A0 | RMSE prueba 0.443 (baseline 0.501), MAE 0.268, R² 0.529 (REGISTRO 1) | `models/prediccion_mejor.pkl` | ✅ |
-| 2 Series temporales | — | — | — | `models/serie_mejor.*` | ⬜ |
+| 2 Series temporales | DS2, serie de ciudad (S1 418 meses; S2 y S3 271 meses) | S1 ETS · S2 SARIMAX · S3 Ingenuo (último valor) | RMSE de prueba (ton/mes): S1 8 785, S2 2 225, S3 2 227; mejora frente al ingenuo estacional 3.5 %, 5.8 % y 5.0 % (REGISTRO 2) | `models/serie_<id>.joblib` | 🟡 (falta Parte B) |
 | 3 Imágenes | DS3 limpio (12 220 imágenes, 10 clases); prueba externa DS4 (277) | V3 MobileNetV2 con fine-tuning | Test DS3: accuracy 0.915, macro-F1 0.910; DS4 (6 clases): accuracy 0.610, macro-F1 0.574 (REGISTRO 3) | `models/clasificador_imagenes.keras` | 🟡 (falta Parte B) |
 | 4 Clustering | DS1, 7 variables de composición y generación | K-Means k=4 | Silhouette 0.219, DB 1.548; estabilidad ARI 0.662 ± 0.277 (estructura débil) (REGISTRO 4) | `models/clustering_mejor.pkl` | ✅ |
 | 5 Resumen | — | — | — | (modelo HF / TextRank) | ⬜ |
@@ -176,17 +188,30 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | P25 | Decidir D67 (fotos propias) | Usuario | cerrado: no (2026-11-23) |
 | P26 | `tensorflow==2.21.0` agregado y fijado en `requirements.txt`; `python src/comprobar_modelo_imagenes.py` termina en OK en el PC del usuario | Usuario | cerrado: 2026-11-22 |
 | P27 | Probar la pestaña con 3 a 5 fotos reales de residuos (clase, confianza, si acertó) y guardar capturas para el manual | Usuario | parcial: 1 foto (madera → Cartón 94.5 %, REGISTRO 3) |
+| P29 | `statsmodels==0.15.0` fijado en `requirements.txt`; **quedó la línea duplicada** (había una y se agregó otra con `echo`): borrar una con `awk '!seen[$0]++' requirements.txt > requirements.tmp && mv requirements.tmp requirements.txt` y revisar con `grep -n statsmodels requirements.txt` (debe salir 1 línea) | Usuario | parcial |
+| P30 | Ejecutar `python src/entrenar_series.py` y pegar `m2_resumen.txt` | Usuario | cerrado: 2026-11-23 (REGISTRO 2) |
+| P31 | Reintentar el ajuste final de S2 con más iteraciones para lograr convergencia | Equipo | implementado en el script (D83, `maxiter` = 1000); falta reejecutar en tu PC para ver si `convergio` pasa a True (en el entorno de la IA ya era True con 200 iteraciones: la diferencia depende de la plataforma) |
+| P32 | (Recomendado) Reejecutar `python src/entrenar_series.py` con el script nuevo: **S1 verificado** (CSV con intervalos fijos y `serie_S1.joblib` coherentes); falta ver la línea `Convergencia del modelo final` de S2 en `m2_resumen.txt` | Usuario | parcial |
+| P34 | Probar la pestaña de series en la app | Usuario | parcial: las tres series y el cambio de horizonte probados con capturas (2026-11-23); falta revisar la pestaña «Modelos y datos» y la descarga del CSV |
+| P35 | `python -m pytest tests/test_series_tiempo.py` en el PC del usuario | Usuario | cerrado: 5 pruebas pasan, incluida la de artefactos reales contra sus CSV (2026-11-23); `tests/test_imagenes.py` ya había pasado en la Fase 5 |
+| P33 | `models/` del usuario tiene `serie_S1.joblib`, `serie_S2.joblib`, `serie_S3.joblib` y `serie_meta.json` | Usuario | cerrado: 2026-11-23 (la prueba de artefactos reales pasa en su PC) |
 | P28 | Contrastar los colores de `peru_municipal` y `peru_no_municipal` con el texto oficial de la NTP 900.058:2019 (INACAL) | Usuario | abierto |
 
 ## 6. Próximo paso exacto
 
-> Con **Continuar** la Fase 5 pasa a ✅ y empieza la **Fase 6** (Módulo 5: resumen de texto); antes se lee su guía `M5` y la sección de textos de `C3`. Siguen abiertos, sin bloquear: P23 (licencias de DS3 y DS4), P27 (más fotos reales y capturas para el manual) y P28 (colores de la NTP 900.058:2019).
+> El usuario descomprime la entrega, abre la app y prueba la pestaña de series (P34), y corre las pruebas (P35); pega la salida o `Error: ...`. Con **Continuar** sin errores la Fase 6 pasa a ✅ y sigue la **Fase 7** (Módulo 5: resumen de texto; antes se leen `M5` y la sección de textos de `C3`). Siguen abiertos, sin bloquear: P14, P23, P27, P28, P29 (statsmodels en `requirements.txt`) y P32.
 
 ## 7. Historial
 
 | Versión | Fecha | Fase | Cambio |
 |---|---|---|---|
 | 0 | — | — | Estado inicial creado junto con el paquete |
+| 37 | 2026-11-23 | 6B | Pruebas del usuario: 3 series OK en pantalla y 5 pruebas pasan; ajustes de texto D86; P29 parcial (línea duplicada), P33 y P35 cerrados, P34 parcial |
+| 36 | 2026-11-23 | 6B | Fase 6 Parte B entregada: `series_tiempo.py` y pruebas; D84 y D85; pendientes P34 y P35 |
+| 35 | 2026-11-23 | 6A | `serie_S1.joblib` y `m2_pronostico_S1.csv` del usuario verificados: el modelo recalcula el CSV con diferencia 0.00 ton/mes; intervalos fijos de S1 en REGISTRO 2; P32 parcial; P33 nuevo |
+| 34 | 2026-11-23 | 6A | Reejecución del usuario en la rama correcta: mismas métricas, distintos intervalos de S1 y tiempos; REGISTRO 2 actualizado con lecturas 7 a 9; parche D83 (semilla en ETS, `maxiter` 1000 en el ajuste final); P31 implementado, P32 nuevo |
+| 33 | 2026-11-23 | 6A | Resultados reales de series registrados (REGISTRO 2): ganadores S1 ETS, S2 SARIMAX, S3 ingenuo; D81 y D82; P30 cerrado, P29 parcial, P31 nuevo |
+| 32 | 2026-11-23 | 6A | Fase 5 validada (✅). Fase 6 Parte A entregada: notebook 02 y `entrenar_series.py` (D75 a D80); probados por la IA con un LSTM reducido, sin registrar cifras; pendientes P29 y P30 |
 | 31 | 2026-11-23 | 5B | Script de comprobación OK en el PC del usuario; `tensorflow==2.21.0` fijado en `requirements.txt` (`fijar_versiones.py` dejó `pytest==8.3.4`, la versión instalada, en lugar de 9.0.1); P26 cerrado; quedan P23, P27 (parcial) y P28 |
 | 30 | 2026-11-23 | 5B | Pruebas en el PC del usuario: 5 pruebas OK, app y pestaña funcionando; script corregido por codificación (D74); P12 cerrado, P26 y P27 parciales; observación con foto real en REGISTRO 3 |
 | 29 | 2026-11-23 | 5B | Fase 5 Parte B entregada: `imagenes.py`, `CONTENEDORES` y umbrales en `config.py`, script de comprobación y pruebas; D69 a D73; pendientes P26 a P28 |

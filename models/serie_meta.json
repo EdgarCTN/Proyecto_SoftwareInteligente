@@ -1,0 +1,415 @@
+{
+ "modulo": "series_temporales",
+ "modelo": "un modelo por serie (ver series)",
+ "fecha": "2026-11-23",
+ "dataset": "DS2 DSNY Monthly Tonnage (NYC Open Data), serie de ciudad: data/processed/serie_ciudad_mensual.csv",
+ "n_entrenamiento": {
+  "S1": 406,
+  "S2": 259,
+  "S3": 259
+ },
+ "n_prueba": 12,
+ "parametros": {
+  "horizonte": 12,
+  "ventanas_validacion": 4,
+  "regla_ganador": "menor RMSE medio de validación; empate <= 2% -> más simple",
+  "orden_complejidad": [
+   "ingenuo_estacional",
+   "media_movil",
+   "ingenuo",
+   "ets",
+   "sarimax",
+   "lstm"
+  ],
+  "lstm": {
+   "look_back": 12,
+   "unidades": 32,
+   "epocas_max": 150,
+   "semillas": 3
+  },
+  "semilla": 42,
+  "exog_futuro": "covid = 0; organicos_programa = último valor conocido"
+ },
+ "metricas": {
+  "serie": "S1",
+  "RMSE": 8785.382849858894,
+  "MAE": 7505.562486818902,
+  "MAPE": 3.0772384534164585
+ },
+ "features": {
+  "exogenas": [
+   "covid",
+   "organicos_programa"
+  ],
+  "frecuencia": "MS"
+ },
+ "librerias": {
+  "statsmodels": "0.15.0",
+  "tensorflow": "2.21.0",
+  "numpy": "2.3.2",
+  "pandas": "3.0.6"
+ },
+ "frecuencia": "MS",
+ "horizonte_max": 12,
+ "unidades": "toneladas por mes (se modela por día y se multiplica por los días del mes)",
+ "series": {
+  "S1": {
+   "nombre": "Basura (refuse)",
+   "columna": "refuse",
+   "inicio": "1992-01",
+   "fin": "2026-10",
+   "n_meses": 418,
+   "ganador": "ets",
+   "archivo_modelo": "serie_S1.joblib",
+   "archivo_pronostico": "m2_pronostico_S1.csv",
+   "metricas_test": {
+    "RMSE": 8785.382849858894,
+    "MAE": 7505.562486818902,
+    "MAPE": 3.0772384534164585
+   },
+   "metricas_validacion": {
+    "RMSE": 10304.552673694612,
+    "MAE": 8319.824006789022,
+    "MAPE": 3.3724170642092286
+   },
+   "mejora_rmse_test_vs_ingenuo_estacional_pct": 3.4713662385753685,
+   "tabla_modelos": {
+    "ingenuo": {
+     "RMSE_val": 14469.915098942354,
+     "RMSE_val_sd": 6734.8222562832125,
+     "MAE_val": 11705.120094086027,
+     "MAPE_val": 4.88004459775223,
+     "test_RMSE": 13172.484973906328,
+     "test_MAE": 10188.80940860215,
+     "test_MAPE": 4.3133006725576
+    },
+    "media_movil": {
+     "RMSE_val": 12726.95265404935,
+     "RMSE_val_sd": 3911.318186767837,
+     "MAE_val": 10215.179430473438,
+     "MAPE_val": 4.261393689551619,
+     "test_RMSE": 13458.579716264023,
+     "test_MAE": 10946.582323348715,
+     "test_MAPE": 4.579019682553788
+    },
+    "ingenuo_estacional": {
+     "RMSE_val": 12478.894299010586,
+     "RMSE_val_sd": 4943.946817968417,
+     "MAE_val": 10291.416135570602,
+     "MAPE_val": 4.210043644313545,
+     "test_RMSE": 9101.323107475455,
+     "test_MAE": 7425.800000000003,
+     "test_MAPE": 3.0383035385747266
+    },
+    "ets": {
+     "RMSE_val": 10304.552673694612,
+     "RMSE_val_sd": 5803.873319181123,
+     "MAE_val": 8319.824006789022,
+     "MAPE_val": 3.3724170642092286,
+     "test_RMSE": 8785.382849858894,
+     "test_MAE": 7505.562486818902,
+     "test_MAPE": 3.0772384534164585
+    },
+    "sarimax": {
+     "RMSE_val": 11441.875263396563,
+     "RMSE_val_sd": 8206.259146489387,
+     "MAE_val": 9819.967387448689,
+     "MAPE_val": 3.966528551058826,
+     "test_RMSE": 9258.684611440753,
+     "test_MAE": 7950.000861972471,
+     "test_MAPE": 3.2552622453291136
+    },
+    "sarimax_sin_covid": {
+     "RMSE_val": 8331.344588522588,
+     "RMSE_val_sd": 2239.2839920047772,
+     "MAE_val": 6700.0561745511195,
+     "MAPE_val": 2.7273752800463646,
+     "test_RMSE": 9168.396435524233,
+     "test_MAE": 7923.691016530509,
+     "test_MAPE": 3.241984072467264
+    },
+    "lstm": {
+     "RMSE_val": 10747.487218109083,
+     "RMSE_val_sd": 3556.9556010834917,
+     "MAE_val": 8581.842319859566,
+     "MAPE_val": 3.562098376822675,
+     "test_RMSE": 12797.76608590095,
+     "test_MAE": 9581.631458000933,
+     "test_MAPE": 4.079342272589661
+    }
+   },
+   "empatados_con_el_mejor": [
+    "ets"
+   ],
+   "config_sarimax": {
+    "orden": [
+     2,
+     1,
+     1
+    ],
+    "estacional": [
+     0,
+     1,
+     1,
+     12
+    ],
+    "exog": [
+     "covid",
+     "organicos_programa"
+    ]
+   },
+   "config_ets": {
+    "error": "add",
+    "trend": null,
+    "damped": false,
+    "seasonal": "mul"
+   },
+   "adf_p_valor": {
+    "serie": 0.22118522652020806,
+    "dif_1": 6.632479056455282e-06,
+    "dif_1_y_12": 1.8487901637764702e-13
+   },
+   "intervalo": true,
+   "convergio": null
+  },
+  "S2": {
+   "nombre": "Papel",
+   "columna": "paper",
+   "inicio": "2004-04",
+   "fin": "2026-10",
+   "n_meses": 271,
+   "ganador": "sarimax",
+   "archivo_modelo": "serie_S2.joblib",
+   "archivo_pronostico": "m2_pronostico_S2.csv",
+   "metricas_test": {
+    "RMSE": 2224.9647254125116,
+    "MAE": 1622.172693771084,
+    "MAPE": 6.477254213304068
+   },
+   "metricas_validacion": {
+    "RMSE": 1384.2679848439911,
+    "MAE": 1132.1255778167529,
+    "MAPE": 4.549165300574778
+   },
+   "mejora_rmse_test_vs_ingenuo_estacional_pct": 5.807595553110345,
+   "tabla_modelos": {
+    "ingenuo": {
+     "RMSE_val": 1882.7503248901717,
+     "RMSE_val_sd": 409.504189537842,
+     "MAE_val": 1484.0086693548385,
+     "MAPE_val": 5.803996434289278,
+     "test_RMSE": 2452.0639492956,
+     "test_MAE": 1950.7153225806449,
+     "test_MAPE": 7.942646345910482
+    },
+    "media_movil": {
+     "RMSE_val": 2085.8359285012752,
+     "RMSE_val_sd": 714.687252486265,
+     "MAE_val": 1749.6612645085152,
+     "MAPE_val": 6.985715128579349,
+     "test_RMSE": 2481.1575750791635,
+     "test_MAE": 1954.6578456221193,
+     "test_MAPE": 7.792447939885418
+    },
+    "ingenuo_estacional": {
+     "RMSE_val": 1732.5464914735405,
+     "RMSE_val_sd": 688.9956100873097,
+     "MAE_val": 1422.7540101600982,
+     "MAPE_val": 5.776774209929536,
+     "test_RMSE": 2362.1487724809667,
+     "test_MAE": 1596.966666666667,
+     "test_MAPE": 6.360653245560917
+    },
+    "ets": {
+     "RMSE_val": 1690.8957172587852,
+     "RMSE_val_sd": 642.8282040740529,
+     "MAE_val": 1449.1980096424331,
+     "MAPE_val": 5.831163104199836,
+     "test_RMSE": 2116.4956984820674,
+     "test_MAE": 1578.548282385949,
+     "test_MAPE": 6.3289918833074665
+    },
+    "sarimax": {
+     "RMSE_val": 1384.2679848439911,
+     "RMSE_val_sd": 318.74185509988666,
+     "MAE_val": 1132.1255778167529,
+     "MAPE_val": 4.549165300574778,
+     "test_RMSE": 2224.9647254125116,
+     "test_MAE": 1622.172693771084,
+     "test_MAPE": 6.477254213304068
+    },
+    "sarimax_sin_covid": {
+     "RMSE_val": 1264.65169568297,
+     "RMSE_val_sd": 178.53760839994277,
+     "MAE_val": 1000.5799286423576,
+     "MAPE_val": 4.030173892734645,
+     "test_RMSE": 2265.332234864147,
+     "test_MAE": 1652.5408393526893,
+     "test_MAPE": 6.609470209474377
+    },
+    "lstm": {
+     "RMSE_val": 2082.8499661919705,
+     "RMSE_val_sd": 774.3743117212131,
+     "MAE_val": 1729.5541125766254,
+     "MAPE_val": 6.929551593030383,
+     "test_RMSE": 2440.2509617542864,
+     "test_MAE": 1936.1002879691132,
+     "test_MAPE": 7.775339861265429
+    }
+   },
+   "empatados_con_el_mejor": [
+    "sarimax"
+   ],
+   "config_sarimax": {
+    "orden": [
+     1,
+     1,
+     1
+    ],
+    "estacional": [
+     0,
+     1,
+     1,
+     12
+    ],
+    "exog": [
+     "covid",
+     "organicos_programa"
+    ]
+   },
+   "config_ets": {
+    "error": "add",
+    "trend": "add",
+    "damped": true,
+    "seasonal": "mul"
+   },
+   "adf_p_valor": {
+    "serie": 0.039124877145881275,
+    "dif_1": 0.000759457747672763,
+    "dif_1_y_12": 6.437103470126484e-08
+   },
+   "intervalo": true,
+   "convergio": false
+  },
+  "S3": {
+   "nombre": "Metal, vidrio y plástico (MGP)",
+   "columna": "mgp",
+   "inicio": "2004-04",
+   "fin": "2026-10",
+   "n_meses": 271,
+   "ganador": "ingenuo",
+   "archivo_modelo": "serie_S3.joblib",
+   "archivo_pronostico": "m2_pronostico_S3.csv",
+   "metricas_test": {
+    "RMSE": 2227.227569658793,
+    "MAE": 1731.437096774194,
+    "MAPE": 7.485604884464224
+   },
+   "metricas_validacion": {
+    "RMSE": 1174.895946788556,
+    "MAE": 986.3659274193546,
+    "MAPE": 4.012673412172868
+   },
+   "mejora_rmse_test_vs_ingenuo_estacional_pct": 5.003223919157518,
+   "tabla_modelos": {
+    "ingenuo": {
+     "RMSE_val": 1174.895946788556,
+     "RMSE_val_sd": 173.55381575215674,
+     "MAE_val": 986.3659274193546,
+     "MAPE_val": 4.012673412172868,
+     "test_RMSE": 2227.227569658793,
+     "test_MAE": 1731.437096774194,
+     "test_MAPE": 7.485604884464224
+    },
+    "media_movil": {
+     "RMSE_val": 1551.233952837554,
+     "RMSE_val_sd": 947.7486106498585,
+     "MAE_val": 1345.0750539777066,
+     "MAPE_val": 5.621140995024583,
+     "test_RMSE": 2240.65080371296,
+     "test_MAE": 1783.381367874212,
+     "test_MAPE": 7.648523152071
+    },
+    "ingenuo_estacional": {
+     "RMSE_val": 1580.8440989066085,
+     "RMSE_val_sd": 953.6886625948168,
+     "MAE_val": 1350.1784149220032,
+     "MAPE_val": 5.568131818679221,
+     "test_RMSE": 2344.5296372620237,
+     "test_MAE": 1512.0499999999995,
+     "test_MAPE": 6.354608773443375
+    },
+    "ets": {
+     "RMSE_val": 1342.37909442884,
+     "RMSE_val_sd": 701.6809942921057,
+     "MAE_val": 1122.5004113407497,
+     "MAPE_val": 4.631383150972701,
+     "test_RMSE": 2146.273292206433,
+     "test_MAE": 1454.7730996654902,
+     "test_MAPE": 6.260391402481023
+    },
+    "sarimax": {
+     "RMSE_val": 1444.5277084069735,
+     "RMSE_val_sd": 877.5777051868047,
+     "MAE_val": 1251.3163060804127,
+     "MAPE_val": 5.119628838770716,
+     "test_RMSE": 2157.7524867742095,
+     "test_MAE": 1333.4363117834619,
+     "test_MAPE": 5.820384060481484
+    },
+    "sarimax_sin_covid": {
+     "RMSE_val": 1235.6428032696786,
+     "RMSE_val_sd": 596.3144093435824,
+     "MAE_val": 1045.1897149232727,
+     "MAPE_val": 4.327728603449917,
+     "test_RMSE": 2193.5310300392425,
+     "test_MAE": 1396.05821770825,
+     "test_MAPE": 6.075927236468117
+    },
+    "lstm": {
+     "RMSE_val": 1425.2222288804592,
+     "RMSE_val_sd": 860.5137578915385,
+     "MAE_val": 1245.7838243072104,
+     "MAPE_val": 5.15146979693437,
+     "test_RMSE": 2211.919866506792,
+     "test_MAE": 1718.0334138599235,
+     "test_MAPE": 7.420927753973226
+    }
+   },
+   "empatados_con_el_mejor": [
+    "ingenuo"
+   ],
+   "config_sarimax": {
+    "orden": [
+     2,
+     1,
+     1
+    ],
+    "estacional": [
+     1,
+     1,
+     1,
+     12
+    ],
+    "exog": [
+     "covid",
+     "organicos_programa"
+    ]
+   },
+   "config_ets": {
+    "error": "mul",
+    "trend": null,
+    "damped": false,
+    "seasonal": "mul"
+   },
+   "adf_p_valor": {
+    "serie": 0.6121090304254807,
+    "dif_1": 0.007889248069544377,
+    "dif_1_y_12": 5.623798953439335e-08
+   },
+   "intervalo": false,
+   "convergio": null
+  }
+ },
+ "notas": "Una sola ciudad; solo residuos recogidos por DSNY en residencias e instituciones. Unidad ton/mes por contrastar con un PDF de DSNY. El pronóstico supone covid = 0 y no cubre pandemias ni cambios de política. S4 (orgánicos) no se modela. Intervalos del 95 % solo para ETS y SARIMAX."
+}

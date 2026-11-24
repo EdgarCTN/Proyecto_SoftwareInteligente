@@ -1,0 +1,92 @@
+M2 SERIES — resumen (ejecución real, 2026-11-23)
+statsmodels 0.15.0, TensorFlow 2.21.0
+
+== S1 Basura (refuse): 1992-01 a 2026-10 (418 meses); tiempo 513 s
+ADF p-valor: {'serie': 0.22118522652020806, 'dif_1': 6.632479056455282e-06, 'dif_1_y_12': 1.8487901637764702e-13}
+SARIMAX elegido: {'orden': (2, 1, 1), 'estacional': (0, 1, 1, 12), 'exog': ['covid', 'organicos_programa']} (AIC -1158.3) | ETS elegido: {'error': 'add', 'trend': None, 'damped': False, 'seasonal': 'mul'} (AICc -1273.5)
+Métricas en toneladas por mes (val = media de 4 ventanas de 12 meses; test = últimos 12 meses):
+                    RMSE_val  RMSE_val_sd   MAE_val  MAPE_val  test_RMSE  test_MAE  test_MAPE
+modelo                                                                                       
+ingenuo             14469.92      6734.82  11705.12      4.88   13172.48  10188.81       4.31
+media_movil         12726.95      3911.32  10215.18      4.26   13458.58  10946.58       4.58
+ingenuo_estacional  12478.89      4943.95  10291.42      4.21    9101.32   7425.80       3.04
+ets                 10304.55      5803.87   8319.82      3.37    8785.38   7505.56       3.08
+sarimax             11441.88      8206.26   9819.97      3.97    9258.68   7950.00       3.26
+sarimax_sin_covid    8331.34      2239.28   6700.06      2.73    9168.40   7923.69       3.24
+lstm                10747.49      3556.96   8581.84      3.56   12797.77   9581.63       4.08
+GANADOR: ETS (dentro del 2 % del mejor: ['ets']); mejora del RMSE de prueba frente al ingenuo estacional: 3.5 %
+Convergencia del modelo final: None
+Pronóstico:
+     fecha  pronostico_ton_mes  inferior_ton_mes  superior_ton_mes
+2026-11-01            247924.0          228988.0          265775.0
+2026-12-01            245044.0          223927.0          263426.0
+2027-01-01            230838.0          210025.0          251471.0
+2027-02-01            203882.0          186105.0          222759.0
+2027-03-01            240875.0          219513.0          263159.0
+2027-04-01            244577.0          222654.0          265944.0
+2027-05-01            260345.0          237744.0          285030.0
+2027-06-01            263889.0          240235.0          284889.0
+2027-07-01            254264.0          231914.0          276366.0
+2027-08-01            250410.0          226533.0          274013.0
+2027-09-01            250441.0          227260.0          273769.0
+2027-10-01            251041.0          226710.0          275330.0
+
+== S2 Papel: 2004-04 a 2026-10 (271 meses); tiempo 169 s
+ADF p-valor: {'serie': 0.039124877145881275, 'dif_1': 0.000759457747672763, 'dif_1_y_12': 6.437103470126484e-08}
+SARIMAX elegido: {'orden': (1, 1, 1), 'estacional': (0, 1, 1, 12), 'exog': ['covid', 'organicos_programa']} (AIC -509.1) | ETS elegido: {'error': 'add', 'trend': 'add', 'damped': True, 'seasonal': 'mul'} (AICc -588.4)
+Métricas en toneladas por mes (val = media de 4 ventanas de 12 meses; test = últimos 12 meses):
+                    RMSE_val  RMSE_val_sd  MAE_val  MAPE_val  test_RMSE  test_MAE  test_MAPE
+modelo                                                                                      
+ingenuo              1882.75       409.50  1484.01      5.80    2452.06   1950.72       7.94
+media_movil          2085.84       714.69  1749.66      6.99    2481.16   1954.66       7.79
+ingenuo_estacional   1732.55       689.00  1422.75      5.78    2362.15   1596.97       6.36
+ets                  1690.90       642.83  1449.20      5.83    2116.50   1578.55       6.33
+sarimax              1384.27       318.74  1132.13      4.55    2224.96   1622.17       6.48
+sarimax_sin_covid    1264.65       178.54  1000.58      4.03    2265.33   1652.54       6.61
+lstm                 2082.85       774.37  1729.55      6.93    2440.25   1936.10       7.78
+GANADOR: SARIMAX (dentro del 2 % del mejor: ['sarimax']); mejora del RMSE de prueba frente al ingenuo estacional: 5.8 %
+Convergencia del modelo final: False
+Pronóstico:
+     fecha  pronostico_ton_mes  inferior_ton_mes  superior_ton_mes
+2026-11-01             24771.0           21723.0           27819.0
+2026-12-01             30025.0           26875.0           33175.0
+2027-01-01             25383.0           22177.0           28589.0
+2027-02-01             21900.0           18970.0           24829.0
+2027-03-01             25663.0           22380.0           28945.0
+2027-04-01             24568.0           21354.0           27782.0
+2027-05-01             25432.0           22073.0           28791.0
+2027-06-01             26495.0           23208.0           29782.0
+2027-07-01             24829.0           21395.0           28263.0
+2027-08-01             24051.0           20580.0           27522.0
+2027-09-01             25970.0           22576.0           29365.0
+2027-10-01             25892.0           22348.0           29436.0
+
+== S3 Metal, vidrio y plástico (MGP): 2004-04 a 2026-10 (271 meses); tiempo 157 s
+ADF p-valor: {'serie': 0.6121090304254807, 'dif_1': 0.007889248069544377, 'dif_1_y_12': 5.623798953439335e-08}
+SARIMAX elegido: {'orden': (2, 1, 1), 'estacional': (1, 1, 1, 12), 'exog': ['covid', 'organicos_programa']} (AIC -511.6) | ETS elegido: {'error': 'mul', 'trend': None, 'damped': False, 'seasonal': 'mul'} (AICc -582.0)
+Métricas en toneladas por mes (val = media de 4 ventanas de 12 meses; test = últimos 12 meses):
+                    RMSE_val  RMSE_val_sd  MAE_val  MAPE_val  test_RMSE  test_MAE  test_MAPE
+modelo                                                                                      
+ingenuo              1174.90       173.55   986.37      4.01    2227.23   1731.44       7.49
+media_movil          1551.23       947.75  1345.08      5.62    2240.65   1783.38       7.65
+ingenuo_estacional   1580.84       953.69  1350.18      5.57    2344.53   1512.05       6.35
+ets                  1342.38       701.68  1122.50      4.63    2146.27   1454.77       6.26
+sarimax              1444.53       877.58  1251.32      5.12    2157.75   1333.44       5.82
+sarimax_sin_covid    1235.64       596.31  1045.19      4.33    2193.53   1396.06       6.08
+lstm                 1425.22       860.51  1245.78      5.15    2211.92   1718.03       7.42
+GANADOR: Ingenuo (último valor) (dentro del 2 % del mejor: ['ingenuo']); mejora del RMSE de prueba frente al ingenuo estacional: 5.0 %
+Convergencia del modelo final: None
+Pronóstico:
+     fecha  pronostico_ton_mes  inferior_ton_mes  superior_ton_mes
+2026-11-01             23967.0               NaN               NaN
+2026-12-01             24766.0               NaN               NaN
+2027-01-01             24766.0               NaN               NaN
+2027-02-01             22369.0               NaN               NaN
+2027-03-01             24766.0               NaN               NaN
+2027-04-01             23967.0               NaN               NaN
+2027-05-01             24766.0               NaN               NaN
+2027-06-01             23967.0               NaN               NaN
+2027-07-01             24766.0               NaN               NaN
+2027-08-01             24766.0               NaN               NaN
+2027-09-01             23967.0               NaN               NaN
+2027-10-01             24766.0               NaN               NaN

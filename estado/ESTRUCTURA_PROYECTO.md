@@ -71,8 +71,9 @@ software_inteligente/
 │   ├── guia_imagenes.md              🟡 Fase 2 B
 │   ├── checklist_instalacion.md      🟡 Fase 8 B (borrador sin ejecutar desde cero; base del manual de instalación)
 │   ├── figuras/                      🟡 Fase 2 A (PNG del EDA)
-│   ├── manual_instalacion.md         ⬜ Fase 9
-│   ├── manual_usuario.md             ⬜ Fase 9
+│   ├── manual_instalacion.md         🟡 Fase 9 (instalación desde cero sin verificar)
+│   ├── manual_usuario.md             🟡 Fase 9 (capturas pendientes)
+│   ├── capturas/                     ⬜ Fase 9 (9 PNG que debe tomar el usuario)
 │   ├── informe_tecnico.md            ⬜ Fases 10–11
 │   └── exposicion.md                 ⬜ Fase 12
 ├── config.py                         🟡 Fase 1

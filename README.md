@@ -2,10 +2,10 @@
 
 Aplicación de **gestión inteligente de residuos urbanos** con 5 módulos de IA (predicción, series temporales, clasificación de imágenes, clustering y resumen de texto). Trabajo Final de *Software Inteligente* (UNMSM, 2026-2).
 
-> **Estado:** en desarrollo por fases. Los módulos aparecen como «en construcción» hasta que se entrenen y se agreguen sus modelos. Consulta `estado/ESTADO_PROYECTO.md`.
+> **Estado:** en desarrollo por fases. Instalación: `docs/manual_instalacion.md`; uso: `docs/manual_usuario.md`. Consulta `estado/ESTADO_PROYECTO.md`.
 
 ## Requisitos
-- Python 3.11 (recomendado en el stack del proyecto). Verifica con `python --version`.
+- Python 3.13.6 (versión con la que se probó el proyecto en Windows; 3.11 era la sugerida en el diseño y no se probó). Verifica con `python --version`.
 - Sin GPU: el entrenamiento pesado (imágenes) se hace en Google Colab; la app solo carga modelos ya entrenados.
 
 ## Instalación (primera vez)

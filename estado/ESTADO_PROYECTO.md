@@ -10,10 +10,10 @@
 
 | Campo | Valor |
 |---|---|
-| Versión del estado | 52 (Fase 8 Parte B: P37, historial de kaggle.json comprobado) |
+| Versión del estado | 53 (Fase 8 validada; Fase 9 entregada) |
 | Última actualización | 2026-11-27 |
-| Última fase completada | Fase 7 (validada 2026-11-27); Fase 6 (con P29 y P34 parciales); Fase 5 (con P23, P27 y P28 abiertos); Fase 4 (con P20 parcial); Fase 2 (con pendientes: revisión humana del filtro de textos e imágenes DS3 y DS4) |
-| Fase actual | Fase 8 Parte B — 🟡 falta commit y push de P37, **revocar el token de Kaggle** y tu "Continuar" |
+| Última fase completada | Fase 8 (validada 2026-11-27; con P37 y P46 parciales); Fase 7; Fase 6 (con P34 parcial); Fase 5 (con P23, P27 y P28 abiertos); Fase 4 (con P20 parcial); Fase 2 (con pendientes) |
+| Fase actual | Fase 9 — 🟡 manuales entregados; faltan las capturas y probar la instalación desde cero |
 | Semana del cronograma | 13 según lo registrado; **sin reconfirmar** el 2026-11-27 (la IA lo preguntó y no hubo respuesta) |
 | Nº de conversación (chat) | 1 |
 
@@ -43,8 +43,8 @@
 | 5 | Módulo 3: Imágenes | ✅ | Notebook 03 (Colab), `imagenes.py`, `.keras` + meta | Sí (Continuar, 2026-11-23) | Parte A ejecutada con datos reales (REGISTRO 3). Parte B entregada: `app/modules/imagenes.py`, `CONTENEDORES` en `config.py`, `src/comprobar_modelo_imagenes.py`, `tests/test_imagenes.py`. Probada por la IA con el modelo real, 5 pruebas pytest y Streamlit AppTest con una foto sintética; en el PC del usuario: 5 pruebas pasan, la app y la pestaña funcionan (interfaz aprobada por el usuario); el script de comprobación se corrigió (codificación) y terminó en OK; 1 foto real probada (REGISTRO 3) |
 | 6 | Módulo 2: Series temporales | ✅ | Notebook 02, `entrenar_series.py`, `series_tiempo.py`, modelo + meta | Sí (Continuar, 2026-11-24; P29 y P34 parciales) | Parte A ejecutada por el usuario con datos reales (REGISTRO 2): ganadores S1 ETS, S2 SARIMAX, S3 ingenuo (último valor); mejoras en prueba frente al ingenuo estacional de 3.5 %, 5.8 % y 5.0 %. SARIMAX final de S2 sin convergencia. Parte B entregada: `app/modules/series_tiempo.py` y `tests/test_series_tiempo.py`; probada por la IA con tu `serie_S1.joblib` real y tu CSV de S1 (coinciden) y con artefactos de una prueba de humo para S2 y S3 (mismos tipos de ganador); en tu PC: 3 series y cambio de horizonte probados con capturas y 5 pruebas pasan (2026-11-23); falta revisar «Modelos y datos» y la descarga del CSV (P34) |
 | 7 | Módulo 5: Resumen de texto | ✅ | Notebook 05, `resumen.py` | Sí (Continuar, 2026-11-27) | Parte A entregada: `app/utils/texto.py`, `tests/test_texto.py` y `notebooks/05_resumen.ipynb` (Colab con GPU). Ejecutada por el usuario en Colab (T4, 2026-11-24, n = 500 por fuente): ganador abstractivo (mT5 XL-Sum) por la regla fijada, pero **la ventaja viene de E1**; en E2 empata con Lead-2 (REGISTRO 5). Parte A validada por el usuario ("Continuar", 2026-11-24). Parte B entregada: `app/modules/resumen.py`, `tests/test_resumen.py`, `requirements-abstractivo.txt`; la IA solo la probó con un streamlit simulado y un modelo falso |
-| 8 | Integración y pruebas | 🟡 | `main.py` completo, pruebas, caché, errores | — | Parte A entregada: `app/main.py` (Inicio + 5 pestañas, errores con detalle técnico, tiempos), `app/modules/inicio.py`, `app/utils/diagnostico.py`, `ARTEFACTOS_MODULO` en `config.py`. Probada por la IA con Streamlit 1.67.0 (`AppTest`): 0 excepciones, y con un modelo borrado y un módulo roto la app sigue funcionando. Parte B entregada: `tests/test_integracion.py` (17 pruebas), `src/medir_arranque.py`, `docs/checklist_instalacion.md`; las 17 pasan en el entorno de la IA (Linux, Streamlit 1.67.0, sin TensorFlow ni statsmodels), **no ejecutadas aún en tu PC**; checklist sin ejecutar desde cero |
-| 9 | Manuales | ⬜ | `docs/manual_instalacion.md`, `docs/manual_usuario.md` | — | |
+| 8 | Integración y pruebas | ✅ | `main.py` completo, pruebas, caché, errores | Sí (Continuar, 2026-11-27; P37 y P46 parciales) | Parte A entregada: `app/main.py` (Inicio + 5 pestañas, errores con detalle técnico, tiempos), `app/modules/inicio.py`, `app/utils/diagnostico.py`, `ARTEFACTOS_MODULO` en `config.py`. Probada por la IA con Streamlit 1.67.0 (`AppTest`): 0 excepciones, y con un modelo borrado y un módulo roto la app sigue funcionando. Parte B entregada: `tests/test_integracion.py` (17 pruebas), `src/medir_arranque.py`, `docs/checklist_instalacion.md`; las 17 pasan en el entorno de la IA (Linux, Streamlit 1.67.0, sin TensorFlow ni statsmodels), **no ejecutadas aún en tu PC**; checklist sin ejecutar desde cero |
+| 9 | Manuales | 🟡 | `docs/manual_instalacion.md`, `docs/manual_usuario.md` | — | Entregados. Etiquetas de controles tomadas del código; sin cifras de resultados salvo las medidas en el PC (60 MB de modelos, 2.33 GB del abstractivo, pico ≈ 2.5 GiB, 46 pruebas). Capturas de pantalla pendientes (`docs/capturas/`); instalación desde cero sin verificar |
 | 10 | Informe técnico, Parte A | ⬜ | Secciones 1–5 | — | |
 | 11 | Informe técnico, Parte B | ⬜ | Secciones 6–12 | — | |
 | 12 | Exposición y revisión final | ⬜ | Guion, diapositivas, preguntas probables, checklist | — | |
@@ -168,6 +168,9 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | D110 | Fase 8 B: `tests/test_integracion.py` prueba la app completa con `AppTest` (abre sin excepciones; un módulo que lanza error no la tumba; un módulo ausente muestra «en construcción»; Inicio nombra los archivos faltantes) y las entradas inválidas con funciones puras y datos de juguete declarados. No se prueba la subida de archivos por interfaz | `tests/test_integracion.py` | 8B |
 | D111 | Fase 8 B: `src/medir_arranque.py` mide en un proceso nuevo (importar Streamlit, 1.ª y 2.ª ejecución de la página con `AppTest`) y el tiempo hasta que el servidor responde en `/_stcore/health`; **no incluye abrir el navegador ni cargar TensorFlow** (se carga al subir una foto). Fuerza UTF-8 en la salida (lección de D74 y D104) | `src/medir_arranque.py` | 8B |
 | D112 | Fase 8 B: `docs/checklist_instalacion.md` queda como borrador sin ejecutar; el Manual de instalación (Fase 9) se escribirá a partir de su resultado real | `docs/checklist_instalacion.md` | 8B |
+| D113 | Fase 9: los manuales declaran lo verificado y lo no verificado (instalación solo probada en una carpeta existente, Windows, Python 3.13.6; Linux, macOS y otras versiones de Python sin probar; memoria mínima y espacio de TensorFlow no medidos). `README.md` pasa de «Python 3.11 recomendado» a 3.13.6 probado | `docs/manual_instalacion.md` | 9 |
+| D114 | Fase 9: el manual de usuario no repite métricas (se desactualizarían): explica cómo leerlas y remite a «Modelo y métricas» de cada módulo, y reitera las limitaciones ya registradas (D43, D53, D72, D81, D94, D98) | `docs/manual_usuario.md` | 9 |
+| D115 | Fase 9: las capturas son enlaces a `docs/capturas/NN_nombre.png` (9 pendientes, lista al final del manual de usuario); la IA no puede tomarlas | `docs/manual_usuario.md` | 9 |
 
 *(La IA agrega aquí cada decisión nueva con su fase.)*
 
@@ -232,16 +235,19 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | P44 | Ejecutar en tu PC `python -m pytest -q` | Usuario | cerrado: 2026-11-27 (46 passed in 38.71s; REGISTRO 6) |
 | P45 | Ejecutar `python src/medir_arranque.py` | Usuario | cerrado: 2026-11-27 (REGISTRO 6) |
 | P46 | Ejecutar el checklist `docs/checklist_instalacion.md` en una carpeta nueva con un entorno virtual nuevo | Usuario | parcial: pasos 6 y 10 hechos en la carpeta actual (no desde cero); el paso 4 resuelto con `grep` (P29 cerrado); el paso 9 sale vacío tras `git rm --cached` (falta commit y push, P37); pasos 1 a 3, 5, 7, 8 y 11 sin reportar |
+| P47 | Tomar las 9 capturas del manual de usuario y guardarlas en `docs/capturas/` con los nombres de la lista final de `docs/manual_usuario.md` | Usuario | abierto |
+| P48 | Seguir `docs/manual_instalacion.md` en una carpeta y un entorno nuevos y anotar cualquier paso que no funcione (cierra P46) | Usuario | abierto |
 
 ## 6. Próximo paso exacto
 
-> El usuario ejecuta P44 a P46 y escribe **Continuar**: la **Fase 8** pasa a ✅ y empieza la **Fase 9** (manuales de instalación y de usuario). Con `Error:` si algo falla. Siguen abiertos, sin bloquear: P14, P15, P23, P27, P28, P29, P32, P34, P37 (**revocar el token de Kaggle**), P38, P40.
+> El usuario toma las capturas (P47) y, si puede, prueba la instalación desde cero (P48); luego escribe **Continuar**: la **Fase 9** pasa a ✅ y empieza la **Fase 10** (informe técnico, Parte A). Siguen abiertos, sin bloquear: P14, P15, P23, P27, P28, P32, P34, P37 (**revocar el token de Kaggle**, commit y push de la eliminación), P38, P40.
 
 ## 7. Historial
 
 | Versión | Fecha | Fase | Cambio |
 |---|---|---|---|
 | 0 | — | — | Estado inicial creado junto con el paquete |
+| 53 | 2026-11-27 | 9 | Fase 8 validada (✅). Fase 9 entregada: `manual_instalacion.md`, `manual_usuario.md`, README ajustado (D113 a D115); P47 y P48 nuevos |
 | 52 | 2026-11-27 | 8B | `git log` muestra `kaggle.json` en el commit `092cb60`; `git status -sb` sin diferencia con `origin/main`; eliminación preparada, sin commit; la revocación del token sigue sin confirmarse |
 | 51 | 2026-11-27 | 8B | El usuario ejecutó `git rm --cached` (índice sin `kaggle.json`; falta commit, push y revocar el token) y confirmó una sola línea de `statsmodels` (P29 cerrado) |
 | 50 | 2026-11-27 | 8B | Resultados reales: 46 pruebas pasan y arranque medido (REGISTRO 6); el borrado de `kaggle.json` sigue sin confirmarse en Git (P37); checklist ajustado para Git Bash; P44 y P45 cerrados, P46 parcial |

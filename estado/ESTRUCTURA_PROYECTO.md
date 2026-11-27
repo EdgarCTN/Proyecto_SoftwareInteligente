@@ -26,13 +26,15 @@ software_inteligente/
 │   │   ├── series_tiempo.py          🟡 Fase 6 B
 │   │   ├── imagenes.py               🟡 Fase 5 B
 │   │   ├── clustering.py             🟡 Fase 4 B
-│   │   └── resumen.py                ⬜ Fase 7
+│   │   └── resumen.py                🟡 Fase 7 B (TextRank por defecto; abstractivo opcional; pestaña de evaluación desde el meta)
 │   └── utils/
 │       ├── datos.py                  🟡 Fase 1
 │       ├── graficos.py               🟡 Fase 1
-│       └── modelos.py                🟡 Fase 1 (carga de artefactos + lectura de *_meta.json)
+│       ├── modelos.py                🟡 Fase 1 (carga de artefactos + lectura de *_meta.json)
+│       └── texto.py                  🟡 Fase 7 A (oraciones, Lead-n, TextRank, bloques, ROUGE; solo numpy)
 ├── src/
 │   ├── fijar_versiones.py            ✅ Fase 1 (fija en requirements.txt las versiones instaladas)
+│   ├── medir_abstractivo.py          🟡 Fase 7 B (mide carga, generación y memoria del abstractivo en el PC; la memoria requiere `pip install psutil`; guarda `data/processed/m5_medicion_cpu.json`)
 │   ├── preparar_datos.py             🟡 Fase 2 A (DS1 y DS2: descargar|verificar|preparar|todo) · Parte B: textos
 │   ├── eda_tabular.py                🟡 Fase 2 A (EDA; figuras en docs/figuras/)
 │   ├── entrenar_prediccion.py        🟡 Fase 3 A (mismo código del notebook 01, sin Jupyter)
@@ -46,7 +48,7 @@ software_inteligente/
 │   ├── 02_series_tiempo.ipynb        🟡 Fase 6 A (local; mismo código que `src/entrenar_series.py`)
 │   ├── 03_imagenes_colab.ipynb       🟡 Fase 5 A (Colab; sin ejecutar con datos reales)
 │   ├── 04_clustering.ipynb           🟡 Fase 4 A (agrupa países; escribe models/clustering_*, data/processed/clustering_paises.csv, m4_*, docs/figuras/m4_*.png)
-│   └── 05_resumen.ipynb              ⬜ Fase 7
+│   └── 05_resumen.ipynb              🟡 Fase 7 A (Colab con GPU; ejecutado por el usuario el 2026-11-24)
 ├── models/                           (artefactos entrenados + *_meta.json)
 ├── data/
 │   ├── raw/                          (descargas sin modificar: wab/, dsny/, texto/; no van al repo)
@@ -58,6 +60,8 @@ software_inteligente/
 │       └── externo_propio/           (fotos propias, opcional)
 ├── tests/
 │   ├── test_series_tiempo.py         🟡 Fase 6 B (5 pruebas; la de artefactos reales compara cada modelo guardado con su CSV y se omite si faltan los archivos)
+│   ├── test_texto.py                 🟡 Fase 7 A y B (8 pruebas con datos de juguete; la IA las corrió con un sustituto mínimo de pytest: falta pytest real en tu PC)
+│   ├── test_resumen.py               🟡 Fase 7 B (10 pruebas con datos de juguete y un modelo falso; las 9 primeras pasaron en tu PC, la de la estimación en CPU se añadió después)
 │   ├── test_imagenes.py              🟡 Fase 5 B (5 pruebas; las del modelo se omiten si faltan TensorFlow o models/)
 │   └── test_humo.py                  ⬜ Fase 8
 ├── docs/
@@ -70,6 +74,7 @@ software_inteligente/
 │   └── exposicion.md                 ⬜ Fase 12
 ├── config.py                         🟡 Fase 1
 ├── requirements.txt                  🟡 Fase 1 (sin versiones hasta ejecutar src/fijar_versiones.py)
+├── requirements-abstractivo.txt      🟡 Fase 7 B (opcional: torch, transformers, sentencepiece con las versiones del Colab; la instalación se verificó en el PC)
 ├── .gitignore                        🟡 Fase 1 (models/ NO se ignora)
 └── README.md                         🟡 Fase 1
 ```
@@ -118,6 +123,8 @@ software_inteligente/
 **Artefactos del módulo 2 (Fase 6 Parte A; los genera `src/entrenar_series.py` o el notebook 02):** un modelo por serie (S1 `refuse`, S2 `paper`, S3 `mgp`; S4 no se modela). `models/serie_<id>.joblib` = diccionario con `id`, `tipo` (`ingenuo`, `media_movil`, `ingenuo_estacional`, `ets`, `sarimax` o `lstm`), `config`, `ultima_fecha` (`YYYY-MM`), `horizonte_max` (12), `exog_futuro` (`covid` = 0, `organicos_programa` = último valor), `unidad_modelo` (los modelos trabajan en **toneladas por día**: multiplicar por los días del mes) y, según el tipo: `modelo` + `escala` (ets, sarimax: se pronostica sobre la serie dividida por `escala` y se multiplica de vuelta), `ultimos_12_ton_dia` (baselines), o `keras` (nombres de `models/serie_<id>_lstm_<k>.keras`) + `escalador_min` + `escalador_max` + `look_back` + `ultimos_escalados` (lstm). `models/serie_meta.json`: campos comunes del contrato más `frecuencia` (`MS`), `horizonte_max`, `unidades` y `series` (por id: `nombre`, `columna`, `inicio`, `fin`, `n_meses`, `ganador`, `archivo_modelo`, `archivo_pronostico`, `metricas_test`, `metricas_validacion`, `mejora_rmse_test_vs_ingenuo_estacional_pct`, `tabla_modelos`, `config_sarimax`, `config_ets`, `adf_p_valor`, `intervalo`, `convergio`). `data/processed/m2_pronostico_<id>.csv` (`fecha`, `pronostico_ton_mes`, `inferior_ton_mes`, `superior_ton_mes`; los límites quedan vacíos si el ganador no da intervalo), `m2_resultados.csv` (todas las métricas por serie, modelo y ventana), `m2_resumen.txt`. Figuras: `docs/figuras/m2_eda_<id>.png`, `m2_pronostico_<id>.png`, `m2_comparacion.png`. Los objetos de statsmodels se guardan con joblib: la app debe usar la misma versión de statsmodels (`serie_meta.json` → `librerias`).
 
 **Artefactos del módulo 3 (Fase 5 Parte A; los genera el notebook de Colab y se entregan en `salida_fase5.zip`):** `models/clasificador_imagenes.keras` (modelo completo con aumento y escalado dentro; entrada 224×224×3 en píxeles 0–255), `models/clases_imagenes.json` (lista de nombres; el índice = salida del modelo), `models/imagenes_meta.json`. Campos del meta: `ganador`, `metricas` (accuracy y macro_f1 en test de DS3; `*_val`; `*_test_6clases`; `*_ds4`; `brecha_accuracy`, `brecha_macro_f1`), `comparacion_variantes`, `por_clase_test`, `matriz_confusion_test`, `prueba_externa` (`clases_comunes`, `mapeo_trashnet_a_ds3`, `n_ds4`, `ds4_por_clase`, `matriz_ds4`, `fotos_propias`), `limpieza` (duplicados y conteo por clase y partición), `librerias`, `notas`. Salidas: `data/processed/m3_resultados.csv`, `m3_resumen.txt`, `m3_particiones.csv` y figuras `docs/figuras/m3_conteo_clases.png`, `m3_curvas.png`, `m3_comparacion.png`, `m3_matriz_confusion.png`, `m3_matriz_ds4.png`. El mapeo clase→contenedor está en `config.CONTENEDORES` (Parte B).
+
+**Artefactos del módulo 5 (Fase 7 Parte A; los genera `notebooks/05_resumen.ipynb`; ejecutado en Colab el 2026-11-24; la IA recibió `m5_resumen.txt` y `resumen_meta.json` y comprobó que coinciden):** `models/resumen_meta.json` con los campos comunes y `metricas` (`rouge1`, `rouge2`, `rougeL`, `ratio_compresion` del ganador, promedio de E1 y E2), `metricas_por_fuente`, `n_por_fuente`, `ganador_evaluacion`, `metodos_principales`, `rouge_l_medio`, `regla_seleccion`, `tokenizador_rouge`, `evaluacion` (tabla por fuente y método, incluida la sensibilidad), `bootstrap_vs_lead`, `subconjuntos_residuos`, `abstractivo` (`modelo_hub` con id, sha y licencia de la ficha; parámetros de generación; dispositivo) y `librerias`. Salidas en `data/processed/`: `m5_resultados.csv`, `m5_por_documento.csv`, `m5_salidas_abstractivo.csv`, `m5_ejemplos.csv` (no va al repo), `m5_resumen.txt`, `m5_demo_ds7.json` (opcional, no va al repo) y la figura `docs/figuras/m5_comparacion.png`. Con `LIMITE_DOCS` activo todo lleva el sufijo `_prueba`. El modelo abstractivo no se guarda: la app lo descarga del Hub (Parte B).
 
 Las claves de `metricas` varían por módulo (clasificación: accuracy, macro_f1, etc.; clustering: silhouette, davies_bouldin, calinski_harabasz; resumen: rouge1, rouge2, rougeL, ratio_compresion). Los valores **solo** se llenan con ejecución real.
 
@@ -191,3 +198,6 @@ Los estados de los archivos se llevan en el árbol de la sección 1 (cambiar ⬜
 | `src/eda_tabular.py` | CLI: `python src/eda_tabular.py` (sin funciones públicas) | Imprime resumen y guarda 8 figuras en `docs/figuras/` |
 | `src/preparar_textos.py` | CLI: `python src/preparar_textos.py [--n 500] [--fuente xlsum\|mlsum\|ambas]`. Funciones: `sin_tildes(t)`, `marcar_residuos(serie)`, `estandarizar(df, fuente)`, `muestrear(df, n, semilla)`, `cargar(fuente)`, `procesar(fuente, n, log)`. Constantes editables: `PALABRAS_RESIDUOS`, `CANDIDATOS` (formas de carga) | Salidas: `data/processed/textos_residuos.csv` (columnas `id, fuente, particion, texto, resumen_ref, es_residuos`; solo test, hasta `n` por fuente), `log_textos.txt`, `revision_filtro.csv` (25 por fuente para revisión manual). Requiere `datasets` |
 | `src/verificar_imagenes.py` | CLI: `python src/verificar_imagenes.py --ds3 RUTA [--ds4 RUTA]`. Funciones: `dhash(img)`, `analizar(raiz)`, `informe(...)`, `cruzar(df3, df4, L)` | Salidas: `data/processed/verificacion_imagenes.txt` y `duplicados_ds3_ds4.csv` (`ruta_ds3, ruta_ds4, tipo`). La partición train/val/test se hace en la Fase 5 |
+| `app/utils/texto.py` | `sin_tildes(t)`, `normalizar_espacios(texto)`, `dividir_oraciones(texto)`, `contar_palabras(texto)`, `ratio_compresion(resumen, original)`, `contar_palabras_residuos(texto)`, `datos_no_respaldados(resumen, original)` → lista de cifras y palabras con mayúscula del resumen ausentes del original, `lead_n(texto, n=3)`, `puntajes_textrank(oraciones, amortiguacion=0.85, iteraciones=100, tolerancia=1e-6)`, `textrank(texto, n=3)`, `dividir_en_bloques(texto, palabras=450)`, `resumen_jerarquico(texto, resumir, palabras=450, max_niveles=3)` → `(final, niveles)`, `tokenizar(texto)`, `rouge_f1(referencia, hipotesis)` → `{rouge1, rouge2, rougeL}` | Utilidades del módulo 5 (solo numpy y biblioteca estándar); las usan el notebook 05 y, en la Parte B, `app/modules/resumen.py` |
+| `app/modules/resumen.py` | Puras: `leer_texto_subido(datos)`, `texto_valido(texto)` → `(ok, motivo)`, `resumen_extractivo(texto, n)` → `(resumen, reducido)`, `bloques_para_abstractivo(texto)` → `(bloques, recortado)`, `estimar_segundos_cpu(n_bloques)`, `librerias_faltantes()`, `generar_abstractivo(tok, modelo, dispositivo, texto)`, `resumen_abstractivo(tok, modelo, dispositivo, texto)` → `(resumen, info)`, `tabla_evaluacion(meta)`, `figura_comparacion(tabla)` (barras agrupadas), `frases_bootstrap(meta)`. Interfaz: `render()`. Constantes: `ARCHIVO_META`, `MODELO_ID`, `REVISION`, `MAX_BLOQUES_ABSTRACTIVO`, `PALABRAS_BLOQUE_ABSTRACTIVO`, `SEG_POR_LLAMADA_CPU` | Lee `models/resumen_meta.json` solo para la pestaña de evaluación (el resumen funciona sin él); el modelo abstractivo se descarga del Hub (no se guarda en `models/`) y solo si están instaladas las librerías de `requirements-abstractivo.txt` |
+| `src/medir_abstractivo.py` | script (sin funciones públicas); usa `app.modules.resumen` (`MODELO_ID`, `REVISION`, `TEXTO_EJEMPLO`, `resumen_abstractivo`) | Mide carga, calentamiento, generación (ejemplo y ejemplo ×5) y memoria; escribe `data/processed/m5_medicion_cpu.json` |

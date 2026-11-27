@@ -1,0 +1,43 @@
+{
+ "fecha": "2026-11-27",
+ "equipo": {
+  "sistema": "Windows-10-10.0.19045-SP0",
+  "python": "3.13.6",
+  "nucleos_logicos": 4,
+  "hilos_torch": 2,
+  "gpu": false,
+  "psutil": true
+ },
+ "modelo": "csebuetnlp/mT5_multilingual_XLSum",
+ "revision": "2437a524effdbadc327ced84595508f1e32025b3",
+ "dispositivo": "cpu",
+ "carga_s": 13.5,
+ "calentamiento_s": 31.8,
+ "memoria_tras_carga_mib": 1398,
+ "memoria_final_mib": 2191,
+ "memoria_pico_mib": 2486,
+ "casos": {
+  "ejemplo (un bloque)": {
+   "palabras_texto": 264,
+   "bloques": 1,
+   "tiempos_s": [
+    14.84,
+    16.15
+   ],
+   "palabras_resumen": 18,
+   "resumen": "La gestión de los residuos sólidos urbanos es una de las etapas más complejas de la vida moderna.",
+   "no_respaldados": []
+  },
+  "ejemplo repetido 5 veces (varios bloques)": {
+   "palabras_texto": 1320,
+   "bloques": 5,
+   "tiempos_s": [
+    77.28
+   ],
+   "palabras_resumen": 20,
+   "resumen": "La mayoría de los residuos sólidos de las grandes ciudades del mundo están en el riesgo de descomposición de basura.",
+   "no_respaldados": []
+  }
+ },
+ "nota": "El texto largo es el ejemplo repetido: solo sirve para medir tiempo, no la calidad."
+}

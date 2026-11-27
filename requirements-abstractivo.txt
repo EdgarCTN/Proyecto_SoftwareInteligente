@@ -1,0 +1,7 @@
+# OPCIONAL: solo para el resumen abstractivo (pestaña «Resumen»). Sin esto la app funciona con el resumen extractivo.
+# Versiones de la ejecución en Colab del notebook 05 (REGISTRO 5); la instalación se verificó en el PC del proyecto
+# (Windows, Python 3.13). Si pip no encuentra torch 2.14.1, instala torch para CPU desde https://pytorch.org/get-started/locally/
+# y después transformers y sentencepiece.
+torch==2.14.1
+transformers==5.22.1
+sentencepiece==0.2.2

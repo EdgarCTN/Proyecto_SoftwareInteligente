@@ -328,15 +328,113 @@ Mejor Silhouette sin restricciones: DBSCAN (eps 0.8, min_samples 3), 7 clústere
 
 **Perfiles interpretados:** `[PENDIENTE]` (nombres y políticas en la Parte B; ver D54 de `ESTADO`).
 
-## 5. Resumen de texto — Fase 7
+## 5. Resumen de texto — Fase 7 Parte A (origen: `m5_resumen.txt` y celdas 4, 6 y 11 de `notebooks/05_resumen.ipynb`, ejecución real del usuario en Colab; Tesla T4; 2026-11-24)
 
-Conjuntos de evaluación: E1 XL-Sum (es) y E2 MLSUM (es) — tamaño de cada muestra y semilla: `[PENDIENTE]` · Precisión del filtro por tema de residuos: `[PENDIENTE]` · Tokenizador de ROUGE: `[PENDIENTE]`
+**Condiciones.** Ejecución completa (no es la prueba rápida): E1 XL-Sum (es, test) n = 500 y E2 MLSUM (es, test) n = 500, muestras de `textos_residuos.csv` (250 de residuos y 250 de otros en MLSUM; 192 y 308 en XL-Sum), semilla 42. Tokenizador de ROUGE: propio. Librerías reportadas: numpy 2.4.6, pandas 2.2.3, torch 2.14.1+cu130, transformers 5.22.1, sentencepiece 0.2.2, rouge-score 0.1.2, huggingface_hub 1.33.0. Modelo abstractivo: `csebuetnlp/mT5_multilingual_XLSum`, revisión `2437a524effdbadc327ced84595508f1e32025b3` (última modificación 2022-08-13), float32. Longitud media de las referencias en estas muestras: XL-Sum 27.0 y MLSUM 22.3 palabras (calculado por la IA sobre el CSV subido).
 
-| Método | ROUGE-1 | ROUGE-2 | ROUGE-L | Ratio de compresión | Tiempo (s) | Origen | Fecha | ⭐ |
+### Verificaciones (celdas 4 y 6)
+
+| Verificación | Resultado real |
+|---|---|
+| El modelo existe en el Hub | Sí; `licencia_ficha` y `etiquetas_licencia` salieron vacías (la API no las expone; ver la fila siguiente) |
+| Licencia y uso del modelo (origen distinto: ficha del modelo leída por la IA con búsqueda web, 2026-11-24) | La ficha declara `cc-by-nc-sa-4.0` en el campo `licenses`, indica que se entrenó con `csebuetnlp/xlsum` y recomienda entrada de 512 tokens, `max_length=84` y `no_repeat_ngram_size=2`; el fragmento leído se cortó antes de `num_beams`, así que **`num_beams=4` sigue sin confirmarse**. Los pesos pesan 2.33 GB |
+| Tokenizador por defecto de `rouge-score` | `pequeña` frente a `pequeño`: ROUGE-1 = 0.500 con el tokenizador por defecto y 0.000 con el propio (el por defecto parte las palabras con tilde o ñ). Con textos idénticos ambos dan 1.000 |
+| ROUGE propio frente a `rouge-score` (mismo tokenizador, 50 pares Lead-2 de XL-Sum) | Diferencia máxima 0.0 en ROUGE-1 y en ROUGE-L (ROUGE-2 no se contrastó) |
+
+### E1 — XL-Sum (en dominio para el abstractivo) · n = 500
+
+| Método | ROUGE-1 | ROUGE-2 | ROUGE-L | desv. ROUGE-L | Palabras del resumen | Ratio de compresión | s/doc | ⭐ |
 |---|---|---|---|---|---|---|---|---|
-| Lead-3 (baseline) | [RESULTADO REAL PENDIENTE] | | | | | | | |
-| TextRank (extractivo) | [RESULTADO REAL PENDIENTE] | | | | | | | |
-| Modelo abstractivo HF: `[nombre verificado]` | [RESULTADO REAL PENDIENTE] | | | | | | | |
+| Lead-1 (sensibilidad) | 0.1905 | 0.0457 | 0.1494 | 0.0961 | 17.3 | 0.0328 | 0.0023 | |
+| **Lead-2 (baseline principal)** | 0.2144 | 0.0402 | 0.1484 | 0.0690 | 43.4 | 0.0818 | 0.0012 | |
+| Lead-3 (sensibilidad) | 0.2044 | 0.0378 | 0.1364 | 0.0546 | 68.1 | 0.1247 | 0.0012 | |
+| TextRank-1 (sensibilidad) | 0.2108 | 0.0364 | 0.1483 | 0.0705 | 33.2 | 0.0557 | 0.0031 | |
+| **TextRank-2 (principal)** | 0.2021 | 0.0379 | 0.1408 | 0.0578 | 63.7 | 0.1079 | 0.0031 | |
+| TextRank-3 (sensibilidad) | 0.1832 | 0.0372 | 0.1265 | 0.0482 | 93.2 | 0.1582 | 0.0030 | |
+| **Abstractivo (mT5 XL-Sum)** | 0.2902 | 0.1064 | 0.2232 | 0.1448 | 16.7 | 0.0321 | 0.3998 | ⭐ |
+
+### E2 — MLSUM (fuera de dominio) · n = 500
+
+| Método | ROUGE-1 | ROUGE-2 | ROUGE-L | desv. ROUGE-L | Palabras del resumen | Ratio de compresión | s/doc | ⭐ |
+|---|---|---|---|---|---|---|---|---|
+| Lead-1 (sensibilidad) | 0.1907 | 0.0470 | 0.1492 | 0.1037 | 24.1 | 0.0390 | 0.0015 | |
+| **Lead-2 (baseline principal)** | 0.2049 | 0.0530 | 0.1504 | 0.0907 | 51.4 | 0.0842 | 0.0035 | |
+| Lead-3 (sensibilidad) | 0.1978 | 0.0569 | 0.1435 | 0.0771 | 77.3 | 0.1239 | 0.0015 | |
+| TextRank-1 (sensibilidad) | 0.2140 | 0.0511 | 0.1556 | 0.1029 | 44.3 | 0.0623 | 0.0038 | |
+| **TextRank-2 (principal)** | 0.1904 | 0.0502 | 0.1383 | 0.0751 | 83.6 | 0.1193 | 0.0065 | |
+| TextRank-3 (sensibilidad) | 0.1642 | 0.0467 | 0.1201 | 0.0606 | 120.1 | 0.1729 | 0.0039 | |
+| **Abstractivo (mT5 XL-Sum)** | 0.1999 | 0.0440 | 0.1582 | 0.1003 | 18.4 | 0.0304 | 0.4189 | ⭐ |
+
+Tiempos: el abstractivo se midió en la GPU Tesla T4 de Colab (≈ 0.40 y 0.42 s por documento); los extractivos, en la CPU de Colab. **No se midió el abstractivo en CPU ni en el PC del usuario.**
+
+### Ganador y comparación con Lead-2
+
+ROUGE-L medio entre E1 y E2: Lead-2 0.1494 · TextRank-2 0.1395 · **Abstractivo 0.1907** → ganador por la regla fijada (D88): **Abstractivo**.
+
+| Fuente | Método | Δ ROUGE-L frente a Lead-2 | IC 95 % (bootstrap pareado, 1000, semilla 42) | ¿Excluye 0? |
+|---|---|---|---|---|
+| XL-Sum | TextRank-2 | −0.0076 | [−0.0132, −0.0018] | sí |
+| XL-Sum | Abstractivo | +0.0748 | [+0.0627, +0.0873] | sí |
+| MLSUM | TextRank-2 | −0.0121 | [−0.0216, −0.0034] | sí |
+| MLSUM | Abstractivo | +0.0077 | [−0.0019, +0.0176] | **no** |
+
+### Subconjuntos «residuos» (ROUGE-L; informativos, sin intervalos)
+
+| Subconjunto | n | Lead-2 | TextRank-2 | Abstractivo |
+|---|---|---|---|---|
+| XL-Sum, con palabra clave | 192 | 0.1430 | 0.1332 | 0.1978 |
+| MLSUM, con palabra clave | 250 | 0.1434 | 0.1367 | 0.1570 |
+| XL-Sum, estricto (≥ 3 apariciones) | 39 | 0.1299 | 0.1306 | 0.1878 |
+| MLSUM, estricto (≥ 3 apariciones) | 53 | 0.1524 | 0.1297 | 0.1588 |
+
+### Lecturas (escritas por la IA a partir de las cifras anteriores; D94)
+
+1. El abstractivo gana por la regla, pero **la ventaja viene de E1**, donde el modelo se entrenó con XL-Sum (Δ +0.0748, IC que excluye 0). En E2, fuera de dominio, su diferencia con Lead-2 (+0.0077) tiene un IC que incluye 0: no se distingue de un baseline que copia las primeras oraciones.
+2. TextRank-2 queda algo por debajo de Lead-2 en las dos fuentes (diferencias de 0.008 y 0.012, con IC que excluyen 0). Son diferencias pequeñas.
+3. Hay mucha dispersión entre documentos (desviación de ROUGE-L de 0.06 a 0.14), y los ROUGE absolutos son bajos para todos los métodos porque las referencias son de una sola frase: se comparan entre métodos, no con otros trabajos.
+4. **Las longitudes difieren mucho:** el abstractivo produce 17–18 palabras; Lead-2 y TextRank-2, de 43 a 84. Como la F1 depende de la longitud, la comparación principal está en parte condicionada por ella. Observación **exploratoria, no fijada de antemano y sin IC**: Lead-1, de longitud parecida al abstractivo, obtiene 0.1494 (E1) y 0.1492 (E2) frente a 0.2232 y 0.1582.
+5. La sensibilidad no cambia la regla (no se usa para elegir), pero muestra que en E2 todos los métodos quedan en una banda estrecha de ROUGE-L (0.1201 a 0.1582) y que en ROUGE-1 TextRank-1 (0.2140) supera al abstractivo (0.1999).
+6. Los subconjuntos siguen el mismo patrón, pero los estrictos tienen 39 y 53 artículos y no se calcularon intervalos: no sacar conclusiones propias sobre residuos.
+
+### Revisión cualitativa (celda 11; 6 ejemplos, 3 por fuente, semilla 42)
+
+Revisor: Claude (IA), a partir de los extractos impresos (≈ 200–300 caracteres del artículo) y de la referencia, no de los artículos completos; el usuario los encontró «coherentes» sin detallar casos. **Limitación:** 6 ejemplos no permiten estimar una tasa de errores.
+
+| Fuente · ejemplo | Observación |
+|---|---|
+| XL-Sum · meteorito en Managua | Frase poco coherente («un cráter de roca espacial de 12 metros de profundidad se desintegró»); el dato de 12 m no se puede comprobar con lo impreso |
+| XL-Sum · niños de Irak | Atribuye el informe a «Save the Children»; la referencia lo atribuye a **War Child** → contradice la referencia |
+| XL-Sum · jubilación en Alemania | No menciona la edad de jubilación (el tema del inicio del artículo) y afirma que Merkel «llegó a la presidencia… el pasado septiembre», algo que no aparece en lo impreso |
+| MLSUM · Márquez Cabrera | Casi copia la primera oración; aparece un carácter extraño («destino à Chicago») |
+| MLSUM · Preysler | Copia exacta de la primera oración; omite lo que resume la referencia (vacaciones en Grecia con Vargas Llosa) |
+| MLSUM · propuestas del PSOE | **Invierte los papeles** («atraer al PSOE» en lugar de «atraer a Podemos», como dice el texto impreso) y añade «presidente de la oposición española, Pedro Sánchez», que no aparece en lo impreso. La referencia de este ejemplo (Aguirre imputada) no corresponde al inicio del artículo |
+
+Resumen: en 2 de 6 hay contradicciones comprobables con lo impreso, en otros 2 hay afirmaciones que lo impreso no respalda, y en 2 el abstractivo copia la primera oración. Es evidencia para el aviso de «puede inventar datos» de la interfaz y del informe.
+
+### Pruebas en el PC del usuario — Fase 7 Parte B (capturas y salida de pip pegadas por el usuario; 2026-11-24)
+
+- **Instalación** de `requirements-abstractivo.txt` en Windows con Python 3.13: correcta. Instalados: torch 2.14.1 (el archivo descargado pesó 124.1 MB), transformers 5.22.1, sentencepiece 0.2.2, tokenizers 0.23.3, safetensors 0.8.0, regex 2026.11.25, networkx 3.7, sympy 1.14.0, mpmath 1.3.0, typer 0.29.3 y shellingham 1.5.4. Ya estaban: numpy 2.3.2 y huggingface-hub 2.4.0.
+- **Interfaz (capturas):** las cinco pestañas con ✅; «Resumen» con el texto de ejemplo y TextRank de 3 oraciones (264 palabras → 83; tiempo 0.0 s); «Evaluación y límites» con la tabla y las cuatro frases de bootstrap leídas de `resumen_meta.json`. En las capturas el método abstractivo figura como no disponible; no consta si se tomaron antes de instalar las librerías.
+- **Defectos vistos en las capturas (corregidos, D101):** el gráfico de ROUGE-L salía **apilado** (sumaba las dos fuentes y el eje llegaba a ≈ 0.38, lo que engaña) y el selector de archivos mostraba «200 MB per file» aunque el módulo acepta 1 MB.
+- **`resumen_meta.json` recibido:** sus 14 filas de evaluación coinciden con la tabla de `m5_resumen.txt` a 4 decimales y trae las claves que usa la app (comprobado por la IA).
+- **`python -m pytest tests/test_texto.py tests/test_resumen.py` en el PC (2026-11-27; Windows, Python 3.13.6, pytest 8.3.4): 17 passed in 14.55 s** (8 de `test_texto.py` y 9 de `test_resumen.py`; la novena, la de las barras agrupadas, exige plotly, así que se ejecutó con plotly real). tiempo y memoria del abstractivo en CPU: ver las dos viñetas finales de esta subsección.
+- **Método abstractivo en la app (2026-11-27, CPU, Windows; captura y consola pegadas por el usuario):** con el texto de ejemplo (264 palabras, 4 párrafos) produjo una sola oración de 18 palabras: «La gestión de los residuos sólidos urbanos es una de las etapas más complejas de la vida moderna.». La interfaz mostró **1289.4 s**, pero ese cronómetro arrancaba **antes** de cargar el modelo, así que incluye la descarga (≈ 2.33 GB) y la carga: **no es el tiempo de generación** (defecto corregido, D102). En la consola la barra «Loading weights» llegó a 284/284 en menos de un segundo, lo que sugiere que la descarga ya había terminado (inferencia de la IA, no verificada).
+- **Lectura (IA) de ese resumen:** es fluido, pero la afirmación «una de las etapas más complejas de la vida moderna» **no aparece en el texto original** y solo recoge el tema general, no los pasos que describe el texto (separación, recolección, compost, relleno sanitario y comunicación). La pista de datos no respaldados dijo que todas las cifras y nombres aparecen en el original, porque solo revisa cifras y palabras con mayúscula: confirma el límite que ya anuncia la interfaz.
+- **Avisos de la consola** (ninguno impidió el resultado; su efecto sobre la calidad no se comprobó): `transformers` indica que no ata `shared.weight` con `lm_head.weight` porque el checkpoint trae valores distintos; avisa de que `max_new_tokens` (84) prevalece sobre `max_length` (84) de la configuración del modelo; el Hub avisa de peticiones sin autenticar (`HF_TOKEN` es opcional y acelera descargas); y `uvicorn` avisa de un problema con `websockets 17.3` que solo afecta detrás de un proxy inverso.
+- **Medición del abstractivo en el PC (`src/medir_abstractivo.py` corregido, 2026-11-27; salida pegada por el usuario):** equipo Windows 10 (10.0.19045), Python 3.13.6, 4 núcleos lógicos, 2 hilos de torch, sin GPU, `psutil` 7.2.2.
+
+| Medida | Valor |
+|---|---|
+| Carga del modelo ya descargado | 13.5 s (14.8 s en la medición anterior) |
+| Memoria residente tras cargarlo | 1398 MiB |
+| Primera generación (calentamiento, no se promedia) | 31.8 s (38.6 s en la medición anterior) |
+| Texto de ejemplo (264 palabras, 1 bloque), régimen estable | 14.84 s y 16.15 s |
+| Ejemplo repetido 5 veces (1320 palabras, 5 bloques), 1 repetición | 77.28 s |
+| Memoria al final: actual / pico | 2191 MiB / 2486 MiB |
+
+Lecturas (IA): en este PC sin GPU el abstractivo tarda ≈ 15 s por bloque de unas 260 palabras (frente a ≈ 0.4 s por artículo en la T4 de Colab) y necesita ≈ 2.5 GiB de memoria como pico. Las 77.28 s del texto largo corresponden, por el código del procedimiento por bloques, a 5 llamadas por bloque más una final (≈ 13 s por llamada): es una inferencia, no se midió llamada por llamada. El pico se midió en el proceso del script, que también carga Streamlit y los módulos de la app.
+
+- **Calidad del resumen por bloques (1 caso, texto repetido y por tanto artificial):** el resumen del texto de 5 bloques fue «La mayoría de los residuos sólidos de las grandes ciudades del mundo están en el riesgo de descomposición de basura.»: **no corresponde a lo que dice el texto** (no habla de «la mayoría» ni de «grandes ciudades del mundo») y la frase final es poco coherente. Con el texto de un bloque repitió la oración de la ejecución anterior (la afirmación sobre «las etapas más complejas de la vida moderna» que el texto no respalda). Un solo caso no permite estimar una tasa, pero coincide con la advertencia de la interfaz: resumir los resúmenes puede alejarse del texto.
 
 ## 6. Pruebas de integración — Fase 8
 

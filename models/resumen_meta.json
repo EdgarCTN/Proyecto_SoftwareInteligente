@@ -1,0 +1,320 @@
+{
+ "modulo": "resumen",
+ "modelo": "Abstractivo",
+ "fecha": "2026-11-24",
+ "dataset": "E1 XL-Sum (es, test) y E2 MLSUM (es, test): muestras de textos_residuos.csv (D32, D36); referencias de la BBC y de El País",
+ "n_entrenamiento": 0,
+ "n_prueba": 1000,
+ "n_por_fuente": {
+  "xlsum": 500,
+  "mlsum": 500
+ },
+ "parametros": {
+  "n_principal": 2,
+  "n_sensibilidad": [
+   1,
+   3
+  ],
+  "empate_rouge_l": 0.005,
+  "remuestreos": 1000,
+  "semilla": 42,
+  "limite_docs": null,
+  "umbral_apariciones": 3
+ },
+ "metricas": {
+  "rouge1": 0.24504203146652725,
+  "rouge2": 0.07522664329025858,
+  "rougeL": 0.19067241196177248,
+  "ratio_compresion": 0.03122839652033086
+ },
+ "metricas_por_fuente": {
+  "xlsum": {
+   "rouge1": 0.2901820379256281,
+   "rouge2": 0.10642252314455979,
+   "rougeL": 0.22318759019594028,
+   "ratio": 0.032089075173820814
+  },
+  "mlsum": {
+   "rouge1": 0.1999020250074264,
+   "rouge2": 0.04403076343595738,
+   "rougeL": 0.15815723372760465,
+   "ratio": 0.03036771786684091
+  }
+ },
+ "features": [],
+ "clases": [],
+ "librerias": {
+  "numpy": "2.4.6",
+  "pandas": "2.2.3",
+  "torch": "2.14.1+cu130",
+  "transformers": "5.22.1",
+  "sentencepiece": "0.2.2",
+  "rouge-score": "0.1.2",
+  "huggingface_hub": "1.33.0"
+ },
+ "ganador_evaluacion": "Abstractivo",
+ "metodos_principales": [
+  "Lead-2",
+  "TextRank-2",
+  "Abstractivo"
+ ],
+ "rouge_l_medio": {
+  "Lead-2": 0.1494307150698545,
+  "TextRank-2": 0.13954421459246813,
+  "Abstractivo": 0.19067241196177248
+ },
+ "regla_seleccion": "mayor ROUGE-L (F1) medio entre E1 y E2; empate (≤ 0.005) -> método más simple",
+ "tokenizador_rouge": "propio: minúsculas y secuencias de letras/dígitos Unicode (app/utils/texto.py::tokenizar)",
+ "evaluacion": [
+  {
+   "fuente": "mlsum",
+   "metodo": "Abstractivo",
+   "n": 500,
+   "rouge1": 0.199902,
+   "rouge2": 0.044031,
+   "rougeL": 0.158157,
+   "rougeL_desv": 0.10032,
+   "palabras_hip": 18.426,
+   "ratio": 0.030368,
+   "seg_por_doc": 0.418865
+  },
+  {
+   "fuente": "mlsum",
+   "metodo": "Lead-1",
+   "n": 500,
+   "rouge1": 0.190699,
+   "rouge2": 0.046957,
+   "rougeL": 0.149176,
+   "rougeL_desv": 0.103747,
+   "palabras_hip": 24.126,
+   "ratio": 0.039015,
+   "seg_por_doc": 0.001532
+  },
+  {
+   "fuente": "mlsum",
+   "metodo": "Lead-2",
+   "n": 500,
+   "rouge1": 0.204905,
+   "rouge2": 0.053028,
+   "rougeL": 0.15043,
+   "rougeL_desv": 0.090686,
+   "palabras_hip": 51.42,
+   "ratio": 0.084199,
+   "seg_por_doc": 0.003507
+  },
+  {
+   "fuente": "mlsum",
+   "metodo": "Lead-3",
+   "n": 500,
+   "rouge1": 0.197758,
+   "rouge2": 0.056887,
+   "rougeL": 0.143522,
+   "rougeL_desv": 0.077111,
+   "palabras_hip": 77.27,
+   "ratio": 0.123899,
+   "seg_por_doc": 0.001529
+  },
+  {
+   "fuente": "mlsum",
+   "metodo": "TextRank-1",
+   "n": 500,
+   "rouge1": 0.213976,
+   "rouge2": 0.051125,
+   "rougeL": 0.155596,
+   "rougeL_desv": 0.10294,
+   "palabras_hip": 44.276,
+   "ratio": 0.062344,
+   "seg_por_doc": 0.003835
+  },
+  {
+   "fuente": "mlsum",
+   "metodo": "TextRank-2",
+   "n": 500,
+   "rouge1": 0.190402,
+   "rouge2": 0.050177,
+   "rougeL": 0.138287,
+   "rougeL_desv": 0.075134,
+   "palabras_hip": 83.646,
+   "ratio": 0.1193,
+   "seg_por_doc": 0.006548
+  },
+  {
+   "fuente": "mlsum",
+   "metodo": "TextRank-3",
+   "n": 500,
+   "rouge1": 0.164185,
+   "rouge2": 0.046726,
+   "rougeL": 0.120097,
+   "rougeL_desv": 0.060606,
+   "palabras_hip": 120.098,
+   "ratio": 0.172924,
+   "seg_por_doc": 0.003889
+  },
+  {
+   "fuente": "xlsum",
+   "metodo": "Abstractivo",
+   "n": 500,
+   "rouge1": 0.290182,
+   "rouge2": 0.106423,
+   "rougeL": 0.223188,
+   "rougeL_desv": 0.144797,
+   "palabras_hip": 16.694,
+   "ratio": 0.032089,
+   "seg_por_doc": 0.399774
+  },
+  {
+   "fuente": "xlsum",
+   "metodo": "Lead-1",
+   "n": 500,
+   "rouge1": 0.19052,
+   "rouge2": 0.045669,
+   "rougeL": 0.149359,
+   "rougeL_desv": 0.096056,
+   "palabras_hip": 17.298,
+   "ratio": 0.032791,
+   "seg_por_doc": 0.002314
+  },
+  {
+   "fuente": "xlsum",
+   "metodo": "Lead-2",
+   "n": 500,
+   "rouge1": 0.214418,
+   "rouge2": 0.040178,
+   "rougeL": 0.148432,
+   "rougeL_desv": 0.068971,
+   "palabras_hip": 43.404,
+   "ratio": 0.081775,
+   "seg_por_doc": 0.001199
+  },
+  {
+   "fuente": "xlsum",
+   "metodo": "Lead-3",
+   "n": 500,
+   "rouge1": 0.204428,
+   "rouge2": 0.037809,
+   "rougeL": 0.136393,
+   "rougeL_desv": 0.054645,
+   "palabras_hip": 68.138,
+   "ratio": 0.124699,
+   "seg_por_doc": 0.001225
+  },
+  {
+   "fuente": "xlsum",
+   "metodo": "TextRank-1",
+   "n": 500,
+   "rouge1": 0.210832,
+   "rouge2": 0.036385,
+   "rougeL": 0.148347,
+   "rougeL_desv": 0.070483,
+   "palabras_hip": 33.206,
+   "ratio": 0.055724,
+   "seg_por_doc": 0.003108
+  },
+  {
+   "fuente": "xlsum",
+   "metodo": "TextRank-2",
+   "n": 500,
+   "rouge1": 0.202132,
+   "rouge2": 0.037949,
+   "rougeL": 0.140802,
+   "rougeL_desv": 0.057797,
+   "palabras_hip": 63.69,
+   "ratio": 0.107917,
+   "seg_por_doc": 0.003118
+  },
+  {
+   "fuente": "xlsum",
+   "metodo": "TextRank-3",
+   "n": 500,
+   "rouge1": 0.18321,
+   "rouge2": 0.037209,
+   "rougeL": 0.126525,
+   "rougeL_desv": 0.048175,
+   "palabras_hip": 93.24,
+   "ratio": 0.158155,
+   "seg_por_doc": 0.002952
+  }
+ ],
+ "bootstrap_vs_lead": {
+  "xlsum|TextRank-2": {
+   "dif_media": -0.007629869541648549,
+   "ic95": [
+    -0.013193013572543448,
+    -0.0017848116749006584
+   ],
+   "excluye_cero": true,
+   "n": 500
+  },
+  "xlsum|Abstractivo": {
+   "dif_media": 0.07475598153860247,
+   "ic95": [
+    0.06265358185162123,
+    0.08730360317526915
+   ],
+   "excluye_cero": true,
+   "n": 500
+  },
+  "mlsum|TextRank-2": {
+   "dif_media": -0.012143131413124146,
+   "ic95": [
+    -0.021570174477005998,
+    -0.0033989736144749423
+   ],
+   "excluye_cero": true,
+   "n": 500
+  },
+  "mlsum|Abstractivo": {
+   "dif_media": 0.007727412245233492,
+   "ic95": [
+    -0.001942921222652493,
+    0.01758296244944427
+   ],
+   "excluye_cero": false,
+   "n": 500
+  }
+ },
+ "subconjuntos_residuos": {
+  "residuos_palabra|xlsum": {
+   "n": 192,
+   "Lead-2": 0.14297652437743757,
+   "TextRank-2": 0.13321885133508937,
+   "Abstractivo": 0.1977948550214664
+  },
+  "residuos_palabra|mlsum": {
+   "n": 250,
+   "Lead-2": 0.1433845817102353,
+   "TextRank-2": 0.13670516936860685,
+   "Abstractivo": 0.1570043268518172
+  },
+  "residuos_estricto|xlsum": {
+   "n": 39,
+   "Lead-2": 0.12989567924244005,
+   "TextRank-2": 0.13064789420218675,
+   "Abstractivo": 0.18775952601506743
+  },
+  "residuos_estricto|mlsum": {
+   "n": 53,
+   "Lead-2": 0.15238128935621775,
+   "TextRank-2": 0.1297033051516424,
+   "Abstractivo": 0.15875628004118505
+  }
+ },
+ "abstractivo": {
+  "modelo_hub": {
+   "id": "csebuetnlp/mT5_multilingual_XLSum",
+   "sha": "2437a524effdbadc327ced84595508f1e32025b3",
+   "ultima_modificacion": "2022-08-13 13:15:36+00:00",
+   "licencia_ficha": null,
+   "etiquetas_licencia": []
+  },
+  "max_entrada_tokens": 512,
+  "max_salida_tokens": 84,
+  "num_beams": 4,
+  "no_repetir_ngram": 2,
+  "dispositivo": "cuda",
+  "gpu": "Tesla T4",
+  "precision": "float32",
+  "nota_dominio": "Si el modelo fue entrenado con XL-Sum, E1 lo favorece; E2 es la comparación más justa."
+ },
+ "notas": "Referencias de una frase: los ROUGE absolutos son bajos para todos los métodos; compáralos entre sí, no con otros trabajos. Evaluación en noticias, no en normas. El abstractivo puede inventar datos."
+}

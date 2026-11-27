@@ -20,8 +20,9 @@ software_inteligente/
 │   ── A partir de aquí, lo crea la IA en las fases ──
 ├── app/
 │   ├── __init__.py                   ✅ Fase 1 (también en modules/ y utils/)
-│   ├── main.py                       🟡 Fase 1 (esqueleto, ya carga módulos dinámicamente) · Fase 8 (completo)
+│   ├── main.py                       🟡 Fase 8 A (Inicio + 5 pestañas, errores con detalle técnico, tiempos por módulo, estado de archivos en la barra lateral)
 │   ├── modules/
+│   │   ├── inicio.py                 🟡 Fase 8 A (página de inicio y avisos; no es un módulo de IA)
 │   │   ├── prediccion.py             🟡 Fase 3 B
 │   │   ├── series_tiempo.py          🟡 Fase 6 B
 │   │   ├── imagenes.py               🟡 Fase 5 B
@@ -29,6 +30,7 @@ software_inteligente/
 │   │   └── resumen.py                🟡 Fase 7 B (TextRank por defecto; abstractivo opcional; pestaña de evaluación desde el meta)
 │   └── utils/
 │       ├── datos.py                  🟡 Fase 1
+│       ├── diagnostico.py            🟡 Fase 8 A (comprueba que existan los archivos de cada módulo)
 │       ├── graficos.py               🟡 Fase 1
 │       ├── modelos.py                🟡 Fase 1 (carga de artefactos + lectura de *_meta.json)
 │       └── texto.py                  🟡 Fase 7 A (oraciones, Lead-n, TextRank, bloques, ROUGE; solo numpy)
@@ -63,10 +65,11 @@ software_inteligente/
 │   ├── test_texto.py                 🟡 Fase 7 A y B (8 pruebas con datos de juguete; la IA las corrió con un sustituto mínimo de pytest: falta pytest real en tu PC)
 │   ├── test_resumen.py               🟡 Fase 7 B (10 pruebas con datos de juguete y un modelo falso; las 9 primeras pasaron en tu PC, la de la estimación en CPU se añadió después)
 │   ├── test_imagenes.py              🟡 Fase 5 B (5 pruebas; las del modelo se omiten si faltan TensorFlow o models/)
-│   └── test_humo.py                  ⬜ Fase 8
+│   └── test_integracion.py           🟡 Fase 8 B (17 pruebas: app completa con AppTest, módulo roto o ausente, archivos faltantes, entradas inválidas con datos de juguete)
 ├── docs/
 │   ├── diccionario_datos.md          🟡 Fase 2 B (DS1 y DS2 con datos reales; textos e imágenes pendientes de ejecución)
 │   ├── guia_imagenes.md              🟡 Fase 2 B
+│   ├── checklist_instalacion.md      🟡 Fase 8 B (borrador sin ejecutar desde cero; base del manual de instalación)
 │   ├── figuras/                      🟡 Fase 2 A (PNG del EDA)
 │   ├── manual_instalacion.md         ⬜ Fase 9
 │   ├── manual_usuario.md             ⬜ Fase 9
@@ -183,16 +186,20 @@ Los estados de los archivos se llevan en el árbol de la sección 1 (cambiar ⬜
 
 | Archivo | Firma | Qué hace |
 |---|---|---|
-| `config.py` | constantes `NOMBRE_PROYECTO`, `RANDOM_STATE`, `BASE_DIR`, `DATA_RAW`, `DATA_PROCESSED`, `IMG_DIR`, `MODELS_DIR`, `DOCS_DIR`, `ARCHIVOS_PROCESADOS` (dict clave→CSV: paises, dsny_distritos, serie_ciudad, distritos_nyc, textos), `MODULOS` (lista de dict: id, titulo, modulo, meta), `CONTENEDORES` (dict esquema_id → {nombre, fuente, clases: {clase: {color, hex, contenedor, origen ('norma'|'proyecto'), nota}}}; esquemas `proyecto`, `peru_municipal`, `peru_no_municipal`), `NOMBRES_CLASES`, `RESIDUOS_PELIGROSOS`, `UMBRAL_CONFIANZA` (0.60), `UMBRAL_PELIGROSO_POSIBLE` (0.20), `ESQUEMA_PREDETERMINADO`, `AVISO_USO` | Rutas, semilla y registro de módulos |
+| `config.py` | constantes `NOMBRE_PROYECTO`, `RANDOM_STATE`, `BASE_DIR`, `DATA_RAW`, `DATA_PROCESSED`, `IMG_DIR`, `MODELS_DIR`, `DOCS_DIR`, `ARCHIVOS_PROCESADOS` (dict clave→CSV: paises, dsny_distritos, serie_ciudad, distritos_nyc, textos), `MODULOS` (lista de dict: id, titulo, modulo, meta), `ARTEFACTOS_MODULO` (dict id → {models: [...], data: [...]}), `CONTENEDORES` (dict esquema_id → {nombre, fuente, clases: {clase: {color, hex, contenedor, origen ('norma'|'proyecto'), nota}}}; esquemas `proyecto`, `peru_municipal`, `peru_no_municipal`), `NOMBRES_CLASES`, `RESIDUOS_PELIGROSOS`, `UMBRAL_CONFIANZA` (0.60), `UMBRAL_PELIGROSO_POSIBLE` (0.20), `ESQUEMA_PREDETERMINADO`, `AVISO_USO` | Rutas, semilla y registro de módulos |
 | `app/utils/modelos.py` | `ruta_modelo(nombre)`, `meta_existe(nombre_meta)`, `leer_meta(nombre_meta) -> dict`, `cargar_joblib(nombre)`, `cargar_keras(nombre)`, `estado_modulo(modulo) -> bool` | Carga de artefactos (cacheada con `st.cache_resource` si hay Streamlit) y lectura de metadatos |
 | `app/utils/datos.py` | `ruta_procesado(clave)`, `procesado_existe(clave)`, `cargar_procesado(clave) -> DataFrame` | Lectura de CSV procesados (cacheada con `st.cache_data`) |
 | `app/utils/graficos.py` | `tabla_metricas(meta)`, `mostrar_metricas(meta)`, `grafico_barras(df,x,y,titulo,color)`, `grafico_dispersion_2d(df,x,y,color,hover,titulo)`, `grafico_pronostico(historico,pronostico,inferior,superior,titulo,unidad)` | Gráficos plotly y métricas desde el `_meta.json` |
+| `app/utils/diagnostico.py` | `revisar_modulo(modulo, models_dir=None, data_dir=None, artefactos=None) -> {id, titulo, listo, faltan}`, `revisar_todos(**kw) -> list` | Comprueba que existan los archivos de `config.ARTEFACTOS_MODULO` (no los abre). Lo usan `main.py` e `inicio.py` |
+| `app/modules/inicio.py` | `render()`; constante `QUE_HACE` (id de módulo → descripción) | Pestaña «Inicio»: tabla de módulos con estado, avisos de uso responsable y licencias. Sin cifras de resultados |
+| `app/main.py` | `mostrar_modulo(nombre) -> {estado: 'ok'\|'construccion'\|'error', segundos, detalle}` | Carga `app.modules.<nombre>` y ejecuta `render()`; captura errores con traceback; mide el tiempo |
 | `app/modules/prediccion.py` | `render()`; puras: `fmt(x, decimales)`, `construir_tabla(valores, features, n)`, `estimar(modelo, tabla) -> (array, hubo_negativos)`, `avisos_rango(gdp, poblacion, meta) -> [(nivel, texto)]`, `referencia(meta, tipo, clave)`, `comparacion_con_baseline(meta)`, `curva_pib(modelo, meta, poblacion, region, puntos)`. Constantes `ARCHIVO_MODELO`, `ARCHIVO_META`, `ORDEN_INGRESO`, `NOMBRE_INGRESO` | Pestaña de predicción. Entrada: `gdp`, `poblacion`, `region_id` (las `features` del meta); lee `prediccion_mejor.pkl` y `prediccion_meta.json`. Si el meta pide otras variables, avisa y no estima |
 | `app/modules/clustering.py` | `render()`; puras: `etiqueta(variable)`, `cargar_nombres(meta) -> (nombres, avisos)`, `asignar_perfil(art, valores) -> (cluster, distancias, vector)`, `vecinos_de_vector(art, paises, x, n, excluir)`, `margen_frontera(distancias)`, `z_perfiles(paises, variables)`, `avisos_estructura(meta)`, `ruido_configuracion(algoritmo, parametros)`, `validar_perfil(valores, comp_vars)`. Constantes `ARCHIVO_MODELO`, `ARCHIVO_META`, `ARCHIVO_NOMBRES`, `ARCHIVO_PAISES`, `ETIQUETAS` | Pestaña de clustering. Lee `clustering_mejor.pkl`, `clustering_meta.json`, `clustering_nombres.json` (opcional) y `data/processed/clustering_paises.csv` (más `m4_resultados.csv` y las figuras `m4_*.png` si existen). Los nombres solo se aplican si `tamanos_de_la_ejecucion` coincide con `perfiles[c].n_paises` del meta |
 | `app/modules/imagenes.py` | `render()`; puras: `nombre_clase(clase)`, `leer_clases(meta)`, `tam_entrada(meta)`, `abrir_imagen(bytes) -> PIL RGB`, `a_entrada(img, tam) -> array (1,alto,ancho,3) 0-255`, `predecir(modelo, img, tam) -> probs`, `top_k(probs, clases, k)`, `clase_peligrosa(top)`, `contenedor_de(clase, esquema_id)`, `precision_recall(meta, clase)`, `confundidas_con(meta, clase, k)`. Constantes `ARCHIVO_MODELO`, `ARCHIVO_CLASES`, `ARCHIVO_META`, `MAX_MB` | Pestaña de imágenes. Entrada: foto jpg/png (≤ 10 MB) y esquema de contenedores. Lee `clasificador_imagenes.keras`, `clases_imagenes.json` e `imagenes_meta.json`. Redimensiona con `tf.image.resize` bilinear sin recorte (igual que el entrenamiento); si la confianza es menor que `UMBRAL_CONFIANZA` no sugiere contenedor |
 | `app/modules/series_tiempo.py` | `render()`; puras: `nombre_modelo(m)`, `fmt(x, dec)`, `fechas_futuras(ultima_fecha, h)`, `pronosticar(art, h=None) -> DataFrame (índice fecha; pronostico, inferior, superior en t/mes)`, `leer_pronostico_csv(meta_serie)`, `texto_comparacion(tabla_modelos, ganador) -> list[str]`, `tabla_modelos_df(meta_serie)`, `serie_historica(clave, columna, inicio)`. Constantes `ARCHIVO_META`, `NOMBRES`, `SIMPLES` | Pestaña de series. Entrada: serie (ids de `serie_meta.json`), horizonte 1 a `horizonte_max` y años de histórico. Calcula siempre el pronóstico de 12 meses con el modelo guardado (para que los intervalos no cambien con el horizonte) y recorta; si el `.joblib` no carga (p. ej. otra versión de statsmodels) usa `m2_pronostico_<id>.csv` y avisa. Muestra métricas desde el meta, comparación calculada contra el ingenuo estacional, avisos por modelo simple sin intervalo o `convergio` = False, y descarga del pronóstico en CSV |
 | `src/entrenar_series.py` | CLI: `python src/entrenar_series.py` (sin argumentos) | Entrena y evalúa los 7 modelos por serie, elige el ganador, guarda los artefactos del módulo 2 y escribe `data/processed/m2_resumen.txt`. Puede tardar decenas de minutos por el LSTM |
 | `src/comprobar_modelo_imagenes.py` | CLI: `python src/comprobar_modelo_imagenes.py [--imagen ruta]` | Comprueba que el modelo carga y predice en el entorno local; devuelve 0 si todo bien |
+| `src/medir_arranque.py` | CLI: `python src/medir_arranque.py [--repeticiones 3] [--puerto 8599]` | Mide el arranque (proceso nuevo con `AppTest` y servidor hasta `/_stcore/health`); guarda `data/processed/m8_arranque.json` |
 | `src/fijar_versiones.py` | script (sin funciones públicas) | Reescribe `requirements.txt` con las versiones instaladas |
 | `src/preparar_datos.py` | CLI: `python src/preparar_datos.py <descargar\|verificar\|preparar\|todo> [--forzar]`. Funciones: `renombrar_ds1(df)`, `preparar_ds1(log)`, `detectar_ds2(df)`, `parsear_fecha(serie)`, `ds2_largo(df, det, log)`, `serie_ciudad(largo, log)`, `preparar_ds2(log)`. Parámetros editables al inicio: `UNIDAD_DS2`, `SUBCADENAS_MATERIAL`, `COVID_INICIO/FIN`, `ORG_SUSPENDE/REANUDA`, `MAPA_DS1` | Descarga a `data/raw/wab/` y `data/raw/dsny/`; escribe `verificacion_ds1_ds2.txt`, `log_preparacion.txt` y los CSV de `data/processed/` |
 | `src/eda_tabular.py` | CLI: `python src/eda_tabular.py` (sin funciones públicas) | Imprime resumen y guarda 8 figuras en `docs/figuras/` |

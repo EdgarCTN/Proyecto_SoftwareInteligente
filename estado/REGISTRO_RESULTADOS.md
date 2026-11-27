@@ -441,6 +441,38 @@ Lecturas (IA): en este PC sin GPU el abstractivo tarda ≈ 15 s por bloque de un
 | Prueba | Resultado | Fecha |
 |---|---|---|
 | Instalación desde cero siguiendo el manual | [RESULTADO REAL PENDIENTE] | |
-| Los 5 módulos abren sin error | [RESULTADO REAL PENDIENTE] | |
-| Entradas inválidas manejadas sin caída | [RESULTADO REAL PENDIENTE] | |
-| Tiempo de arranque de la app | [RESULTADO REAL PENDIENTE] | |
+| Los 5 módulos abren sin error | Sí: las 6 pestañas (Inicio + 5 módulos) abren sin errores en el PC del usuario (Fase 8 A; captura) | 2026-11-27 |
+| Entradas inválidas manejadas sin caída | Cubiertas por las pruebas automáticas de `tests/test_integracion.py` (texto vacío, corto o largo; archivo que no es imagen; composición > 100 %; extrapolación; metadatos inexistentes): pasan dentro de `46 passed` en el PC del usuario. No se probó la subida de archivos por interfaz | 2026-11-27 |
+| Tiempo de arranque de la app | Medido con `src/medir_arranque.py` (3 repeticiones; ver la tabla de abajo) | 2026-11-27 |
+| Seguridad y dependencias (paso 4 y 9 del checklist) | `git ls-files \| findstr kaggle` sale vacío tras `git rm --cached notebooks/kaggle.json` (aún sin commit confirmado); `grep -n statsmodels requirements.txt` → 1 comentario (línea 14) y 1 pin (línea 18) | 2026-11-27 |
+| Todas las pruebas `pytest` en el PC del usuario | `python -m pytest -q` → 46 passed in 38.71s (Windows, Git Bash) | 2026-11-27 |
+
+### Tiempo de ejecución de la página por pestaña — Fase 8 Parte A (captura del «Diagnóstico técnico» en el PC del usuario, 2026-11-27)
+
+Estado de la captura: pestaña Predicción > «Países del dataset» con Perú elegido (es decir, tras interactuar con un control), sin foto subida en Imágenes y sin texto en Resumen. Cada cifra es **una sola lectura**, sin repeticiones.
+
+| Pestaña | Segundos |
+|---|---|
+| Inicio | 0.01 |
+| Predicción | 0.16 |
+| Series temporales | 0.23 |
+| Imágenes | 0.04 (sin foto cargada) |
+| Clustering | 0.25 |
+| Resumen | 0.11 |
+| Suma | 0.80 (calculada a partir de las seis lecturas) |
+
+Lectura (IA): con esos controles, una interacción vuelve a ejecutar las seis pestañas en unos 0.8 s en total, lo que respalda conservar `st.tabs` (D106). **No está medido** el caso con una foto cargada en Imágenes ni con un texto grande en Resumen, que son los que podrían encarecer cada interacción. Tampoco es el tiempo de arranque en frío (queda pendiente).
+
+### Arranque de la app — Fase 8 Parte B (salida de `python src/medir_arranque.py` en el PC del usuario, 2026-11-27)
+
+Tres repeticiones. «Proceso nuevo» usa `AppTest` (sin navegador); «servidor listo» es el tiempo hasta que `/_stcore/health` responde (no incluye abrir el navegador ni cargar TensorFlow). Todas: 0 excepciones y 0 errores.
+
+| Repetición | Importar Streamlit (s) | 1.ª ejecución (s) | 2.ª ejecución (s) | Servidor listo (s) |
+|---|---|---|---|---|
+| 1 | 1.40 | 6.33 | 0.52 | 3.64 |
+| 2 | 1.42 | 5.48 | 0.51 | 3.15 |
+| 3 | 1.53 | 5.53 | 0.52 | 3.06 |
+| Promedio (calculado a partir de las tres lecturas) | 1.45 | 5.78 | 0.52 | 3.28 |
+
+Lectura (IA): la primera ejecución de la página tarda unos 5.5 a 6.3 s y las siguientes unos 0.5 s, coherente con los ≈ 0.8 s de la sección anterior. **No se midió por separado** qué parte de la primera ejecución corresponde a importar librerías y qué parte a la primera carga de modelos y datos; es probable que sean ambas, pero es una suposición. Solo tres repeticiones en un equipo, con caché de disco ya caliente tras la primera.
+

@@ -1,0 +1,35 @@
+{
+  "equipo": {
+    "so": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.6",
+    "streamlit": "1.67.0"
+  },
+  "proceso_nuevo": [
+    {
+      "importar_streamlit_s": 1.404165600077249,
+      "primera_ejecucion_s": 6.334464699961245,
+      "segunda_ejecucion_s": 0.5161991000641137,
+      "excepciones": 0,
+      "errores": 0
+    },
+    {
+      "importar_streamlit_s": 1.420560900005512,
+      "primera_ejecucion_s": 5.476388400071301,
+      "segunda_ejecucion_s": 0.5136156999506056,
+      "excepciones": 0,
+      "errores": 0
+    },
+    {
+      "importar_streamlit_s": 1.5280208999756724,
+      "primera_ejecucion_s": 5.527614600025117,
+      "segunda_ejecucion_s": 0.5239464000333101,
+      "excepciones": 0,
+      "errores": 0
+    }
+  ],
+  "servidor_listo_s": [
+    3.6351002999581397,
+    3.150703000021167,
+    3.0606829000171274
+  ]
+}

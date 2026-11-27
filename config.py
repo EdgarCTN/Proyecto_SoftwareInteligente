@@ -30,6 +30,16 @@ MODULOS = [
     {"id": "resumen", "titulo": "📝 Resumen", "modulo": "resumen", "meta": "resumen_meta.json"},
 ]
 
+# Archivos que cada módulo necesita para funcionar (los usa app/utils/diagnostico.py; no se descargan ni se generan aquí)
+ARTEFACTOS_MODULO = {
+    "prediccion": {"models": ["prediccion_mejor.pkl", "prediccion_meta.json"], "data": ["paises_residuos.csv"]},
+    "series": {"models": ["serie_meta.json", "serie_S1.joblib", "serie_S2.joblib", "serie_S3.joblib"],
+               "data": ["serie_ciudad_mensual.csv"]},
+    "imagenes": {"models": ["clasificador_imagenes.keras", "clases_imagenes.json", "imagenes_meta.json"], "data": []},
+    "clustering": {"models": ["clustering_mejor.pkl", "clustering_meta.json"], "data": ["clustering_paises.csv"]},
+    "resumen": {"models": ["resumen_meta.json"], "data": []},
+}
+
 # --- Módulo 3 (imágenes): nombres, contenedores y umbrales (clases reales de models/clases_imagenes.json) ---
 NOMBRES_CLASES = {
     "battery": "Batería o pila", "biological": "Residuo orgánico", "cardboard": "Cartón", "clothes": "Ropa",

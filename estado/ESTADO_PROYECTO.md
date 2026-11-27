@@ -10,11 +10,11 @@
 
 | Campo | Valor |
 |---|---|
-| Versión del estado | 46 (Fase 7 Parte B: medición del abstractivo completa) |
+| Versión del estado | 52 (Fase 8 Parte B: P37, historial de kaggle.json comprobado) |
 | Última actualización | 2026-11-27 |
-| Última fase completada | Fase 7 Parte A (la fase 7 sigue 🟡 hasta su Parte B); Fase 6 (con P29 y P34 parciales); Fase 5 (con P23, P27 y P28 abiertos); Fase 4 (con P20 parcial; Fase 2 con pendientes: revisión humana del filtro de textos e imágenes DS3 y DS4) |
-| Fase actual | Fase 7 Parte B — 🟡 todo probado y medido en tu PC; falta "Continuar" |
-| Semana del cronograma | 13 (próxima entrega: semana 14, avance 50 %) |
+| Última fase completada | Fase 7 (validada 2026-11-27); Fase 6 (con P29 y P34 parciales); Fase 5 (con P23, P27 y P28 abiertos); Fase 4 (con P20 parcial); Fase 2 (con pendientes: revisión humana del filtro de textos e imágenes DS3 y DS4) |
+| Fase actual | Fase 8 Parte B — 🟡 falta commit y push de P37, **revocar el token de Kaggle** y tu "Continuar" |
+| Semana del cronograma | 13 según lo registrado; **sin reconfirmar** el 2026-11-27 (la IA lo preguntó y no hubo respuesta) |
 | Nº de conversación (chat) | 1 |
 
 ## 1. Datos del proyecto
@@ -42,8 +42,8 @@
 | 4 | Módulo 4: Clustering | ✅ | Notebook 04, `clustering.py`, modelo + meta | Sí (Continuar) | Parte A con datos reales (REGISTRO 4): K-Means k=4, estructura débil. Parte B: `app/modules/clustering.py`; modo país confirmado tras corregir TWN sin nombre (D57, D58); perfil nuevo, mapa y métricas sin reporte de fallas (P20 parcial) |
 | 5 | Módulo 3: Imágenes | ✅ | Notebook 03 (Colab), `imagenes.py`, `.keras` + meta | Sí (Continuar, 2026-11-23) | Parte A ejecutada con datos reales (REGISTRO 3). Parte B entregada: `app/modules/imagenes.py`, `CONTENEDORES` en `config.py`, `src/comprobar_modelo_imagenes.py`, `tests/test_imagenes.py`. Probada por la IA con el modelo real, 5 pruebas pytest y Streamlit AppTest con una foto sintética; en el PC del usuario: 5 pruebas pasan, la app y la pestaña funcionan (interfaz aprobada por el usuario); el script de comprobación se corrigió (codificación) y terminó en OK; 1 foto real probada (REGISTRO 3) |
 | 6 | Módulo 2: Series temporales | ✅ | Notebook 02, `entrenar_series.py`, `series_tiempo.py`, modelo + meta | Sí (Continuar, 2026-11-24; P29 y P34 parciales) | Parte A ejecutada por el usuario con datos reales (REGISTRO 2): ganadores S1 ETS, S2 SARIMAX, S3 ingenuo (último valor); mejoras en prueba frente al ingenuo estacional de 3.5 %, 5.8 % y 5.0 %. SARIMAX final de S2 sin convergencia. Parte B entregada: `app/modules/series_tiempo.py` y `tests/test_series_tiempo.py`; probada por la IA con tu `serie_S1.joblib` real y tu CSV de S1 (coinciden) y con artefactos de una prueba de humo para S2 y S3 (mismos tipos de ganador); en tu PC: 3 series y cambio de horizonte probados con capturas y 5 pruebas pasan (2026-11-23); falta revisar «Modelos y datos» y la descarga del CSV (P34) |
-| 7 | Módulo 5: Resumen de texto | 🟡 | Notebook 05, `resumen.py` | — | Parte A entregada: `app/utils/texto.py`, `tests/test_texto.py` y `notebooks/05_resumen.ipynb` (Colab con GPU). Ejecutada por el usuario en Colab (T4, 2026-11-24, n = 500 por fuente): ganador abstractivo (mT5 XL-Sum) por la regla fijada, pero **la ventaja viene de E1**; en E2 empata con Lead-2 (REGISTRO 5). Parte A validada por el usuario ("Continuar", 2026-11-24). Parte B entregada: `app/modules/resumen.py`, `tests/test_resumen.py`, `requirements-abstractivo.txt`; la IA solo la probó con un streamlit simulado y un modelo falso |
-| 8 | Integración y pruebas | ⬜ | `main.py` completo, pruebas, caché, errores | — | |
+| 7 | Módulo 5: Resumen de texto | ✅ | Notebook 05, `resumen.py` | Sí (Continuar, 2026-11-27) | Parte A entregada: `app/utils/texto.py`, `tests/test_texto.py` y `notebooks/05_resumen.ipynb` (Colab con GPU). Ejecutada por el usuario en Colab (T4, 2026-11-24, n = 500 por fuente): ganador abstractivo (mT5 XL-Sum) por la regla fijada, pero **la ventaja viene de E1**; en E2 empata con Lead-2 (REGISTRO 5). Parte A validada por el usuario ("Continuar", 2026-11-24). Parte B entregada: `app/modules/resumen.py`, `tests/test_resumen.py`, `requirements-abstractivo.txt`; la IA solo la probó con un streamlit simulado y un modelo falso |
+| 8 | Integración y pruebas | 🟡 | `main.py` completo, pruebas, caché, errores | — | Parte A entregada: `app/main.py` (Inicio + 5 pestañas, errores con detalle técnico, tiempos), `app/modules/inicio.py`, `app/utils/diagnostico.py`, `ARTEFACTOS_MODULO` en `config.py`. Probada por la IA con Streamlit 1.67.0 (`AppTest`): 0 excepciones, y con un modelo borrado y un módulo roto la app sigue funcionando. Parte B entregada: `tests/test_integracion.py` (17 pruebas), `src/medir_arranque.py`, `docs/checklist_instalacion.md`; las 17 pasan en el entorno de la IA (Linux, Streamlit 1.67.0, sin TensorFlow ni statsmodels), **no ejecutadas aún en tu PC**; checklist sin ejecutar desde cero |
 | 9 | Manuales | ⬜ | `docs/manual_instalacion.md`, `docs/manual_usuario.md` | — | |
 | 10 | Informe técnico, Parte A | ⬜ | Secciones 1–5 | — | |
 | 11 | Informe técnico, Parte B | ⬜ | Secciones 6–12 | — | |
@@ -161,6 +161,13 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | D103 | M5 Parte B: `src/medir_abstractivo.py` mide en el PC la carga, el calentamiento, la generación (el texto de ejemplo y ese texto repetido 5 veces, solo para tiempo) y la memoria (con `psutil`, opcional; el pico solo en Windows) y guarda `m5_medicion_cpu.json`; así no hace falta el Administrador de tareas. Su rama sin `psutil` no se probó | `src/medir_abstractivo.py` | 7B |
 | D104 | M5 Parte B: `medir_abstractivo.py` falló en la consola de Windows por imprimir «≈» (cp1252); ahora fuerza UTF-8 en la salida, no usa símbolos fuera de cp1252 en sus nombres, avanza línea a línea y silencia los avisos de `transformers`. Reproducido el fallo con la versión anterior y comprobada la corrección con `PYTHONIOENCODING=cp1252` (con modelos simulados) | `src/medir_abstractivo.py` | 7B |
 | D105 | M5 Parte B, con la medición del PC (≈ 15 s por bloque de ≈ 260 palabras sin GPU; ≈ 77 s para 5 bloques; pico ≈ 2.5 GiB): el aviso de la interfaz cita esas cifras y, si no hay GPU y el texto pide más de 30 s, muestra una estimación (`estimar_segundos_cpu`: una llamada por bloque más una final, 15 s cada una). Es una extrapolación de una sola medición y se dice | `app/modules/resumen.py` | 7B |
+| D106 | Fase 8: se **conservan las pestañas** (`st.tabs`) y no se cambia a navegación lateral: con `st.tabs` los cinco módulos se ejecutan en cada interacción (cuestan poco gracias a `st.cache_resource` y `st.cache_data`), pero con un selector lateral Streamlit borraría el estado de los controles de las pestañas ocultas (texto del resumen, foto subida). El tiempo de cada módulo se mide y se muestra en «Diagnóstico técnico» para decidir con datos reales en la Parte B | `app/main.py` | 8A |
+| D107 | Fase 8: pestaña nueva «🏠 Inicio» (`app/modules/inicio.py`) como primera: qué hace cada módulo, estado de archivos, avisos de privacidad, sesgos, alcance de los datos y licencias. No muestra cifras de resultados (las métricas siguen saliendo solo de cada `_meta.json`). No está en `config.MODULOS` (no es un módulo de IA) | `app/modules/inicio.py` | 8A |
+| D108 | Fase 8: `config.ARTEFACTOS_MODULO` lista por módulo los archivos de `models/` y `data/processed/` que necesita; `app/utils/diagnostico.py` solo comprueba que existan (no los abre ni prueba que funcionen), y el ✅ de la barra lateral significa eso. Reemplaza el criterio anterior (solo existencia del `_meta.json`) | `config.py` | 8A |
+| D109 | Fase 8: `main.py` captura cualquier `Exception` al importar o ejecutar un módulo y muestra el error con un «Detalle técnico» (traceback); `st.stop()` y `st.rerun()` no se ven afectados (no son `Exception`). Si faltan archivos, Inicio y la barra lateral los nombran; el resto sigue funcionando | `app/main.py` | 8A |
+| D110 | Fase 8 B: `tests/test_integracion.py` prueba la app completa con `AppTest` (abre sin excepciones; un módulo que lanza error no la tumba; un módulo ausente muestra «en construcción»; Inicio nombra los archivos faltantes) y las entradas inválidas con funciones puras y datos de juguete declarados. No se prueba la subida de archivos por interfaz | `tests/test_integracion.py` | 8B |
+| D111 | Fase 8 B: `src/medir_arranque.py` mide en un proceso nuevo (importar Streamlit, 1.ª y 2.ª ejecución de la página con `AppTest`) y el tiempo hasta que el servidor responde en `/_stcore/health`; **no incluye abrir el navegador ni cargar TensorFlow** (se carga al subir una foto). Fuerza UTF-8 en la salida (lección de D74 y D104) | `src/medir_arranque.py` | 8B |
+| D112 | Fase 8 B: `docs/checklist_instalacion.md` queda como borrador sin ejecutar; el Manual de instalación (Fase 9) se escribirá a partir de su resultado real | `docs/checklist_instalacion.md` | 8B |
 
 *(La IA agrega aquí cada decisión nueva con su fase.)*
 
@@ -172,7 +179,7 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | 2 Series temporales | DS2, serie de ciudad (S1 418 meses; S2 y S3 271 meses) | S1 ETS · S2 SARIMAX · S3 Ingenuo (último valor) | RMSE de prueba (ton/mes): S1 8 785, S2 2 225, S3 2 227; mejora frente al ingenuo estacional 3.5 %, 5.8 % y 5.0 % (REGISTRO 2) | `models/serie_<id>.joblib` | ✅ |
 | 3 Imágenes | DS3 limpio (12 220 imágenes, 10 clases); prueba externa DS4 (277) | V3 MobileNetV2 con fine-tuning | Test DS3: accuracy 0.915, macro-F1 0.910; DS4 (6 clases): accuracy 0.610, macro-F1 0.574 (REGISTRO 3) | `models/clasificador_imagenes.keras` | ✅ |
 | 4 Clustering | DS1, 7 variables de composición y generación | K-Means k=4 | Silhouette 0.219, DB 1.548; estabilidad ARI 0.662 ± 0.277 (estructura débil) (REGISTRO 4) | `models/clustering_mejor.pkl` | ✅ |
-| 5 Resumen | E1 XL-Sum y E2 MLSUM (500 artículos cada una) | Abstractivo `csebuetnlp/mT5_multilingual_XLSum` (por la regla; en E2 empata con Lead-2) | ROUGE-L medio 0.1907 (E1 0.2232; E2 0.1582) frente a Lead-2 0.1494 y TextRank-2 0.1395 (REGISTRO 5) | `models/resumen_meta.json` (el modelo se descarga del Hub, 2.33 GB) | 🟡 (Parte A registrada; falta Parte B) |
+| 5 Resumen | E1 XL-Sum y E2 MLSUM (500 artículos cada una) | Abstractivo `csebuetnlp/mT5_multilingual_XLSum` (por la regla; en E2 empata con Lead-2) | ROUGE-L medio 0.1907 (E1 0.2232; E2 0.1582) frente a Lead-2 0.1494 y TextRank-2 0.1395 (REGISTRO 5) | `models/resumen_meta.json` (el modelo se descarga del Hub, 2.33 GB) | ✅ |
 
 *(Detalle completo de métricas en `REGISTRO_RESULTADOS.md`.)*
 
@@ -206,7 +213,7 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | P25 | Decidir D67 (fotos propias) | Usuario | cerrado: no (2026-11-23) |
 | P26 | `tensorflow==2.21.0` agregado y fijado en `requirements.txt`; `python src/comprobar_modelo_imagenes.py` termina en OK en el PC del usuario | Usuario | cerrado: 2026-11-22 |
 | P27 | Probar la pestaña con 3 a 5 fotos reales de residuos (clase, confianza, si acertó) y guardar capturas para el manual | Usuario | parcial: 1 foto (madera → Cartón 94.5 %, REGISTRO 3) |
-| P29 | `statsmodels==0.15.0` fijado en `requirements.txt`; **quedó la línea duplicada** (había una y se agregó otra con `echo`): borrar una con `awk '!seen[$0]++' requirements.txt > requirements.tmp && mv requirements.tmp requirements.txt` y revisar con `grep -n statsmodels requirements.txt` (debe salir 1 línea) | Usuario | parcial |
+| P29 | `statsmodels==0.15.0` fijado en `requirements.txt` | Usuario | cerrado: 2026-11-27 (`grep -n statsmodels requirements.txt` muestra un comentario en la línea 14 y un solo pin en la 18; sin duplicado) |
 | P30 | Ejecutar `python src/entrenar_series.py` y pegar `m2_resumen.txt` | Usuario | cerrado: 2026-11-23 (REGISTRO 2) |
 | P31 | Reintentar el ajuste final de S2 con más iteraciones para lograr convergencia | Equipo | implementado en el script (D83, `maxiter` = 1000); falta reejecutar en tu PC para ver si `convergio` pasa a True (en el entorno de la IA ya era True con 200 iteraciones: la diferencia depende de la plataforma) |
 | P32 | (Recomendado) Reejecutar `python src/entrenar_series.py` con el script nuevo: **S1 verificado** (CSV con intervalos fijos y `serie_S1.joblib` coherentes); falta ver la línea `Convergencia del modelo final` de S2 en `m2_resumen.txt` | Usuario | parcial |
@@ -214,23 +221,33 @@ Detalle y motivos en los archivos indicados. Todas las decisiones de datos son *
 | P35 | `python -m pytest tests/test_series_tiempo.py` en el PC del usuario | Usuario | cerrado: 5 pruebas pasan, incluida la de artefactos reales contra sus CSV (2026-11-23); `tests/test_imagenes.py` ya había pasado en la Fase 5 |
 | P33 | `models/` del usuario tiene `serie_S1.joblib`, `serie_S2.joblib`, `serie_S3.joblib` y `serie_meta.json` | Usuario | cerrado: 2026-11-23 (la prueba de artefactos reales pasa en su PC) |
 | P36 | Ejecutar `notebooks/05_resumen.ipynb` en Colab con GPU (subir `texto.py` y `textos_residuos.csv`; conviene una prueba con `LIMITE_DOCS = 20` antes) y pegar `m5_resumen.txt` y las líneas «VERIFICACIÓN…» de las celdas 4 y 6. **Antes:** `data/processed/textos_residuos.csv` no está en el repositorio (`.gitignore`); si falta en tu PC, regenerarlo con `python src/preparar_textos.py` (sin argumentos: 500 por fuente, tope 250 de residuos, semilla 42) y subirlo a Colab | Usuario | cerrado: 2026-11-24 (ejecución completa; REGISTRO 5) |
-| P37 | **Seguridad:** `notebooks/kaggle.json` traía credenciales reales: revocar el token en Kaggle (Settings → API → Expire Token), crear otro, quitar el archivo del repositorio (`git rm --cached`) y revisar el historial si ya hubo `push`; `kaggle.json` queda en `.gitignore` | Usuario | abierto |
+| P37 | **Seguridad:** `kaggle.json` entró en el commit `092cb60` («Tercer modulo») y `git status -sb` (2026-11-27) muestra `main` sin diferencia con `origin/main` (según el último estado conocido del remoto), así que **debe tratarse como expuesto**. `git rm --cached` ya dejó la eliminación preparada (`D`), pero **sin commit ni push**. Falta: (1) **revocar el token en Kaggle** (Settings → API → Expire Token) y, si hace falta, crear otro fuera del repositorio; (2) commit y push de la eliminación. Limpiar el historial es opcional una vez revocado el token | Usuario | parcial |
 | P38 | Licencia del modelo: `cc-by-nc-sa-4.0` según su ficha (D95; confirmarla en la página del modelo). Falta la licencia de DS7 (`C3`: `[VERIFICAR]`) y citar en el informe XL-Sum (Hasan et al., 2021), MLSUM y el modelo | Usuario | parcial |
 | P39 | Copiar `resumen_meta.json` al proyecto y adjuntarlo | Usuario | cerrado: 2026-11-24 (recibido; sus 14 filas coinciden con `m5_resumen.txt`) |
 | P41 | Probar la Parte B en tu PC | Usuario | cerrado: 2026-11-27 (`pytest`: 17 passed; interfaz probada por capturas; opcional: subir un `.txt` y pulsar Resumir con la caja vacía) |
 | P42 | Medir tiempo y memoria del abstractivo en el PC | Usuario | cerrado: 2026-11-27 (REGISTRO 5) |
 | P40 | (Opcional) Comprobar con el artículo completo los ejemplos de Irak y del PSOE (REGISTRO 5) y confirmar que son errores del modelo | Usuario | abierto |
 | P28 | Contrastar los colores de `peru_municipal` y `peru_no_municipal` con el texto oficial de la NTP 900.058:2019 (INACAL) | Usuario | abierto |
+| P43 | Probar la Parte A de la Fase 8 en tu PC | Usuario | parcial: 6 pestañas abren sin errores y tiempos por pestaña recibidos (REGISTRO 6, 2026-11-27); falta (opcional) medir Imágenes con una foto cargada y el aviso de archivos faltantes renombrando un modelo |
+| P44 | Ejecutar en tu PC `python -m pytest -q` | Usuario | cerrado: 2026-11-27 (46 passed in 38.71s; REGISTRO 6) |
+| P45 | Ejecutar `python src/medir_arranque.py` | Usuario | cerrado: 2026-11-27 (REGISTRO 6) |
+| P46 | Ejecutar el checklist `docs/checklist_instalacion.md` en una carpeta nueva con un entorno virtual nuevo | Usuario | parcial: pasos 6 y 10 hechos en la carpeta actual (no desde cero); el paso 4 resuelto con `grep` (P29 cerrado); el paso 9 sale vacío tras `git rm --cached` (falta commit y push, P37); pasos 1 a 3, 5, 7, 8 y 11 sin reportar |
 
 ## 6. Próximo paso exacto
 
-> El usuario revisa la entrega (en especial que `python -m pytest tests/test_resumen.py` siga pasando con la prueba nueva) y escribe **Continuar**: la **Fase 7** pasa a ✅ y empieza la **Fase 8** (integración de los cinco módulos, pruebas de integración y robustez). Siguen abiertos, sin bloquear: P14, P15 (D37/D92), P23, P27, P28, P29, P32, P34, P37 (revocar el token de Kaggle), P38, P40.
+> El usuario ejecuta P44 a P46 y escribe **Continuar**: la **Fase 8** pasa a ✅ y empieza la **Fase 9** (manuales de instalación y de usuario). Con `Error:` si algo falla. Siguen abiertos, sin bloquear: P14, P15, P23, P27, P28, P29, P32, P34, P37 (**revocar el token de Kaggle**), P38, P40.
 
 ## 7. Historial
 
 | Versión | Fecha | Fase | Cambio |
 |---|---|---|---|
 | 0 | — | — | Estado inicial creado junto con el paquete |
+| 52 | 2026-11-27 | 8B | `git log` muestra `kaggle.json` en el commit `092cb60`; `git status -sb` sin diferencia con `origin/main`; eliminación preparada, sin commit; la revocación del token sigue sin confirmarse |
+| 51 | 2026-11-27 | 8B | El usuario ejecutó `git rm --cached` (índice sin `kaggle.json`; falta commit, push y revocar el token) y confirmó una sola línea de `statsmodels` (P29 cerrado) |
+| 50 | 2026-11-27 | 8B | Resultados reales: 46 pruebas pasan y arranque medido (REGISTRO 6); el borrado de `kaggle.json` sigue sin confirmarse en Git (P37); checklist ajustado para Git Bash; P44 y P45 cerrados, P46 parcial |
+| 49 | 2026-11-27 | 8B | Fase 8 Parte B entregada: `test_integracion.py`, `medir_arranque.py`, `checklist_instalacion.md` (D110 a D112); 17 pruebas pasan en el entorno de la IA; P44 a P46 nuevos |
+| 48 | 2026-11-27 | 8A | El usuario confirmó que las 6 pestañas abren sin errores y pegó los tiempos del «Diagnóstico técnico» (REGISTRO 6); P43 parcial |
+| 47 | 2026-11-27 | 8A | Fase 7 validada (✅). Fase 8 Parte A entregada: `main.py` completo, `inicio.py`, `diagnostico.py`, `ARTEFACTOS_MODULO` (D106 a D109); probada con `AppTest`; P43 nuevo; semana del cronograma sin reconfirmar |
 | 46 | 2026-11-27 | 7B | Medición completa del abstractivo en el PC (REGISTRO 5; P42 cerrado); el aviso de la interfaz cita las cifras y estima el tiempo sin GPU (D105); calidad dudosa del resumen por bloques anotada |
 | 45 | 2026-11-27 | 7B | Medición parcial del abstractivo en el PC (REGISTRO 5); el script falló por la codificación de la consola de Windows y se corrigió (D104); P42 sigue parcial |
 | 44 | 2026-11-27 | 7B | `pytest`: 17 passed en el PC (REGISTRO 5; P41 cerrado). Script `src/medir_abstractivo.py` como alternativa al Administrador de tareas (D103); P42 sigue parcial |
